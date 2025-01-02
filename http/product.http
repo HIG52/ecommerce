@@ -1,0 +1,19 @@
+### 상품 목록 조회
+GET http://localhost:8080/api/products
+Content-Type: application/json
+
+### 특정 상품 조회 - 유효한 상품 ID
+GET http://localhost:8080/api/products/1
+Content-Type: application/json
+
+### 특정 상품 조회 - 존재하지 않는 상품 ID
+GET http://localhost:8080/api/products/0
+Content-Type: application/json
+
+### 특정 상품 조회 - 품절된 상품
+GET http://localhost:8080/api/products/2
+Content-Type: application/json
+
+### 인기 상품 조회
+GET http://localhost:8080/api/products/topProduct
+Content-Type: application/json

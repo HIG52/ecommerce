@@ -1,0 +1,35 @@
+### 결제 생성 - 유효한 데이터
+POST http://localhost:8080/api/payments/
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "orderId": 1
+}
+
+### 결제 생성 - 존재하지 않는 유저
+POST http://localhost:8080/api/payments/
+Content-Type: application/json
+
+{
+  "userId": 0,
+  "orderId": 1
+}
+
+### 결제 생성 - 존재하지 않는 주문
+POST http://localhost:8080/api/payments/
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "orderId": 0
+}
+
+### 결제 생성 - 만료된 주문
+POST http://localhost:8080/api/payments/
+Content-Type: application/json
+
+{
+  "userId": 10,
+  "orderId": 10
+}
