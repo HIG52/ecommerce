@@ -19,30 +19,19 @@ https://docs.google.com/spreadsheets/d/1S-V0aaEDx8nXaLeL-qKHYJz45HS5AnGflVhSwqqU
 https://docs.google.com/spreadsheets/d/18d7nosQLr5CIZH96ZxWk3UayW7eZdu1zySMU7XHcBEY/edit?usp=sharing
 
 ### 패키지 구조
-src
-├─main
-│  ├─java
-│  │  └─kr
-│  │      └─hhplus
-│  │          └─be
-│  │              └─server
-│  │                  ├─api
-│  │                  │  ├─controller
-│  │                  │  ├─dto
-│  │                  │  └─usecase
-│  │                  ├─config
-│  │                  │  └─jpa
-│  │                  ├─domain
-│  │                  │  ├─entity
-│  │                  │  └─repository
-│  │                  ├─infrastructure
-│  │                  │  ├─repository
-│  │                  │  └─repositoryImpl
-│  │                  └─service
-│  └─resources
-└─test
-└─java
-└─kr
-└─hhplus
-└─be
-└─server
+```
+server
+├─api
+│  ├─controller
+│  ├─dto
+│  └─usecase
+├─config
+│  └─jpa
+├─domain
+│  ├─entity
+│  └─repository
+├─infrastructure
+│  ├─repository
+│  └─repositoryImpl
+└─service
+```
