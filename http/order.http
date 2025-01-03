@@ -1,0 +1,45 @@
+### 주문 생성 - 유효한 데이터
+POST http://localhost:8080/api/orders/
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "productIds": [1, 2, 3],
+  "productQuantities": [1, 2, 3]
+}
+
+### 주문 생성 - 존재하지 않는 유저
+POST http://localhost:8080/api/orders/
+Content-Type: application/json
+
+{
+  "userId": 0,
+  "productIds": [1, 2, 3],
+  "productQuantities": [1, 2, 3]
+}
+
+### 주문 생성 - 품절된 상품 포함
+POST http://localhost:8080/api/orders/
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "productIds": [1, 2, 3],
+  "productQuantities": [1, 0, 3]
+}
+
+### 주문 상세 조회 - 유효한 데이터
+GET http://localhost:8080/api/orders/1
+Content-Type: application/json
+
+{
+  "userId": 1
+}
+
+### 주문 상세 조회 - 존재하지 않는 유저
+GET http://localhost:8080/api/orders/1
+Content-Type: application/json
+
+{
+  "userId": 0
+}
