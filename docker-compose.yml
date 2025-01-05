@@ -15,3 +15,6 @@ services:
 networks:
   default:
     driver: bridge
+
+
+#docker-compose up -d
