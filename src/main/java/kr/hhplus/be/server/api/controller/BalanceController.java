@@ -22,12 +22,9 @@ public class BalanceController {
     public ResponseEntity<BalanceResponseDTO> getUserPoint(
             @PathVariable(name = "userId") int userId) {
 
-        BalanceResponseDTO response = new BalanceResponseDTO();
+        BalanceResponseDTO responseDTO = balanceUsecase.getUserBalance(userId);
 
-        response.setUserId(userId);
-        response.setBalance(balanceUsecase.getUserBalance(userId));
-
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
     }
 
     @PostMapping("/api/balances/{userId}/charge")

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "coupon")
-public class Coupon {
+public class Coupon extends AuditingFields{
 
     @Id
     @Column(name = "coupon_id", nullable = false)
@@ -36,10 +36,5 @@ public class Coupon {
     @Column(name = "max_discount_amount")
     private Long maxDiscountAmount;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "modify_at")
-    private LocalDateTime modifyAt;
 
 }

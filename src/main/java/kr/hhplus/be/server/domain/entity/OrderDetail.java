@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "order_detail")
-public class OrderDetail {
+public class OrderDetail extends AuditingFields{
 
     @Id
     @Column(name = "order_detail_id", nullable = false)
@@ -26,10 +26,4 @@ public class OrderDetail {
 
     @Column(name = "order_amount")
     private Long orderAmount;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "modify_at")
-    private LocalDateTime modifyAt;
 }

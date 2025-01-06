@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.infrastructure.repositoryImpl;
 
+import kr.hhplus.be.server.domain.entity.User;
 import kr.hhplus.be.server.domain.repository.BalanceRepository;
 import kr.hhplus.be.server.infrastructure.repository.BalanceJpaRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +13,8 @@ public class BalanceRepositoryImpl implements BalanceRepository {
     private final BalanceJpaRepository balanceJpaRepository;
 
     @Override
-    public long getUserBalance(long userId) {
-
-        return balanceJpaRepository.findByUserId(userId).getBalance();
+    public User getUser(long userId) {
+        return balanceJpaRepository.findByUserId(userId);
     }
 
 }

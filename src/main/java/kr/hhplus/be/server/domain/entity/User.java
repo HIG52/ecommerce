@@ -5,15 +5,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@NoArgsConstructor
 @Table(name = "user")
-public class User {
+public class User extends AuditingFields{
 
     @Id
     @Column(name = "user_id", nullable = false)
@@ -25,10 +21,18 @@ public class User {
     @Column(name = "balance")
     private Long balance;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    protected User() {
 
-    @Column(name = "modify_at")
-    private LocalDateTime modifyAt;
+    }
+
+    private User(Long userId, String userName, Long balance) {
+        this.userId = userId;
+        this.userName = userName;
+        this.balance = balance;
+    }
+
+    public static User createUser(Long userId, String userName, Long balance) {
+        return new User(userId, userName, balance);
+    }
 
 }

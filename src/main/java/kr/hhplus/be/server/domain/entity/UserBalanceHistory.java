@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "user_balance_history")
-public class UserBalanceHistory {
+public class UserBalanceHistory extends AuditingFields{
 
     @Id
     @Column(name = "user_balance_history_id", nullable = false)
@@ -26,11 +26,5 @@ public class UserBalanceHistory {
 
     @Column(name = "inserted_at")
     private LocalDateTime insertedAt;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "modify_at")
-    private LocalDateTime modifyAt;
 
 }

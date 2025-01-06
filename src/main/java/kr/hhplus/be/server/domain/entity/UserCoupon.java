@@ -7,7 +7,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "user_coupon")
-public class UserCoupon {
+public class UserCoupon extends AuditingFields{
 
     @Id
     @Column(name = "user_coupon", nullable = false)
