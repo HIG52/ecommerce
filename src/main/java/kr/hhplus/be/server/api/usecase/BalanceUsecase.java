@@ -6,5 +6,6 @@ public interface BalanceUsecase {
 
     BalanceResponseDTO getUserBalance(long userId);
 
+    BalanceResponseDTO chargeUserBalance(long userId, long amount);
 
 }

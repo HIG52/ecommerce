@@ -38,4 +38,22 @@ class BalanceServiceTest {
         assertThat(balanceResponseDTO.getBalance()).isEqualTo(20000L);
     }
 
+    @Test
+    void UserId와_충전금액을_입력하면_잔액_반환() {
+        // given
+        long userId = 1L;
+        long amount = 10000L;
+        BalanceService balanceService = new BalanceService(balanceRepository);
+        User user = User.createUser(userId, "test", 20000L);
+
+        given(balanceRepository.getUser(userId)).willReturn(user);
+
+        // when
+        BalanceResponseDTO balanceResponseDTO = balanceService.chargeUserBalance(userId, amount);
+
+        // then
+        assertThat(balanceResponseDTO.getUserId()).isEqualTo(userId);
+        assertThat(balanceResponseDTO.getBalance()).isEqualTo(30000L);
+    }
+
 }

@@ -16,12 +16,26 @@ public class BalanceService implements BalanceUsecase {
     @Override
     public BalanceResponseDTO getUserBalance(long userId) {
 
-        BalanceResponseDTO response = new BalanceResponseDTO();
+        BalanceResponseDTO balanceResponseDTO = new BalanceResponseDTO();
         User user = balanceRepository.getUser(userId);
-        response.setBalance(user.getBalance());
-        response.setUserId(user.getUserId());
+        balanceResponseDTO.setBalance(user.getBalance());
+        balanceResponseDTO.setUserId(user.getUserId());
 
-        return response;
+        return balanceResponseDTO;
+    }
+
+    @Override
+    public BalanceResponseDTO chargeUserBalance(long userId, long amount) {
+
+        BalanceResponseDTO balanceResponseDTO = new BalanceResponseDTO();
+        User user = balanceRepository.getUser(userId);
+        user.addBalance(amount);
+        balanceRepository.saveUser(user);
+
+        balanceResponseDTO.setBalance(user.getBalance());
+        balanceResponseDTO.setUserId(user.getUserId());
+
+        return balanceResponseDTO;
     }
 
 

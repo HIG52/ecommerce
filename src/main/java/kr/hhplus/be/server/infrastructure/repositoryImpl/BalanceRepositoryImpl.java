@@ -17,4 +17,9 @@ public class BalanceRepositoryImpl implements BalanceRepository {
         return balanceJpaRepository.findByUserId(userId);
     }
 
+    @Override
+    public void saveUser(User user) {
+        balanceJpaRepository.save(user);
+    }
+
 }

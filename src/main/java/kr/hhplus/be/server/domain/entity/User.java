@@ -35,4 +35,7 @@ public class User extends AuditingFields{
         return new User(userId, userName, balance);
     }
 
+    public void addBalance(long amount) {
+        this.balance += amount;
+    }
 }

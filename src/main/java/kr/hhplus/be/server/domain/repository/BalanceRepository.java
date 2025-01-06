@@ -6,4 +6,5 @@ public interface BalanceRepository {
 
     User getUser(long userId);
 
+    void saveUser(User user);
 }
