@@ -11,12 +11,26 @@ spring:
       connection-timeout: 10000
       max-lifetime: 60000
     driver-class-name: com.mysql.cj.jdbc.Driver
+  logging:
+    level:
+      level:
+        root: DEBUG  # 모든 로그를 DEBUG 수준으로 출력
+        org.hibernate.SQL: DEBUG  # Hibernate SQL 쿼리 로그
+        org.hibernate.type.descriptor.sql.BasicBinder: TRACE  # Hibernate 파라미터 바인딩 로그
+        org.springframework: DEBUG  # Spring 관련 디버깅 로그
+      pattern:
+        console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+      org:
+        hibernate:
+          type:
+            descriptor:
+              sql: trace
   jpa:
     open-in-view: false
     generate-ddl: false
-    show-sql: false
+    show-sql: true
     hibernate:
-      ddl-auto: none
+      ddl-auto: validate
     properties:
       hibernate.timezone.default_storage: NORMALIZE_UTC
       hibernate.jdbc.time_zone: UTC
