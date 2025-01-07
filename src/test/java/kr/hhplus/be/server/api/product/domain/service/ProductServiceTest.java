@@ -7,6 +7,12 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
@@ -31,5 +37,38 @@ class ProductServiceTest {
         assertEquals(productResponseDTO.getProductName(), "test");
         assertEquals(productResponseDTO.getProductPrice(), 10000L);
         assertEquals(productResponseDTO.getProductQuantity(), 10);
+    }
+
+    @Test
+    void 페이지와_사이즈를_입력하면_상품목록_반환() {
+        // given
+        ProductService productService = new ProductService(productRepository);
+        int page = 0;
+        int size = 2;
+        Pageable pageable = PageRequest.of(page, size);
+
+        List<Product> products = List.of(
+                Product.createProduct("Product1", 10000L, 10),
+                Product.createProduct("Product2", 20000L, 5)
+        );
+
+        Page<Product> productPage = new PageImpl<>(products, pageable, products.size());
+        given(productRepository.findAll(pageable)).willReturn(productPage);
+
+        // when
+        Page<ProductResponseDTO> productResponseDTOPage = productService.getProducts(page, size);
+
+        // then
+        assertEquals(productResponseDTOPage.getContent().size(), 2);
+
+        ProductResponseDTO firstProduct = productResponseDTOPage.getContent().get(0);
+        assertEquals(firstProduct.getProductName(), "Product1");
+        assertEquals(firstProduct.getProductPrice(), 10000L);
+        assertEquals(firstProduct.getProductQuantity(), 10);
+
+        ProductResponseDTO secondProduct = productResponseDTOPage.getContent().get(1);
+        assertEquals(secondProduct.getProductName(), "Product2");
+        assertEquals(secondProduct.getProductPrice(), 20000L);
+        assertEquals(secondProduct.getProductQuantity(), 5);
     }
 }
