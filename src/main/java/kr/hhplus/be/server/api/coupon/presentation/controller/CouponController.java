@@ -70,7 +70,7 @@ public class CouponController {
 
         response.setCouponId(couponId);
         response.setCouponName("쿠폰명");
-        response.setCouponType("PERCENT");
+        //response.setCouponType("PERCENT");
         response.setCouponQuantity(10000);
         response.setCouponAmount(1000);
         response.setExpirationDate(LocalDateTime.of(2024, 12, 31, 23, 59, 59));
