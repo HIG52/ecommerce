@@ -10,7 +10,6 @@ public class ServerApplication {
 	public static void main(String[] args) {
 
 		ApplicationContext test = SpringApplication.run(ServerApplication.class, args);
-
 	}
 
 }
