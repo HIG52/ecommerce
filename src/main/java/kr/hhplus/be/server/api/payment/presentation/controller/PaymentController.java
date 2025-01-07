@@ -1,7 +1,7 @@
-package kr.hhplus.be.server.api.controller;
+package kr.hhplus.be.server.api.payment.presentation.controller;
 
-import kr.hhplus.be.server.api.dto.PaymentRequestDTO;
-import kr.hhplus.be.server.api.dto.PaymentResponseDTO;
+import kr.hhplus.be.server.api.payment.presentation.dto.PaymentRequestDTO;
+import kr.hhplus.be.server.api.payment.presentation.dto.PaymentResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,7 +1,7 @@
-package kr.hhplus.be.server.api.controller;
+package kr.hhplus.be.server.api.order.presentation.controller;
 
-import kr.hhplus.be.server.api.dto.OrderRequestDTO;
-import kr.hhplus.be.server.api.dto.OrderResponseDTO;
+import kr.hhplus.be.server.api.order.presentation.dto.OrderRequestDTO;
+import kr.hhplus.be.server.api.order.presentation.dto.OrderResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

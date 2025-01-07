@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.api.dto;
+package kr.hhplus.be.server.api.payment.presentation.dto;
 
 public class PaymentRequestDTO {
     private long userId;

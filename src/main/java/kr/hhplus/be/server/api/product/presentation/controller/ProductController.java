@@ -1,6 +1,6 @@
-package kr.hhplus.be.server.api.controller;
+package kr.hhplus.be.server.api.product.presentation.controller;
 
-import kr.hhplus.be.server.api.dto.ProductResponseDTO;
+import kr.hhplus.be.server.api.product.presentation.dto.ProductResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

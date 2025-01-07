@@ -1,7 +1,7 @@
-package kr.hhplus.be.server.api.controller;
+package kr.hhplus.be.server.api.coupon.presentation.controller;
 
-import kr.hhplus.be.server.api.dto.CouponRequestDTO;
-import kr.hhplus.be.server.api.dto.CouponResponseDTO;
+import kr.hhplus.be.server.api.coupon.presentation.dto.CouponRequestDTO;
+import kr.hhplus.be.server.api.coupon.presentation.dto.CouponResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

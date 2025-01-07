@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.api.dto;
+package kr.hhplus.be.server.api.order.presentation.dto;
 
 import java.util.List;
 

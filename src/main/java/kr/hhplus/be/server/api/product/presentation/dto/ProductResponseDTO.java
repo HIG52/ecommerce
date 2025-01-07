@@ -1,6 +1,4 @@
-package kr.hhplus.be.server.api.dto;
-
-import lombok.Data;
+package kr.hhplus.be.server.api.product.presentation.dto;
 
 public class ProductResponseDTO {
     private long productId;
