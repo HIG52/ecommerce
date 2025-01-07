@@ -41,21 +41,6 @@ class BalanceServiceTest {
     }
 
     @Test
-    void UserId와_amount를_입력하면_히스토리를_저장() {
-        // given
-        long userId = 1L;
-        long amount = 1000L;
-        HistoryType historyType = HistoryType.CHARGE;
-
-        BalanceHistoryService balanceHistoryService = new BalanceHistoryService(balanceRepository);
-
-        //when
-
-        //then
-
-    }
-
-    @Test
     void UserId와_충전금액을_입력하면_잔액_반환() {
         // given
         long userId = 1L;
