@@ -1,16 +1,16 @@
 package kr.hhplus.be.server.api.coupon.domain.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import kr.hhplus.be.server.common.entity.AuditingFields;
+import lombok.Getter;
 
 @Entity
+@Getter
 @Table(name = "user_coupon")
 public class UserCoupon extends AuditingFields {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_coupon", nullable = false)
     private Long id;
 
@@ -19,4 +19,18 @@ public class UserCoupon extends AuditingFields {
 
     @Column(name = "user_id")
     private Long userId;
+
+    private UserCoupon() {
+
+    }
+
+    private UserCoupon(Long couponId, Long userId) {
+        this.couponId = couponId;
+        this.userId = userId;
+    }
+
+    public static UserCoupon createUserCoupon(Long couponId, Long userId) {
+        return new UserCoupon(couponId, userId);
+    }
+
 }
