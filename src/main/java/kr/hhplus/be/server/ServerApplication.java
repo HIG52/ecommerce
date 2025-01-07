@@ -11,11 +11,6 @@ public class ServerApplication {
 
 		ApplicationContext test = SpringApplication.run(ServerApplication.class, args);
 
-		if (test.containsBean("balanceJpaRepository")) {
-			System.out.println("balanceJpaRepository bean is created");
-		} else {
-			System.out.println("balanceJpaRepository bean is not created");
-		}
 	}
 
 }
