@@ -1,9 +1,6 @@
 package kr.hhplus.be.server.api.balance.domain.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import kr.hhplus.be.server.common.entity.AuditingFields;
 import lombok.Getter;
 
@@ -13,6 +10,7 @@ import lombok.Getter;
 public class User extends AuditingFields {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
@@ -26,14 +24,13 @@ public class User extends AuditingFields {
 
     }
 
-    private User(Long userId, String userName, Long balance) {
-        this.userId = userId;
+    private User(String userName, Long balance) {
         this.userName = userName;
         this.balance = balance;
     }
 
-    public static User createUser(Long userId, String userName, Long balance) {
-        return new User(userId, userName, balance);
+    public static User createUser(String userName, Long balance) {
+        return new User(userName, balance);
     }
 
     public void addBalance(long amount) {
