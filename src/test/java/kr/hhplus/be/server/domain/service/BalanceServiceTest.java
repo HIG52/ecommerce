@@ -1,16 +1,16 @@
 package kr.hhplus.be.server.domain.service;
 
-import kr.hhplus.be.server.api.dto.BalanceResponseDTO;
-import kr.hhplus.be.server.domain.entity.User;
-import kr.hhplus.be.server.domain.repository.BalanceRepository;
-import org.assertj.core.api.Assertions;
+import kr.hhplus.be.server.api.balance.domain.service.BalanceService;
+import kr.hhplus.be.server.api.balance.presentation.dto.BalanceRequestDTO;
+import kr.hhplus.be.server.api.balance.presentation.dto.BalanceResponseDTO;
+import kr.hhplus.be.server.api.balance.domain.entity.User;
+import kr.hhplus.be.server.api.balance.domain.repository.BalanceRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,11 +45,13 @@ class BalanceServiceTest {
         long amount = 10000L;
         BalanceService balanceService = new BalanceService(balanceRepository);
         User user = User.createUser(userId, "test", 20000L);
-
+        BalanceRequestDTO balanceRequestDTO = new BalanceRequestDTO();
+        balanceRequestDTO.setUserId(userId);
+        balanceRequestDTO.setAmount(amount);
         given(balanceRepository.getUser(userId)).willReturn(user);
 
         // when
-        BalanceResponseDTO balanceResponseDTO = balanceService.chargeUserBalance(userId, amount);
+        BalanceResponseDTO balanceResponseDTO = balanceService.chargeUserBalance(balanceRequestDTO);
 
         // then
         assertThat(balanceResponseDTO.getUserId()).isEqualTo(userId);
