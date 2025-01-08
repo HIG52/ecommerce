@@ -2,13 +2,14 @@ package kr.hhplus.be.server.api.product.domain.service;
 
 import kr.hhplus.be.server.api.product.domain.entity.Product;
 import kr.hhplus.be.server.api.product.domain.repository.ProductRepository;
+import kr.hhplus.be.server.api.product.domain.service.dto.QuantityRequest;
+import kr.hhplus.be.server.api.product.domain.service.dto.QuantityResponse;
 import kr.hhplus.be.server.api.product.presentation.dto.ProductResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -43,15 +44,12 @@ public class ProductService {
         });
     }
 
-    // TODO : 전달객체 수정 예정
-    public List<ProductResponseDTO> updateProductQuantity(List<ProductResponseDTO> productResponseDTOList) {
+    public QuantityResponse updateProductQuantity(QuantityRequest quantityRequests) {
 
-        for (ProductResponseDTO productResponseDTO : productResponseDTOList) {
-            Product product = productRepository.getProduct(productResponseDTO.getProductId());
-            product.updateProductQuantity(productResponseDTO.getProductQuantity());
-            productRepository.productSave(product);
-        }
-        return productResponseDTOList;
+        Product product = productRepository.getProduct(quantityRequests.productId());
+        product.updateProductQuantity(quantityRequests.productQuantity());
+
+        return new QuantityResponse(quantityRequests.productId(), product.getProductQuantity());
     }
 
 }

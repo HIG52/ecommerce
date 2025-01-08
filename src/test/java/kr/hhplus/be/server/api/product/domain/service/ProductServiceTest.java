@@ -2,7 +2,10 @@ package kr.hhplus.be.server.api.product.domain.service;
 
 import kr.hhplus.be.server.api.product.domain.entity.Product;
 import kr.hhplus.be.server.api.product.domain.repository.ProductRepository;
+import kr.hhplus.be.server.api.product.domain.service.dto.QuantityRequest;
+import kr.hhplus.be.server.api.product.domain.service.dto.QuantityResponse;
 import kr.hhplus.be.server.api.product.presentation.dto.ProductResponseDTO;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -14,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
@@ -71,4 +75,22 @@ class ProductServiceTest {
         assertEquals(secondProduct.getProductPrice(), 20000L);
         assertEquals(secondProduct.getProductQuantity(), 5);
     }
+    
+    @Test
+    void ProductId와_Quantity를_입력받으면_Quantity만큼_재고차감후_반환(){
+        //given
+        ProductService productService = new ProductService(productRepository);
+        QuantityRequest quantityRequest = new QuantityRequest(1L, 2);
+        given(productRepository.getProduct(quantityRequest.productId()))
+                .willReturn(Product.createProduct("test", 10000L, 10));
+
+        //when
+        QuantityResponse quantityResponse = productService.updateProductQuantity(quantityRequest);
+
+        //then
+        assertThat(quantityResponse.productId()).isEqualTo(1L);
+        assertThat(quantityResponse.productQuantity()).isEqualTo(8);
+
+    }
+    
 }

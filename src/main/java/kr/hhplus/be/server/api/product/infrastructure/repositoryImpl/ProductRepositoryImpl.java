@@ -24,5 +24,10 @@ public class ProductRepositoryImpl implements ProductRepository {
         return productJpaRepository.findAll(pageable);
     }
 
+    @Override
+    public void productSave(Product product) {
+        productJpaRepository.save(product);
+    }
+
 
 }
