@@ -33,6 +33,10 @@ public class BalanceService {
         user.addBalance(balanceRequest.amount());
         User resultUser = balanceRepository.saveUser(user);
 
+        if (resultUser == null) {
+            throw new IllegalStateException("잔액 충전 실패: 충전 결과가 올바르지 않습니다.");
+        }
+
         return new BalanceChargeResponse(resultUser.getUserId(), resultUser.getBalance());
     }
 

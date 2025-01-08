@@ -21,6 +21,10 @@ public class BalanceHistoryService {
 
         UserBalanceHistory resultUserBalanceHistory = balanceRepository.saveUserBalanceHistory(userBalanceHistory);
 
+        if (resultUserBalanceHistory == null) {
+            throw new IllegalStateException("잔액 히스토리 저장 실패: 저장 결과가 올바르지 않습니다.");
+        }
+
         return new BalanceHistoryResponse(resultUserBalanceHistory.getUserId(), userBalanceHistory.getAmount());
     }
 

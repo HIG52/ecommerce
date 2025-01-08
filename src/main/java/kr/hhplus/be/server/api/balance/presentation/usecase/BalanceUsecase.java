@@ -29,14 +29,6 @@ public class BalanceUsecase {
             BalanceChargeResponse balanceChargeResponse = balanceService.chargeUserBalance(userId, balanceRequest);
             BalanceHistoryResponse balanceHistoryResponse = balanceHistoryService.saveBalanceHistory(userId, balanceHistoryRequest);
 
-            if (balanceChargeResponse == null) {
-                throw new IllegalStateException("잔액 충전 실패: 충전 결과가 올바르지 않습니다.");
-            }
-
-            if (balanceHistoryResponse == null) {
-                throw new IllegalStateException("잔액 히스토리 저장 실패: 저장 결과가 올바르지 않습니다.");
-            }
-
             return new BalanceResponseDTO(balanceChargeResponse.userId(), balanceChargeResponse.balance());
         }catch (Exception e){
             throw  new RuntimeException("잔액 충전 처리중 문제가 발생하였습니다.");
