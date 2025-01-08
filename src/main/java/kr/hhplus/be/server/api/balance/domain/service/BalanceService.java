@@ -1,11 +1,13 @@
 package kr.hhplus.be.server.api.balance.domain.service;
 
-import kr.hhplus.be.server.api.balance.presentation.dto.BalanceRequestDTO;
-import kr.hhplus.be.server.api.balance.presentation.dto.BalanceResponseDTO;
+import kr.hhplus.be.server.api.balance.domain.service.request.BalanceRequest;
+import kr.hhplus.be.server.api.balance.domain.service.response.BalanceChargeResponse;
+import kr.hhplus.be.server.api.balance.domain.service.response.BalanceResponse;
 import kr.hhplus.be.server.api.balance.domain.entity.User;
 import kr.hhplus.be.server.api.balance.domain.repository.BalanceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -13,28 +15,29 @@ public class BalanceService {
 
     private final BalanceRepository balanceRepository;
 
-    public BalanceResponseDTO getUserBalance(long userId) {
+    public BalanceResponse getUserBalance(long userId) {
 
-        BalanceResponseDTO balanceResponseDTO = new BalanceResponseDTO();
         User user = balanceRepository.getUser(userId);
-        balanceResponseDTO.setBalance(user.getBalance());
-        balanceResponseDTO.setUserId(user.getUserId());
 
-        return balanceResponseDTO;
+        if(user == null) {
+            throw new IllegalArgumentException("사용자 정보가 존재하지 않습니다.");
+        }
+
+        return new BalanceResponse(user.getUserId(), user.getBalance());
     }
 
-    public BalanceResponseDTO chargeUserBalance(BalanceRequestDTO balanceRequestDTO) {
+    @Transactional
+    public BalanceChargeResponse chargeUserBalance(long userId, BalanceRequest balanceRequest) {
 
-        BalanceResponseDTO balanceResponseDTO = new BalanceResponseDTO();
-        User user = balanceRepository.getUser(balanceRequestDTO.getUserId());
-        user.addBalance(balanceRequestDTO.getAmount());
-        balanceRepository.saveUser(user);
+        User user = balanceRepository.getUser(userId);
+        user.addBalance(balanceRequest.amount());
+        User resultUser = balanceRepository.saveUser(user);
 
-        balanceResponseDTO.setBalance(user.getBalance());
-        balanceResponseDTO.setUserId(user.getUserId());
+        if (resultUser == null) {
+            throw new IllegalStateException("잔액 충전 실패: 충전 결과가 올바르지 않습니다.");
+        }
 
-        return balanceResponseDTO;
+        return new BalanceChargeResponse(resultUser.getUserId(), resultUser.getBalance());
     }
-
 
 }

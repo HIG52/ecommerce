@@ -50,3 +50,11 @@ springdoc:
   swagger-ui:
     path: /swagger-index
     disable-swagger-default-url: true
+
+---
+spring.config.activate.on-profile: test
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
