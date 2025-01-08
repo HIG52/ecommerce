@@ -18,6 +18,7 @@ class TestcontainersConfiguration {
 			.withDatabaseName("hhplus")
 			.withUsername("test")
 			.withPassword("test");
+			//.withInitScript("schema.sql");
 		MYSQL_CONTAINER.start();
 
 		System.setProperty("spring.datasource.url", MYSQL_CONTAINER.getJdbcUrl() + "?characterEncoding=UTF-8&serverTimezone=UTC");

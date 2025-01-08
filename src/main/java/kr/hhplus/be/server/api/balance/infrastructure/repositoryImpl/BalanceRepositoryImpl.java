@@ -21,13 +21,14 @@ public class BalanceRepositoryImpl implements BalanceRepository {
     }
 
     @Override
-    public void saveUser(User user) {
-        balanceJpaRepository.save(user);
+    public User saveUser(User user) {
+        return balanceJpaRepository.save(user);
     }
 
     @Override
-    public void saveUserBalanceHistory(UserBalanceHistory userBalanceHistory) {
+    public UserBalanceHistory saveUserBalanceHistory(UserBalanceHistory userBalanceHistory) {
         balanceHistoryJpaRepository.save(userBalanceHistory);
+        return userBalanceHistory;
     }
 
 }

@@ -7,7 +7,7 @@ public interface BalanceRepository {
 
     User getUser(long userId);
 
-    void saveUser(User user);
+    User saveUser(User user);
 
-    void saveUserBalanceHistory(UserBalanceHistory userBalanceHistory);
+    UserBalanceHistory saveUserBalanceHistory(UserBalanceHistory userBalanceHistory);
 }

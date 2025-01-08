@@ -3,10 +3,12 @@ package kr.hhplus.be.server.api.balance.domain.entity;
 import jakarta.persistence.*;
 import kr.hhplus.be.server.common.type.HistoryType;
 import kr.hhplus.be.server.common.entity.AuditingFields;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Getter
 @Table(name = "user_balance_history")
 public class UserBalanceHistory extends AuditingFields {
 

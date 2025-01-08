@@ -14,7 +14,7 @@ https://docs.google.com/spreadsheets/d/19ekSsXp_MItYbaY5A5JpfeulXQ6UXXZiagSQtws4
 
 ### API 명세서
 https://docs.google.com/spreadsheets/d/1S-V0aaEDx8nXaLeL-qKHYJz45HS5AnGflVhSwqqUvAA/edit?usp=sharing
-
+https://app.swaggerhub.com/apis-docs/HINGJY1997_1/ecommerce/1.0.0
 ### ERD
 https://docs.google.com/spreadsheets/d/18d7nosQLr5CIZH96ZxWk3UayW7eZdu1zySMU7XHcBEY/edit?usp=sharing
 
