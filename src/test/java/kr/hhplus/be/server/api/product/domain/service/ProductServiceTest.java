@@ -5,7 +5,6 @@ import kr.hhplus.be.server.api.product.domain.repository.ProductRepository;
 import kr.hhplus.be.server.api.product.domain.service.dto.QuantityRequest;
 import kr.hhplus.be.server.api.product.domain.service.dto.QuantityResponse;
 import kr.hhplus.be.server.api.product.presentation.dto.ProductResponseDTO;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
