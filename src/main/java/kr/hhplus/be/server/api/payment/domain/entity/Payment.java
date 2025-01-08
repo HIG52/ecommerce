@@ -13,29 +13,33 @@ public class Payment extends AuditingFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "payment_id", nullable = false)
-    private Long id;
+    private Long paymentId;
 
     @Column(name = "order_id")
     private Long orderId;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "payment_amount")
-    private PaymentStatusType paymentAmount;
+    private Long paymentAmount;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "payment_status")
-    private String paymentStatus;
+    private PaymentStatusType paymentStatus;
 
     protected Payment() {
     }
 
-    private Payment(Long orderId, PaymentStatusType paymentAmount, String paymentStatus) {
+    private Payment(Long orderId, Long paymentAmount, PaymentStatusType paymentStatus) {
         this.orderId = orderId;
         this.paymentAmount = paymentAmount;
         this.paymentStatus = paymentStatus;
     }
 
-    public static Payment createPayment(Long orderId, PaymentStatusType paymentAmount, String paymentStatus) {
+    public static Payment createPayment(Long orderId, Long paymentAmount, PaymentStatusType paymentStatus) {
         return new Payment(orderId, paymentAmount, paymentStatus);
+    }
+
+    public void updatePaymentStatus(PaymentStatusType paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 
 }
