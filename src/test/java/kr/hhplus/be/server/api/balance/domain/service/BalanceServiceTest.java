@@ -58,7 +58,7 @@ class BalanceServiceTest {
     }
 
     @Test
-    void chargeUserBalance() {
+    void userId_amount입력시_잔액충전후_BalanceChargeResponse반환() {
         // given
         BalanceService balanceService = new BalanceService(balanceRepository);
 
