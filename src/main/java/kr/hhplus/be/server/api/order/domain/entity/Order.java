@@ -9,7 +9,7 @@ import lombok.Getter;
 
 @Entity
 @Getter
-@Table(name = "order")
+@Table(name = "`order`")
 public class Order extends AuditingFields {
 
     @Id
