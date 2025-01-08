@@ -20,7 +20,7 @@ public class UserCoupon extends AuditingFields {
     @Column(name = "user_id")
     private Long userId;
 
-    private UserCoupon() {
+    protected UserCoupon() {
 
     }
 

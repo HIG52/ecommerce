@@ -16,8 +16,9 @@ public class OrderController {
     public ResponseEntity<OrderResponseDTO> orders(
             @RequestBody OrderRequestDTO orderRequestDTO) {
 
-        OrderResponseDTO response = new OrderResponseDTO();
-        response.setOrderId(1);
+        //OrderResponseDTO response = new OrderResponseDTO();
+
+        /*response.setOrderId(1);
 
         if(orderRequestDTO.getUserId() <= 0) {
             response.setMessage("존재하지 않는 유저입니다.");
@@ -29,15 +30,16 @@ public class OrderController {
                 response.setMessage("품절된 상품이 존재합니다.");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
             }
-        }
+        }*/
 
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return null;
     }
 
     @GetMapping("/api/orders/{orderId}")
     public ResponseEntity<OrderResponseDTO> getOrder(
             @PathVariable(name = "orderId") int orderId,
             @RequestBody OrderRequestDTO orderRequestDTO) {
+/*
 
         OrderResponseDTO response = new OrderResponseDTO();
 
@@ -73,8 +75,9 @@ public class OrderController {
             response.setMessage("사용자가 존재하지 않습니다.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
+*/
 
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return null;
     }
 
 }

@@ -7,6 +7,6 @@ public class ProductResponseDTO {
     private long productId;
     private String productName;
     private long productPrice;
-    private long ProductQuantity;
+    private int ProductQuantity;
     private String message;
 }

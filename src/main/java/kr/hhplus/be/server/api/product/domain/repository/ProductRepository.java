@@ -10,4 +10,6 @@ public interface ProductRepository {
 
 
     Page<Product> findAll(Pageable pageable);
+
+    void productSave(Product product);
 }

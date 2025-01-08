@@ -36,4 +36,8 @@ public class Product extends AuditingFields {
     public static Product createProduct(String productName, Long productPrice, Integer productQuantity) {
         return new Product(productName, productPrice, productQuantity);
     }
+
+    public void updateProductQuantity(int productQuantity) {
+        this.productQuantity -= productQuantity;
+    }
 }

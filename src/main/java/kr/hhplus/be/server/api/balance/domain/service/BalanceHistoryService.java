@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 public class BalanceHistoryService {
 
     private final BalanceRepository balanceRepository;
-
+    // TODO : 반환값 생성 예정
     public void saveChargeBalanceHistory(long userId, long amount) {
 
         UserBalanceHistory userBalanceHistory = UserBalanceHistory.createUserBalanceHistory(userId, HistoryType.CHARGE, amount);
-
+        
         balanceRepository.saveUserBalanceHistory(userBalanceHistory);
     }
 
