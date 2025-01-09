@@ -6,8 +6,10 @@ import kr.hhplus.be.server.api.order.domain.repository.OrderRepository;
 import kr.hhplus.be.server.api.order.infrastructure.repository.OrderDetailJpaRepository;
 import kr.hhplus.be.server.api.order.infrastructure.repository.OrderJpaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -31,5 +33,10 @@ public class OrderRepositoryImpl implements OrderRepository {
     @Override
     public Order findByOrderId(long orderId) {
         return orderJpaRepository.findByOrderId(orderId);
+    }
+
+    @Override
+    public List<OrderDetail> findTop3OrderDetailsGroupByProductId(LocalDateTime startDate, LocalDateTime endDate) {
+        return orderDetailJpaRepository.findTop3OrderDetailsGroupByProductId(startDate, endDate);
     }
 }
