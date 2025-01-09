@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.api.product.domain.service.dto;
+package kr.hhplus.be.server.api.product.domain.service.request;
 
 public record QuantityRequest(
         long productId,
