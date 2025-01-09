@@ -1,10 +1,14 @@
 package kr.hhplus.be.server.api.coupon.domain.service;
 
 import kr.hhplus.be.server.api.coupon.domain.entity.Coupon;
+import kr.hhplus.be.server.api.coupon.domain.entity.UserCoupon;
 import kr.hhplus.be.server.api.coupon.domain.repository.CouponRepository;
+import kr.hhplus.be.server.api.coupon.domain.service.request.CouponRequest;
 import kr.hhplus.be.server.api.coupon.domain.service.response.CouponResponse;
 import kr.hhplus.be.server.api.coupon.domain.service.response.CouponsResponse;
+import kr.hhplus.be.server.api.coupon.domain.service.response.UserCouponReponse;
 import kr.hhplus.be.server.common.type.CouponType;
+import kr.hhplus.be.server.common.type.UserCouponType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -18,7 +22,9 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -119,4 +125,64 @@ class CouponServiceTest {
         // findAll 호출 검증
         verify(couponRepository).findAll(PageRequest.of(page, size));
     }
+
+    @Test
+    void 이미_발급받은_쿠폰이면_예외_발생() {
+        // given
+        UserCouponService userCouponService = new UserCouponService(couponRepository);
+        long userId = 1L;
+        long couponId = 100L;
+        CouponRequest request = new CouponRequest(userId, couponId);
+
+        // 가짜로 '이미 발급받은 쿠폰' 이 존재한다고 Mock 설정
+        UserCoupon existingUserCoupon = UserCoupon.createUserCoupon(userId, couponId, UserCouponType.N);
+        ReflectionTestUtils.setField(existingUserCoupon, "userId", userId);
+        ReflectionTestUtils.setField(existingUserCoupon, "couponId", couponId);
+
+        given(couponRepository.getMyUserCoupon(userId, couponId))
+                .willReturn(existingUserCoupon);
+
+        // when & then
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+                userCouponService.downloadUserCoupon(request)
+        );
+        assertThat(exception.getMessage()).isEqualTo("이미 발급받은 쿠폰입니다.");
+
+        // 이미 발급받은 경우 saveUserCoupon()은 절대 호출되지 않아야 함
+        verify(couponRepository, never()).saveUserCoupon(any());
+    }
+
+    @Test
+    void 쿠폰이_발급되지_않았다면_정상_발급된다() {
+        // given
+        UserCouponService userCouponService = new UserCouponService(couponRepository);
+        long userId = 2L;
+        long couponId = 200L;
+        CouponRequest request = new CouponRequest(userId, couponId);
+
+        // 유저가 이 쿠폰을 가지고 있지 않다고 Mock 설정
+        given(couponRepository.getMyUserCoupon(userId, couponId))
+                .willReturn(null);
+
+        // 새로 발급될 UserCoupon 엔티티(리턴될 값)도 가짜로 설정
+        UserCoupon newUserCoupon = UserCoupon.createUserCoupon(couponId, userId, UserCouponType.N);
+        ReflectionTestUtils.setField(newUserCoupon, "userCouponId", 999L); // PK 가정
+
+        // repository.saveUserCoupon() 호출 시 newUserCoupon 을 리턴하게 Mock 설정
+        given(couponRepository.saveUserCoupon(any(UserCoupon.class)))
+                .willReturn(newUserCoupon);
+
+        // when
+        UserCouponReponse response = userCouponService.downloadUserCoupon(request);
+
+        // then
+        assertThat(response.userId()).isEqualTo(userId);
+        assertThat(response.couponId()).isEqualTo(couponId);
+        assertThat(response.useYn()).isEqualTo(UserCouponType.N);
+
+        // saveUserCoupon()은 1번 호출되어야 함
+        verify(couponRepository).saveUserCoupon(any(UserCoupon.class));
+    }
+
+
 }

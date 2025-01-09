@@ -36,4 +36,19 @@ public class CouponRepositoryImpl implements CouponRepository {
         return couponJpaRepository.findAll(pageable);
     }
 
+    @Override
+    public Coupon getCouponWithLock(long couponId) {
+        return couponJpaRepository.findByCouponIdWithLock(couponId);
+    }
+
+    @Override
+    public Coupon saveCoupon(Coupon coupon) {
+        return couponJpaRepository.save(coupon);
+    }
+
+    @Override
+    public UserCoupon getMyUserCoupon(long userId, long couponId) {
+        return userCouponJpaRepository.findByUserIdAndCouponId(userId, couponId);
+    }
+
 }

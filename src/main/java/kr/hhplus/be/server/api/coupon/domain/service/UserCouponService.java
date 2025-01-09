@@ -15,7 +15,14 @@ public class UserCouponService {
 
     private final CouponRepository couponRepository;
 
+    @Transactional
     public UserCouponReponse downloadUserCoupon(CouponRequest couponRequest) {
+
+        UserCoupon myCoupon = couponRepository.getMyUserCoupon(couponRequest.userId(), couponRequest.couponId());
+
+        if(myCoupon != null) {
+            throw new IllegalArgumentException("이미 발급받은 쿠폰입니다.");
+        }
 
         UserCoupon userCoupon = UserCoupon.createUserCoupon(couponRequest.userId(), couponRequest.couponId(), UserCouponType.N);
 
