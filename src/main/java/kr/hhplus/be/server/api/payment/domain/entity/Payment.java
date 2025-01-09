@@ -18,6 +18,9 @@ public class Payment extends AuditingFields {
     @Column(name = "order_id")
     private Long orderId;
 
+    @Column(name = "coupon_id")
+    private Long couponId;
+
     @Column(name = "payment_amount")
     private Long paymentAmount;
 
@@ -28,14 +31,15 @@ public class Payment extends AuditingFields {
     protected Payment() {
     }
 
-    private Payment(Long orderId, Long paymentAmount, PaymentStatusType paymentStatus) {
+    private Payment(Long orderId, Long couponId, Long paymentAmount, PaymentStatusType paymentStatus) {
         this.orderId = orderId;
+        this.couponId = couponId;
         this.paymentAmount = paymentAmount;
         this.paymentStatus = paymentStatus;
     }
 
-    public static Payment createPayment(Long orderId, Long paymentAmount, PaymentStatusType paymentStatus) {
-        return new Payment(orderId, paymentAmount, paymentStatus);
+    public static Payment createPayment(Long orderId, Long couponId, Long paymentAmount, PaymentStatusType paymentStatus) {
+        return new Payment(orderId, couponId, paymentAmount, paymentStatus);
     }
 
     public void updatePaymentStatus(PaymentStatusType paymentStatus) {

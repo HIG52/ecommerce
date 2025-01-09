@@ -14,6 +14,7 @@ public class PaymentController {
     @PostMapping("/api/payments/")
     public ResponseEntity<PaymentResponseDTO> payments(
             @RequestBody PaymentRequestDTO paymentRequestDTO) {
+/*
 
         PaymentResponseDTO response = new PaymentResponseDTO();
         response.setPaymentId(1);
@@ -34,8 +35,9 @@ public class PaymentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
+*/
 
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
 }
