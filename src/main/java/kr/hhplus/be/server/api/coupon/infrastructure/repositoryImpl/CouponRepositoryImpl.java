@@ -6,6 +6,8 @@ import kr.hhplus.be.server.api.coupon.domain.repository.CouponRepository;
 import kr.hhplus.be.server.api.coupon.infrastructure.repository.CouponJpaRepository;
 import kr.hhplus.be.server.api.coupon.infrastructure.repository.UserCouponJpaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -20,8 +22,18 @@ public class CouponRepositoryImpl implements CouponRepository {
     }
 
     @Override
-    public void saveUserCoupon(UserCoupon userCoupon) {
-        userCouponJpaRepository.save(userCoupon);
+    public UserCoupon saveUserCoupon(UserCoupon userCoupon) {
+        return userCouponJpaRepository.save(userCoupon);
+    }
+
+    @Override
+    public UserCoupon getUserCoupon(long userCouponId) {
+        return userCouponJpaRepository.findByUserCouponId(userCouponId);
+    }
+
+    @Override
+    public Page<Coupon> findAll(Pageable pageable) {
+        return couponJpaRepository.findAll(pageable);
     }
 
 }
