@@ -4,14 +4,20 @@ import kr.hhplus.be.server.common.type.CouponType;
 
 import java.time.LocalDateTime;
 
-public record CouponResponseDTO(
+public record CouponDetailResponseDTO(
         long couponId,
-        String couponName,
-        long couponAmount,
-        CouponType couponType,
         long couponQuantity,
+        String couponName,
+
+        long userCouponId,
+        boolean downloadResult,
+
+        String message,
+
+        CouponType couponType,
+        long couponAmount,
         LocalDateTime expirationDate,
-        long maxDiscountAmount,
-        long minUsageAmount
-) {
+        long minUsageAmount,
+        long maxDiscountAmount
+){
 }

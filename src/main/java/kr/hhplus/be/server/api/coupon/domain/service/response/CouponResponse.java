@@ -1,10 +1,10 @@
-package kr.hhplus.be.server.api.coupon.presentation.dto;
+package kr.hhplus.be.server.api.coupon.domain.service.response;
 
 import kr.hhplus.be.server.common.type.CouponType;
 
 import java.time.LocalDateTime;
 
-public record CouponResponseDTO(
+public record CouponResponse(
         long couponId,
         String couponName,
         long couponAmount,
