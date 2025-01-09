@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.api.balance.domain.service;
 
+import kr.hhplus.be.server.api.balance.domain.service.request.BalanceDecreaseRequest;
 import kr.hhplus.be.server.api.balance.domain.service.request.BalanceRequest;
 import kr.hhplus.be.server.api.balance.domain.service.response.BalanceChargeResponse;
 import kr.hhplus.be.server.api.balance.domain.service.response.BalanceResponse;
@@ -40,4 +41,21 @@ public class BalanceService {
         return new BalanceChargeResponse(resultUser.getUserId(), resultUser.getBalance());
     }
 
+    @Transactional
+    public BalanceResponse decreaseBalance(BalanceDecreaseRequest balanceDecreaseRequest) {
+        User user = balanceRepository.getUserWithLock(balanceDecreaseRequest.userId());
+        user.decreaseBalance(balanceDecreaseRequest.amount());
+
+        User resultUser = balanceRepository.saveUser(user);
+
+        if (resultUser == null) {
+            throw new IllegalStateException("잔액 차감 실패: 차감 결과가 올바르지 않습니다.");
+        }
+
+        if(resultUser.getBalance() < 0) {
+            throw new IllegalStateException("잔액 차감 실패: 잔액이 부족합니다.");
+        }
+
+        return new BalanceResponse(resultUser.getUserId(), resultUser.getBalance());
+    }
 }

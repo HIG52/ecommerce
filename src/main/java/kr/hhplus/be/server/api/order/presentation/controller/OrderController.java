@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.hhplus.be.server.api.balance.presentation.dto.BalanceResponseDTO;
 import kr.hhplus.be.server.api.order.presentation.dto.OrderRequestDTO;
 import kr.hhplus.be.server.api.order.presentation.dto.OrderResponseDTO;
+import kr.hhplus.be.server.api.order.presentation.usecase.OrderUsecase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,8 @@ import java.util.List;
 @Tag(name = "Order API", description = "주문 관리 API")
 public class OrderController {
 
+    private final OrderUsecase orderUsecase;
+
     @Operation(
             summary = "주문 생성",
             description = "쿠폰 목록을 조회합니다.",
@@ -33,9 +36,9 @@ public class OrderController {
     public ResponseEntity<OrderResponseDTO> createOrders(
             @RequestBody OrderRequestDTO orderRequestDTO) {
 
-        // TODO : 주문 생성 usecase 작성 예정
+        OrderResponseDTO orderResponseDTO = orderUsecase.createOrder(orderRequestDTO);
 
-        return null;
+        return ResponseEntity.status(HttpStatus.OK).body(orderResponseDTO);
     }
 
     @Operation(

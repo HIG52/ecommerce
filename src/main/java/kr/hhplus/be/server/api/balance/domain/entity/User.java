@@ -36,4 +36,8 @@ public class User extends AuditingFields {
     public void addBalance(long amount) {
         this.balance += amount;
     }
+
+    public void decreaseBalance(long amount) {
+        this.balance -= amount;
+    }
 }

@@ -16,4 +16,6 @@ public interface ProductRepository {
     void productSave(Product product);
 
     List<Product> getTopProducts(List<Long> productIds);
+
+    Product getProductWithLock(long l);
 }

@@ -134,7 +134,7 @@ class ProductServiceTest {
                 .willReturn(Product.createProduct("test", 10000L, 10));
 
         //when
-        QuantityResponse quantityResponse = productService.updateProductQuantity(quantityRequest);
+        QuantityResponse quantityResponse = productService.decreaseProductQuantity(quantityRequest);
 
         //then
         assertThat(quantityResponse.productId()).isEqualTo(1L);

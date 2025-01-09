@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.api.payment.domain.service.dto;
+package kr.hhplus.be.server.api.payment.domain.service.response;
 
 import kr.hhplus.be.server.common.type.PaymentStatusType;
 
