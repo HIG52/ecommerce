@@ -13,4 +13,10 @@ public interface CouponRepository {
     UserCoupon getUserCoupon(long userCouponId);
 
     Page<Coupon> findAll(Pageable pageable);
+
+    Coupon getCouponWithLock(long couponId);
+
+    Coupon saveCoupon(Coupon coupon);
+
+    UserCoupon getMyUserCoupon(long l, long l1);
 }

@@ -4,8 +4,9 @@ import kr.hhplus.be.server.common.type.OrderStatusType;
 import kr.hhplus.be.server.common.type.PaymentStatusType;
 
 public record OrderResponse(
+        long orderId,
         long userId,
-        long totalPrice,
+        long orderTotalPrice,
         PaymentStatusType paymentStatus,
         OrderStatusType status
 ) {

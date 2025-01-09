@@ -2,7 +2,8 @@ package kr.hhplus.be.server.api.payment.domain.service;
 
 import kr.hhplus.be.server.api.payment.domain.entity.Payment;
 import kr.hhplus.be.server.api.payment.domain.repository.PaymentRepository;
-import kr.hhplus.be.server.api.payment.domain.service.dto.PaymentResponse;
+import kr.hhplus.be.server.api.payment.domain.service.request.PaymentCreateRequest;
+import kr.hhplus.be.server.api.payment.domain.service.response.PaymentResponse;
 import kr.hhplus.be.server.common.type.PaymentStatusType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,9 +16,9 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
 
     @Transactional
-    public PaymentResponse createPayment(long orderId, long paymentAmount, long couponId, PaymentStatusType paymentStatus) {
+    public PaymentResponse createPayment(PaymentCreateRequest paymentCreateRequest) {
 
-        Payment payment = Payment.createPayment(orderId, couponId, paymentAmount, paymentStatus);
+        Payment payment = Payment.createPayment(paymentCreateRequest.orderId(), paymentCreateRequest.paymentAmount(), paymentCreateRequest.couponId(), PaymentStatusType.PENDING);
         Payment resultPayment = paymentRepository.paymentSave(payment);
 
         return new PaymentResponse(

@@ -36,5 +36,10 @@ public class ProductRepositoryImpl implements ProductRepository {
         return productJpaRepository.findByProductIds(productIds);
     }
 
+    @Override
+    public Product getProductWithLock(long productId) {
+        return productJpaRepository.findByProductIdWithLock(productId);
+    }
+
 
 }

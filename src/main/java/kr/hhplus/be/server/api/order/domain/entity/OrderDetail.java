@@ -17,7 +17,7 @@ public class OrderDetail extends AuditingFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_detail_id", nullable = false)
-    private Long id;
+    private Long orderDetailId;
 
     @Column(name = "order_id")
     private Long orderId;

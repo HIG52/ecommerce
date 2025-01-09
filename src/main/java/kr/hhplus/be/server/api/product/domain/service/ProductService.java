@@ -6,7 +6,6 @@ import kr.hhplus.be.server.api.product.domain.service.request.QuantityRequest;
 import kr.hhplus.be.server.api.product.domain.service.response.ProductResponse;
 import kr.hhplus.be.server.api.product.domain.service.response.ProductsResponse;
 import kr.hhplus.be.server.api.product.domain.service.response.QuantityResponse;
-import kr.hhplus.be.server.api.product.presentation.usecase.ProductUsecase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -58,10 +57,11 @@ public class ProductService {
     }
 
     @Transactional
-    public QuantityResponse updateProductQuantity(QuantityRequest quantityRequests) {
+    public QuantityResponse decreaseProductQuantity(QuantityRequest quantityRequests) {
 
-        Product product = productRepository.getProduct(quantityRequests.productId());
-        product.updateProductQuantity(quantityRequests.productQuantity());
+        Product product = productRepository.getProductWithLock(quantityRequests.productId());
+        product.decreaseProductQuantity(quantityRequests.productQuantity());
+        productRepository.productSave(product);
 
         return new QuantityResponse(quantityRequests.productId(), product.getProductQuantity());
     }

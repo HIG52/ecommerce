@@ -10,6 +10,7 @@ import kr.hhplus.be.server.common.type.OrderStatusType;
 import kr.hhplus.be.server.common.type.PaymentStatusType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,11 +18,13 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
+    @Transactional
     public OrderResponse createOrder(long userId, long orderTotalAmount) {
         Order order = Order.createOrder(userId, orderTotalAmount, PaymentStatusType.PENDING, OrderStatusType.ORDERED);
         Order resultOrder = orderRepository.save(order);
 
         return new OrderResponse(
+                resultOrder.getOrderId(),
                 resultOrder.getUserId(),
                 resultOrder.getOrderTotalAmount(),
                 resultOrder.getPaymentStatus(),
@@ -29,6 +32,7 @@ public class OrderService {
         );
     }
 
+    @Transactional
     public OrderStatusResponse updateOrderStatus(long orderId, OrderStatusType orderStatusType) {
         Order order = orderRepository.findByOrderId(orderId);
         order.updateStatus(orderStatusType);
@@ -40,6 +44,7 @@ public class OrderService {
         );
     }
 
+    @Transactional
     public OrderPaymentStatusResponse updateOrderPaymentStatus(long orderId, PaymentStatusType paymentStatusType) {
         Order order = orderRepository.findByOrderId(orderId);
         order.updatePaymentStatus(paymentStatusType);

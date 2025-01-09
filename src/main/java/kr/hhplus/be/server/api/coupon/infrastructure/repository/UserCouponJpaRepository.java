@@ -5,5 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserCouponJpaRepository extends JpaRepository<UserCoupon, Long> {
 
+    UserCoupon findByUserIdAndCouponId(long userId, long couponId);
+
     UserCoupon findByUserCouponId(long userCouponId);
 }

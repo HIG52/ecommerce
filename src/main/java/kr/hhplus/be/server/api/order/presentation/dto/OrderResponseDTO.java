@@ -6,13 +6,11 @@ import kr.hhplus.be.server.common.type.PaymentStatusType;
 public record OrderResponseDTO(
         long orderId,
         long userId,
-        long totalPrice,
+        long orderTotalPrice,
         PaymentStatusType paymentStatus,
         OrderStatusType status,
-        long productId,
         long orderQuantity,
-        long orderAmount,
-        String message
+        long orderAmount
 ) {
 
 }

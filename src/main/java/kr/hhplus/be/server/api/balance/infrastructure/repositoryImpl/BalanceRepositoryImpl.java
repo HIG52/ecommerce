@@ -31,4 +31,9 @@ public class BalanceRepositoryImpl implements BalanceRepository {
         return userBalanceHistory;
     }
 
+    @Override
+    public User getUserWithLock(long userId) {
+        return balanceJpaRepository.findByUserIdWithLock(userId);
+    }
+
 }
