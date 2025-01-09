@@ -124,23 +124,35 @@ class ProductServiceTest {
         assertEquals(secondProduct.productPrice(), 20000L);
         assertEquals(secondProduct.productQuantity(), 5);
     }
-    
-    @Test
-    void ProductId와_Quantity를_입력받으면_Quantity만큼_재고차감후_반환(){
-        //given
-        ProductService productService = new ProductService(productRepository);
-        QuantityRequest quantityRequest = new QuantityRequest(1L, 2);
-        given(productRepository.getProduct(quantityRequest.productId()))
-                .willReturn(Product.createProduct("test", 10000L, 10));
 
-        //when
+    @Test
+    void ProductId와_Quantity를_입력받으면_Quantity만큼_재고차감후_반환() {
+        // given
+        ProductService productService = new ProductService(productRepository);
+        long productId = 1L;
+        int decreaseQuantity = 2;
+        QuantityRequest quantityRequest = new QuantityRequest(productId, decreaseQuantity);
+
+        // Mock 데이터 설정
+        Product product = Product.createProduct("test", 10000L, 10); // 초기 재고: 10
+        ReflectionTestUtils.setField(product, "productId", productId);
+
+        // getProductWithLock 호출 시 Mock 반환
+        given(productRepository.getProductWithLock(productId)).willReturn(product);
+
+        // when
         QuantityResponse quantityResponse = productService.decreaseProductQuantity(quantityRequest);
 
-        //then
-        assertThat(quantityResponse.productId()).isEqualTo(1L);
-        assertThat(quantityResponse.productQuantity()).isEqualTo(8);
+        // then
+        // 결과 검증
+        assertThat(quantityResponse.productId()).isEqualTo(productId);
+        assertThat(quantityResponse.productQuantity()).isEqualTo(8); // 초기 10 - 2 = 8
 
+        // Repository 메서드 호출 검증
+        verify(productRepository).getProductWithLock(productId);
+        verify(productRepository).productSave(product);
     }
+
 
     @Test
     void ProductId_리스트를_입력받으면_상위_상품목록_반환() {

@@ -33,6 +33,7 @@ class OrderServiceTest {
         long orderTotalAmount = 5000L;
 
         Order mockOrder = Order.createOrder(userId, orderTotalAmount, PaymentStatusType.PENDING, OrderStatusType.ORDERED);
+        ReflectionTestUtils.setField(mockOrder, "orderId", 1L);
         given(orderRepository.save(any(Order.class))).willReturn(mockOrder);
 
         // when
