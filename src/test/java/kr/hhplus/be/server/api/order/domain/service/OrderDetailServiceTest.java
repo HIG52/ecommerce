@@ -2,6 +2,8 @@ package kr.hhplus.be.server.api.order.domain.service;
 
 import kr.hhplus.be.server.api.order.domain.entity.OrderDetail;
 import kr.hhplus.be.server.api.order.domain.repository.OrderRepository;
+import kr.hhplus.be.server.api.order.domain.service.request.OrderDetailsCreateRequest;
+import kr.hhplus.be.server.api.order.domain.service.response.OrderDetailsResponse;
 import kr.hhplus.be.server.api.order.presentation.dto.OrderResponseDTO;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -10,10 +12,12 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
@@ -28,30 +32,88 @@ class OrderDetailServiceTest {
         // given
         OrderDetailService orderDetailService = new OrderDetailService(orderRepository);
 
-        Long orderId = 1L;
-        List<Long> productIds = List.of(101L, 102L, 103L);
-        List<Integer> productQuantities = List.of(2, 3, 1);
-        List<Long> productPrices = List.of(2000L, 3000L, 1000L);
-
-        List<OrderDetail> mockOrderDetails = List.of(
-                OrderDetail.createOrderDetail(orderId, 101L, 2, 2000L),
-                OrderDetail.createOrderDetail(orderId, 102L, 3, 3000L),
-                OrderDetail.createOrderDetail(orderId, 103L, 1, 1000L)
+        // CreateOrderDetailsRequest 객체 생성
+        OrderDetailsCreateRequest request = new OrderDetailsCreateRequest(
+                1L,
+                List.of(101L, 102L, 103L),
+                List.of(2, 3, 1),
+                List.of(2000L, 3000L, 1000L)
         );
 
-        // Stubbing 없이 메서드 실행 후 캡처
+        // Mock 데이터 생성
+        List<OrderDetail> mockOrderDetails = List.of(
+                OrderDetail.createOrderDetail(request.orderId(), 101L, 2, 2000L),
+                OrderDetail.createOrderDetail(request.orderId(), 102L, 3, 3000L),
+                OrderDetail.createOrderDetail(request.orderId(), 103L, 1, 1000L)
+        );
+
+        // Stubbing: orderDetailsaveAll 호출 시 Mock 데이터 반환
+        given(orderRepository.orderDetailsaveAll(anyList())).willReturn(mockOrderDetails);
+
         // when
-         orderDetailService.createOrderDetails(orderId, productIds, productQuantities, productPrices);
+        List<OrderDetailsResponse> responses = orderDetailService.createOrderDetails(request);
 
         // then
         ArgumentCaptor<List<OrderDetail>> captor = ArgumentCaptor.forClass(List.class);
         verify(orderRepository).orderDetailsaveAll(captor.capture());
         List<OrderDetail> capturedOrderDetails = captor.getValue();
 
+        // 검증: 저장된 OrderDetail 리스트 확인
         assertThat(capturedOrderDetails).hasSize(3);
         assertThat(capturedOrderDetails.get(0).getProductId()).isEqualTo(101L);
         assertThat(capturedOrderDetails.get(0).getOrderQuantity()).isEqualTo(2);
         assertThat(capturedOrderDetails.get(0).getOrderAmount()).isEqualTo(2000L);
+
+        // 검증: 반환된 OrderDetailsResponse 리스트 확인
+        assertThat(responses).hasSize(3);
+        assertThat(responses.get(0).productId()).isEqualTo(101L);
+        assertThat(responses.get(0).orderQuantity()).isEqualTo(2);
+        assertThat(responses.get(0).orderAmount()).isEqualTo(2000L);
+    }
+
+    @Test
+    void 주문_상세정보를_저장하면_OrderDetailsResponse_반환() {
+        // given
+        OrderDetailService orderDetailService = new OrderDetailService(orderRepository);
+
+        // CreateOrderDetailsRequest 객체 생성
+        OrderDetailsCreateRequest request = new OrderDetailsCreateRequest(
+                1L,
+                List.of(101L, 102L, 103L),
+                List.of(2, 3, 1),
+                List.of(2000L, 3000L, 1000L)
+        );
+
+        // Mock 데이터 생성
+        List<OrderDetail> mockOrderDetails = List.of(
+                OrderDetail.createOrderDetail(request.orderId(), 101L, 2, 2000L),
+                OrderDetail.createOrderDetail(request.orderId(), 102L, 3, 3000L),
+                OrderDetail.createOrderDetail(request.orderId(), 103L, 1, 1000L)
+        );
+
+        // Mock 설정: orderDetailsaveAll 호출 시 Mock 데이터 반환
+        given(orderRepository.orderDetailsaveAll(anyList())).willReturn(mockOrderDetails);
+
+        // when
+        List<OrderDetailsResponse> responses = orderDetailService.createOrderDetails(request);
+
+        // then
+        // 저장된 OrderDetail 리스트 검증
+        assertThat(responses).hasSize(3);
+        assertThat(responses.get(0).productId()).isEqualTo(101L);
+        assertThat(responses.get(0).orderQuantity()).isEqualTo(2);
+        assertThat(responses.get(0).orderAmount()).isEqualTo(2000L);
+
+        assertThat(responses.get(1).productId()).isEqualTo(102L);
+        assertThat(responses.get(1).orderQuantity()).isEqualTo(3);
+        assertThat(responses.get(1).orderAmount()).isEqualTo(3000L);
+
+        assertThat(responses.get(2).productId()).isEqualTo(103L);
+        assertThat(responses.get(2).orderQuantity()).isEqualTo(1);
+        assertThat(responses.get(2).orderAmount()).isEqualTo(1000L);
+
+        // 호출 검증
+        verify(orderRepository).orderDetailsaveAll(anyList());
     }
 
 }

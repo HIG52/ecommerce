@@ -2,6 +2,9 @@ package kr.hhplus.be.server.api.order.domain.service;
 
 import kr.hhplus.be.server.api.order.domain.entity.Order;
 import kr.hhplus.be.server.api.order.domain.repository.OrderRepository;
+import kr.hhplus.be.server.api.order.domain.service.response.OrderPaymentStatusResponse;
+import kr.hhplus.be.server.api.order.domain.service.response.OrderResponse;
+import kr.hhplus.be.server.api.order.domain.service.response.OrderStatusResponse;
 import kr.hhplus.be.server.api.order.presentation.dto.OrderResponseDTO;
 import kr.hhplus.be.server.common.type.OrderStatusType;
 import kr.hhplus.be.server.common.type.PaymentStatusType;
@@ -14,30 +17,38 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
-    public OrderResponseDTO createOrder(long userId, long orderTotalAmount) {
-            Order order = Order.createOrder(userId, orderTotalAmount, PaymentStatusType.PENDING, OrderStatusType.ORDERED);
-            Order resultOrder = orderRepository.save(order);
-        // TODO : 서비스에서 컨트롤러 또는 usecase로 내려줄 데이터 전달객체 생성예정
-        return OrderResponseDTO.builder()
-                .userId(resultOrder.getUserId())
-                .totalPrice(resultOrder.getOrderTotalAmount())
-                .paymentStatus(resultOrder.getPaymentStatus())
-                .status(resultOrder.getStatus())
-                .build();
+    public OrderResponse createOrder(long userId, long orderTotalAmount) {
+        Order order = Order.createOrder(userId, orderTotalAmount, PaymentStatusType.PENDING, OrderStatusType.ORDERED);
+        Order resultOrder = orderRepository.save(order);
+
+        return new OrderResponse(
+                resultOrder.getUserId(),
+                resultOrder.getOrderTotalAmount(),
+                resultOrder.getPaymentStatus(),
+                resultOrder.getStatus()
+        );
     }
 
-    public OrderResponseDTO updateOrderStatus(long orderId, OrderStatusType orderStatusType) {
+    public OrderStatusResponse updateOrderStatus(long orderId, OrderStatusType orderStatusType) {
         Order order = orderRepository.findByOrderId(orderId);
         order.updateStatus(orderStatusType);
         Order resultOrder = orderRepository.save(order);
-        // TODO : status만 반환하도록 수정 예정
-        return OrderResponseDTO.builder()
-                .userId(resultOrder.getUserId())
-                .totalPrice(resultOrder.getOrderTotalAmount())
-                .paymentStatus(resultOrder.getPaymentStatus())
-                .status(resultOrder.getStatus())
-                .build();
+
+        return new OrderStatusResponse(
+                resultOrder.getOrderId(),
+                resultOrder.getStatus()
+        );
     }
 
+    public OrderPaymentStatusResponse updateOrderPaymentStatus(long orderId, PaymentStatusType paymentStatusType) {
+        Order order = orderRepository.findByOrderId(orderId);
+        order.updatePaymentStatus(paymentStatusType);
+        Order resultOrder = orderRepository.save(order);
+
+        return new OrderPaymentStatusResponse(
+                resultOrder.getOrderId(),
+                resultOrder.getPaymentStatus()
+        );
+    }
 
 }

@@ -49,4 +49,7 @@ public class Order extends AuditingFields {
         this.status = status;
     }
 
+    public void updatePaymentStatus(PaymentStatusType paymentStatusType) {
+        this.paymentStatus = paymentStatusType;
+    }
 }

@@ -2,10 +2,14 @@ package kr.hhplus.be.server.api.order.domain.service;
 
 import kr.hhplus.be.server.api.order.domain.entity.OrderDetail;
 import kr.hhplus.be.server.api.order.domain.repository.OrderRepository;
-import kr.hhplus.be.server.api.order.presentation.dto.OrderResponseDTO;
+import kr.hhplus.be.server.api.order.domain.service.request.OrderDetailsCreateRequest;
+import kr.hhplus.be.server.api.order.domain.service.response.OrderDetailsResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,32 +19,46 @@ public class OrderDetailService {
 
     private final OrderRepository orderRepository;
 
-    public List<OrderResponseDTO> createOrderDetails(Long orderId, List<Long> productIds, List<Integer> productQuantities, List<Long> productPrices) {
+    public List<OrderDetailsResponse> createOrderDetails(OrderDetailsCreateRequest orderDetailsCreateRequest) {
+
         List<OrderDetail> orderDetails = new ArrayList<>();
-        for (int i = 0; i < productIds.size(); i++) {
+        for (int i = 0; i < orderDetailsCreateRequest.productIds().size(); i++) {
             OrderDetail orderDetail = OrderDetail.createOrderDetail(
-                    orderId,
-                    productIds.get(i),
-                    productQuantities.get(i),
-                    productPrices.get(i)
+                    orderDetailsCreateRequest.orderId(),
+                    orderDetailsCreateRequest.productIds().get(i),
+                    orderDetailsCreateRequest.productQuantities().get(i),
+                    orderDetailsCreateRequest.productPrices().get(i)
             );
             orderDetails.add(orderDetail);
         }
 
         List<OrderDetail> resultOrderDetails = orderRepository.orderDetailsaveAll(orderDetails);
 
-        List<OrderResponseDTO> orderResponseDTOs = new ArrayList<>();
-        for (OrderDetail orderDetail : resultOrderDetails) {
-            orderResponseDTOs.add(OrderResponseDTO.builder()
-                    .orderId(orderDetail.getOrderId())
-                    .productId(orderDetail.getProductId())
-                    .orderQuantity(orderDetail.getOrderQuantity())
-                    .orderAmount(orderDetail.getOrderAmount())
-                    .build());
-        }
+        // OrderDetailsResponse로 변환
+        return resultOrderDetails.stream()
+                .map(orderDetail -> new OrderDetailsResponse(
+                        orderDetail.getOrderId(),
+                        orderDetail.getProductId(),
+                        orderDetail.getOrderQuantity(),
+                        orderDetail.getOrderAmount()
+                ))
+                .toList();
 
-        return orderResponseDTOs;
+    }
 
+    public List<OrderDetailsResponse> getTopOrderDetails() {
+        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime startDate = endDate.minusDays(3);
+        List<OrderDetail> orderDetails = orderRepository.findTop3OrderDetailsGroupByProductId(startDate, endDate);
+
+        return orderDetails.stream()
+                .map(orderDetail -> new OrderDetailsResponse(
+                        orderDetail.getOrderId(),
+                        orderDetail.getProductId(),
+                        orderDetail.getOrderQuantity(),
+                        orderDetail.getOrderAmount()
+                ))
+                .toList();
     }
 
 }
