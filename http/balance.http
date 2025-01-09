@@ -1,0 +1,23 @@
+### 유저 포인트 조회 - 유효한 유저
+GET http://localhost:8080/api/balances/1/balance
+Content-Type: application/json
+
+### 유저 포인트 조회 - 존재하지 않는 유저
+GET http://localhost:8080/api/balances/1/balance
+Content-Type: application/json
+
+### 유저 포인트 충전 - 유효한 유저
+POST http://localhost:8080/api/balances/1/charge
+Content-Type: application/json
+
+{
+  "amount": 5000
+}
+
+### 유저 포인트 충전 - 존재하지 않는 유저
+POST http://localhost:8080/api/balances/0/charge
+Content-Type: application/json
+
+{
+  "amount": 5000
+}
