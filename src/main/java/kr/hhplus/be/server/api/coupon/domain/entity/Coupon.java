@@ -58,4 +58,7 @@ public class Coupon extends AuditingFields {
     }
 
 
+    public void decreaseQuantity() {
+        this.couponQuantity--;
+    }
 }

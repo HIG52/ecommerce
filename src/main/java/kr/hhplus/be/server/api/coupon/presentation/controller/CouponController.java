@@ -16,6 +16,7 @@ import kr.hhplus.be.server.api.coupon.presentation.dto.CouponRequestDTO;
 import kr.hhplus.be.server.api.coupon.presentation.dto.CouponResponseDTO;
 import kr.hhplus.be.server.api.coupon.presentation.dto.UserCouponResponseDTO;
 import kr.hhplus.be.server.api.coupon.presentation.dto.CouponsResponseDTO;
+import kr.hhplus.be.server.api.coupon.presentation.usecase.CouponUsecase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ public class CouponController {
 
     private final CouponService couponService;
     private final UserCouponService userCouponService;
+    private final CouponUsecase couponUsecase;
 
     @Operation(
             summary = "쿠폰 목록 조회",
@@ -71,18 +73,7 @@ public class CouponController {
     public ResponseEntity<UserCouponResponseDTO> couponDownload(
             @RequestBody CouponRequestDTO couponRequestDTO) {
 
-        CouponRequest couponRequest = new CouponRequest(
-                couponRequestDTO.userId(),
-                couponRequestDTO.couponId()
-        );
-
-        UserCouponReponse userCouponReponse = userCouponService.downloadUserCoupon(couponRequest);
-
-        UserCouponResponseDTO userCouponResponseDTO = new UserCouponResponseDTO(
-                userCouponReponse.userId(),
-                userCouponReponse.couponId(),
-                userCouponReponse.useYn()
-        );
+        UserCouponResponseDTO userCouponResponseDTO = couponUsecase.downloadUserCoupon(couponRequestDTO);
 
         return ResponseEntity.status(HttpStatus.OK).body(userCouponResponseDTO);
     }
