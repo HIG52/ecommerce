@@ -16,6 +16,7 @@ public class ProductUsecase {
     private final OrderDetailService orderDetailService;
 
     public ProductsResponseDTO getTopProducts() {
+
         //List<Long> productIds = orderDetailService.getTopProducts();
 
         //List<ProductsResponseDTO> products = productService.getTopProducts(productIds).stream()

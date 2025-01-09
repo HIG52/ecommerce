@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.hhplus.be.server.api.balance.presentation.dto.BalanceResponseDTO;
 import kr.hhplus.be.server.api.payment.presentation.dto.PaymentRequestDTO;
 import kr.hhplus.be.server.api.payment.presentation.dto.PaymentResponseDTO;
+import kr.hhplus.be.server.api.payment.presentation.usecase.PaymentUsecase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Payment API", description = "결제 관리 API")
 public class PaymentController {
 
+    private final PaymentUsecase paymentUsecase;
+
     @Operation(
             summary = "결제 생성",
             description = "결제 요청 및 결제 결과 저장",
@@ -31,8 +34,8 @@ public class PaymentController {
     @PostMapping("/api/payments/")
     public ResponseEntity<PaymentResponseDTO> payments(
             @RequestBody PaymentRequestDTO paymentRequestDTO) {
-        
-        //TODO usecase 작성 예정
+
+        PaymentResponseDTO paymentResponseDTO = paymentUsecase.createPayment(paymentRequestDTO);
 
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }

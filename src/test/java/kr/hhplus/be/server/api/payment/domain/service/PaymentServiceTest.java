@@ -2,7 +2,8 @@ package kr.hhplus.be.server.api.payment.domain.service;
 
 import kr.hhplus.be.server.api.payment.domain.entity.Payment;
 import kr.hhplus.be.server.api.payment.domain.repository.PaymentRepository;
-import kr.hhplus.be.server.api.payment.domain.service.dto.PaymentResponse;
+import kr.hhplus.be.server.api.payment.domain.service.request.PaymentCreateRequest;
+import kr.hhplus.be.server.api.payment.domain.service.response.PaymentResponse;
 import kr.hhplus.be.server.common.type.PaymentStatusType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,7 +41,8 @@ class PaymentServiceTest {
         given(paymentRepository.paymentSave(any(Payment.class))).willReturn(mockPayment);
 
         // when
-        PaymentResponse response = paymentService.createPayment(orderId, couponId, paymentAmount, paymentStatus);
+        PaymentCreateRequest paymentCreateRequest = new PaymentCreateRequest(orderId, paymentAmount, couponId, paymentStatus);
+        PaymentResponse response = paymentService.createPayment(paymentCreateRequest);
 
         // then
         assertThat(response.paymentId()).isEqualTo(100L);

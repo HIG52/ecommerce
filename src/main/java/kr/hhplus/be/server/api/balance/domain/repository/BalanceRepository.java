@@ -10,4 +10,6 @@ public interface BalanceRepository {
     User saveUser(User user);
 
     UserBalanceHistory saveUserBalanceHistory(UserBalanceHistory userBalanceHistory);
+
+    User getUserWithLock(long l);
 }

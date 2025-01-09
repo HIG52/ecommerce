@@ -4,9 +4,9 @@ import java.util.List;
 
 public record OrderRequestDTO(
         Long userId,
-        Long orderId,
+        Long orderTotalAmount,
         List<Long> productIds,
-        List<Long> productQuantities,
+        List<Integer> productQuantities,
         List<Long> productPrices
 ) {
 
