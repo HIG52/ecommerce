@@ -26,11 +26,12 @@ class PaymentServiceTest {
         // given
         PaymentService paymentService = new PaymentService(paymentRepository);
         long orderId = 1L;
+        long couponId = 1L;
         long paymentAmount = 5000L;
         PaymentStatusType paymentStatus = PaymentStatusType.SUCCESS;
 
         // Mock Payment 객체 생성
-        Payment mockPayment = Payment.createPayment(orderId, paymentAmount, paymentStatus);
+        Payment mockPayment = Payment.createPayment(orderId, couponId, paymentAmount, paymentStatus);
 
         // Mock Payment ID 설정
         ReflectionTestUtils.setField(mockPayment, "paymentId", 100L);
@@ -39,7 +40,7 @@ class PaymentServiceTest {
         given(paymentRepository.paymentSave(any(Payment.class))).willReturn(mockPayment);
 
         // when
-        PaymentResponse response = paymentService.createPayment(orderId, paymentAmount, paymentStatus);
+        PaymentResponse response = paymentService.createPayment(orderId, couponId, paymentAmount, paymentStatus);
 
         // then
         assertThat(response.paymentId()).isEqualTo(100L);
