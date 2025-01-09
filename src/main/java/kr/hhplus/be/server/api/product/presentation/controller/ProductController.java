@@ -1,105 +1,74 @@
 package kr.hhplus.be.server.api.product.presentation.controller;
 
+import jakarta.validation.Valid;
+import kr.hhplus.be.server.api.coupon.domain.service.response.CouponsResponse;
+import kr.hhplus.be.server.api.coupon.presentation.dto.CouponsResponseDTO;
+import kr.hhplus.be.server.api.product.domain.service.ProductService;
+import kr.hhplus.be.server.api.product.domain.service.response.ProductResponse;
+import kr.hhplus.be.server.api.product.domain.service.response.ProductsResponse;
 import kr.hhplus.be.server.api.product.presentation.dto.ProductResponseDTO;
+import kr.hhplus.be.server.api.product.presentation.dto.ProductsResponseDTO;
+import kr.hhplus.be.server.api.product.presentation.usecase.ProductUsecase;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class ProductController {
 
+    private final ProductService productService;
+    private final ProductUsecase productUsecase;
+
     @GetMapping("/api/products")
-    public ResponseEntity<List<ProductResponseDTO>> getProducts() {
-        
-        //예제 데이터
-        List<ProductResponseDTO> responseList = new ArrayList<>();
-        ProductResponseDTO product1 = new ProductResponseDTO();
-        product1.setProductId(1);
-        product1.setProductName("상품명1");
-        product1.setProductPrice(10000);
+    public ResponseEntity<List<ProductsResponseDTO>> getProducts(
+            @Valid @RequestParam(defaultValue = "0") int page,
+            @Valid @RequestParam(defaultValue = "10") int size
+    ) {
 
-        ProductResponseDTO product2 = new ProductResponseDTO();
-        product2.setProductId(2);
-        product2.setProductName("상품명2");
-        product2.setProductPrice(20000);
+        List<ProductsResponse> products = productService.getProducts(page, size);
 
-        responseList.add(product1);
-        responseList.add(product2);
+        List<ProductsResponseDTO> resultProducts = products.stream()
+                .map(product -> new ProductsResponseDTO(
+                        product.productId(),
+                        product.productName(),
+                        product.productPrice(),
+                        product.productQuantity()
+                ))
+                .toList();
 
         // 리스트 반환
-        return ResponseEntity.status(HttpStatus.OK).body(responseList);
+        return ResponseEntity.status(HttpStatus.OK).body(resultProducts);
     }
 
     @GetMapping("/api/products/{productId}")
     public ResponseEntity<ProductResponseDTO> getProduct(
             @PathVariable(name = "productId") int productId) {
 
-        ProductResponseDTO response = new ProductResponseDTO();
+        ProductResponse product = productService.getProduct(productId);
 
-        response.setProductId(productId);
-        response.setProductName("상품명");
-        response.setProductPrice(10000);
-        response.setProductQuantity(10);
+        ProductResponseDTO resultProduct = new ProductResponseDTO(
+                product.productName(),
+                product.productPrice(),
+                product.productQuantity()
+        );
 
-        if(productId <= 0) {
-            response.setMessage("상품이 존재하지 않습니다.");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-
-        if(response.getProductQuantity() <= 0) {
-            response.setMessage("상품이 품절되었습니다.");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-
-
-
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(resultProduct);
     }
 
     @GetMapping("/api/products/topProduct")
-    public ResponseEntity<List<ProductResponseDTO>> getTopProduct() {
+    public ResponseEntity<List<ProductsResponseDTO>> getTopProduct() {
 
-        //예제 데이터
-        List<ProductResponseDTO> responseList = new ArrayList<>();
-        ProductResponseDTO product1 = new ProductResponseDTO();
-        product1.setProductId(1);
-        product1.setProductName("상품명1");
-        product1.setProductPrice(10000);
+        productUsecase.getTopProducts();
 
-        ProductResponseDTO product2 = new ProductResponseDTO();
-        product2.setProductId(2);
-        product2.setProductName("상품명2");
-        product2.setProductPrice(20000);
-
-        ProductResponseDTO product3 = new ProductResponseDTO();
-        product3.setProductId(3);
-        product3.setProductName("상품명3");
-        product3.setProductPrice(30000);
-
-        ProductResponseDTO product4 = new ProductResponseDTO();
-        product4.setProductId(3);
-        product4.setProductName("상품명3");
-        product4.setProductPrice(30000);
-
-        ProductResponseDTO product5 = new ProductResponseDTO();
-        product5.setProductId(3);
-        product5.setProductName("상품명3");
-        product5.setProductPrice(30000);
-
-        responseList.add(product1);
-        responseList.add(product2);
-        responseList.add(product3);
-        responseList.add(product4);
-        responseList.add(product5);
-
-
-
-        return ResponseEntity.status(HttpStatus.OK).body(responseList);
+        return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
 }
