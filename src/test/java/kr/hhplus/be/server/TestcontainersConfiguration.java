@@ -3,6 +3,7 @@ package kr.hhplus.be.server;
 import jakarta.annotation.PreDestroy;
 import org.springframework.context.annotation.Configuration;
 import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.utility.DockerImageName;
 
 @Configuration
@@ -15,7 +16,7 @@ class TestcontainersConfiguration {
 			.withDatabaseName("hhplus")
 			.withUsername("test")
 			.withPassword("test");
-			//.withInitScript("schema.sql");
+			//.withInitScript("userData.sql")
 		MYSQL_CONTAINER.start();
 
 		System.setProperty("spring.datasource.url", MYSQL_CONTAINER.getJdbcUrl() + "?characterEncoding=UTF-8&serverTimezone=UTC");

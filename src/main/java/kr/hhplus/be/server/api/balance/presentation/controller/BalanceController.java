@@ -14,7 +14,6 @@ import kr.hhplus.be.server.api.balance.presentation.usecase.BalanceUsecase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
