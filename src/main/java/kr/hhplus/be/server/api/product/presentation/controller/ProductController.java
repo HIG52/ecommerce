@@ -97,9 +97,9 @@ public class ProductController {
     @GetMapping("/api/products/topProduct")
     public ResponseEntity<List<ProductsResponseDTO>> getTopProduct() {
 
-        productUsecase.getTopProducts();
+        List<ProductsResponseDTO> productsResponseDTO = productUsecase.getTopProducts();
 
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body(productsResponseDTO);
     }
 
 }
