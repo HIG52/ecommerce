@@ -1,5 +1,11 @@
 package kr.hhplus.be.server.api.coupon.presentation.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import kr.hhplus.be.server.api.balance.presentation.dto.BalanceResponseDTO;
 import kr.hhplus.be.server.api.coupon.domain.service.CouponService;
 import kr.hhplus.be.server.api.coupon.domain.service.UserCouponService;
 import kr.hhplus.be.server.api.coupon.domain.service.request.CouponRequest;
@@ -19,11 +25,20 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "Coupon API", description = "쿠폰 관리 API")
 public class CouponController {
 
     private final CouponService couponService;
     private final UserCouponService userCouponService;
 
+    @Operation(
+            summary = "쿠폰 목록 조회",
+            description = "쿠폰 목록을 조회합니다.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "쿠폰목록 조회 성공",
+                            content = @Content(schema = @Schema(implementation = CouponsResponseDTO.class)))
+            }
+    )
     @GetMapping("/api/coupons")
     public ResponseEntity<List<CouponsResponseDTO>> getCoupons(
             @RequestParam(defaultValue = "0") int page,
@@ -44,6 +59,14 @@ public class CouponController {
         return ResponseEntity.status(HttpStatus.OK).body(couponDTOs);
     }
 
+    @Operation(
+            summary = "쿠폰 발급",
+            description = "쿠폰을 발급합니다.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "쿠폰 발급 성공",
+                            content = @Content(schema = @Schema(implementation = UserCouponResponseDTO.class)))
+            }
+    )
     @PostMapping("/api/coupons/download")
     public ResponseEntity<UserCouponResponseDTO> couponDownload(
             @RequestBody CouponRequestDTO couponRequestDTO) {
@@ -64,6 +87,14 @@ public class CouponController {
         return ResponseEntity.status(HttpStatus.OK).body(userCouponResponseDTO);
     }
 
+    @Operation(
+            summary = "쿠폰 상세 조회",
+            description = "쿠폰 상세 정보를 조회합니다.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "쿠폰 상세조회 성공",
+                            content = @Content(schema = @Schema(implementation = CouponResponseDTO.class)))
+            }
+    )
     @GetMapping("/api/coupons/{couponId}")
     public ResponseEntity<CouponResponseDTO> getCoupon(
             @PathVariable(name = "couponId") int couponId) {
