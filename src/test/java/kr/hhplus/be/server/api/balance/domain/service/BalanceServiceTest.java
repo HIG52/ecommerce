@@ -1,20 +1,18 @@
 package kr.hhplus.be.server.api.balance.domain.service;
 
-import kr.hhplus.be.server.api.balance.domain.entity.User;
-import kr.hhplus.be.server.api.balance.domain.repository.BalanceRepository;
-import kr.hhplus.be.server.api.balance.domain.service.request.BalanceRequest;
-import kr.hhplus.be.server.api.balance.domain.service.response.BalanceChargeResponse;
-import kr.hhplus.be.server.api.balance.domain.service.response.BalanceResponse;
-import org.assertj.core.api.Assertions;
+import kr.hhplus.be.server.balance.domain.entity.User;
+import kr.hhplus.be.server.balance.domain.repository.BalanceRepository;
+import kr.hhplus.be.server.balance.domain.service.BalanceService;
+import kr.hhplus.be.server.balance.domain.service.request.BalanceRequest;
+import kr.hhplus.be.server.balance.domain.service.response.BalanceChargeResponse;
+import kr.hhplus.be.server.balance.domain.service.response.BalanceResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)

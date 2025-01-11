@@ -1,12 +1,14 @@
 package kr.hhplus.be.server.api.coupon.domain.service;
 
-import kr.hhplus.be.server.api.coupon.domain.entity.Coupon;
-import kr.hhplus.be.server.api.coupon.domain.entity.UserCoupon;
-import kr.hhplus.be.server.api.coupon.domain.repository.CouponRepository;
-import kr.hhplus.be.server.api.coupon.domain.service.request.CouponRequest;
-import kr.hhplus.be.server.api.coupon.domain.service.response.CouponResponse;
-import kr.hhplus.be.server.api.coupon.domain.service.response.CouponsResponse;
-import kr.hhplus.be.server.api.coupon.domain.service.response.UserCouponReponse;
+import kr.hhplus.be.server.coupon.domain.entity.Coupon;
+import kr.hhplus.be.server.coupon.domain.entity.UserCoupon;
+import kr.hhplus.be.server.coupon.domain.repository.CouponRepository;
+import kr.hhplus.be.server.coupon.domain.service.CouponService;
+import kr.hhplus.be.server.coupon.domain.service.UserCouponService;
+import kr.hhplus.be.server.coupon.domain.service.request.CouponRequest;
+import kr.hhplus.be.server.coupon.domain.service.response.CouponResponse;
+import kr.hhplus.be.server.coupon.domain.service.response.CouponsResponse;
+import kr.hhplus.be.server.coupon.domain.service.response.UserCouponReponse;
 import kr.hhplus.be.server.common.type.CouponType;
 import kr.hhplus.be.server.common.type.UserCouponType;
 import org.junit.jupiter.api.Test;

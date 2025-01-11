@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.integration;
 
-import kr.hhplus.be.server.api.product.presentation.controller.ProductController;
-import kr.hhplus.be.server.api.product.presentation.dto.ProductsResponseDTO;
+import kr.hhplus.be.server.product.presentation.controller.ProductController;
+import kr.hhplus.be.server.product.presentation.dto.ProductsResponseDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

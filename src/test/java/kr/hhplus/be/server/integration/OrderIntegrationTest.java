@@ -1,8 +1,8 @@
 package kr.hhplus.be.server.integration;
 
-import kr.hhplus.be.server.api.order.presentation.controller.OrderController;
-import kr.hhplus.be.server.api.order.presentation.dto.OrderRequestDTO;
-import kr.hhplus.be.server.api.order.presentation.dto.OrderResponseDTO;
+import kr.hhplus.be.server.order.presentation.controller.OrderController;
+import kr.hhplus.be.server.order.presentation.dto.OrderRequestDTO;
+import kr.hhplus.be.server.order.presentation.dto.OrderResponseDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

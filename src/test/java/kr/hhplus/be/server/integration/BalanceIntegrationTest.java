@@ -1,9 +1,8 @@
 package kr.hhplus.be.server.integration;
 
-import kr.hhplus.be.server.api.balance.domain.repository.BalanceRepository;
-import kr.hhplus.be.server.api.balance.presentation.controller.BalanceController;
-import kr.hhplus.be.server.api.balance.presentation.dto.BalanceRequestDTO;
-import kr.hhplus.be.server.api.balance.presentation.dto.BalanceResponseDTO;
+import kr.hhplus.be.server.balance.presentation.controller.BalanceController;
+import kr.hhplus.be.server.balance.presentation.dto.BalanceRequestDTO;
+import kr.hhplus.be.server.balance.presentation.dto.BalanceResponseDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

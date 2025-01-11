@@ -1,22 +1,19 @@
 package kr.hhplus.be.server.api.order.domain.service;
 
-import kr.hhplus.be.server.api.order.domain.entity.OrderDetail;
-import kr.hhplus.be.server.api.order.domain.repository.OrderRepository;
-import kr.hhplus.be.server.api.order.domain.service.request.OrderDetailsCreateRequest;
-import kr.hhplus.be.server.api.order.domain.service.response.OrderDetailsResponse;
-import kr.hhplus.be.server.api.order.presentation.dto.OrderResponseDTO;
-import org.assertj.core.api.Assertions;
+import kr.hhplus.be.server.order.domain.entity.OrderDetail;
+import kr.hhplus.be.server.order.domain.repository.OrderRepository;
+import kr.hhplus.be.server.order.domain.service.OrderDetailService;
+import kr.hhplus.be.server.order.domain.service.request.OrderDetailsCreateRequest;
+import kr.hhplus.be.server.order.domain.service.response.OrderDetailsResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;

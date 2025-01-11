@@ -1,11 +1,12 @@
 package kr.hhplus.be.server.api.product.domain.service;
 
-import kr.hhplus.be.server.api.product.domain.entity.Product;
-import kr.hhplus.be.server.api.product.domain.repository.ProductRepository;
-import kr.hhplus.be.server.api.product.domain.service.request.QuantityRequest;
-import kr.hhplus.be.server.api.product.domain.service.response.ProductResponse;
-import kr.hhplus.be.server.api.product.domain.service.response.ProductsResponse;
-import kr.hhplus.be.server.api.product.domain.service.response.QuantityResponse;
+import kr.hhplus.be.server.product.domain.entity.Product;
+import kr.hhplus.be.server.product.domain.repository.ProductRepository;
+import kr.hhplus.be.server.product.domain.service.ProductService;
+import kr.hhplus.be.server.product.domain.service.request.QuantityRequest;
+import kr.hhplus.be.server.product.domain.service.response.ProductResponse;
+import kr.hhplus.be.server.product.domain.service.response.ProductsResponse;
+import kr.hhplus.be.server.product.domain.service.response.QuantityResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;

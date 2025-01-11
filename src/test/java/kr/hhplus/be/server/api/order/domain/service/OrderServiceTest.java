@@ -1,10 +1,11 @@
 package kr.hhplus.be.server.api.order.domain.service;
 
-import kr.hhplus.be.server.api.order.domain.entity.Order;
-import kr.hhplus.be.server.api.order.domain.repository.OrderRepository;
-import kr.hhplus.be.server.api.order.domain.service.response.OrderPaymentStatusResponse;
-import kr.hhplus.be.server.api.order.domain.service.response.OrderResponse;
-import kr.hhplus.be.server.api.order.domain.service.response.OrderStatusResponse;
+import kr.hhplus.be.server.order.domain.entity.Order;
+import kr.hhplus.be.server.order.domain.repository.OrderRepository;
+import kr.hhplus.be.server.order.domain.service.OrderService;
+import kr.hhplus.be.server.order.domain.service.response.OrderPaymentStatusResponse;
+import kr.hhplus.be.server.order.domain.service.response.OrderResponse;
+import kr.hhplus.be.server.order.domain.service.response.OrderStatusResponse;
 import kr.hhplus.be.server.common.type.OrderStatusType;
 import kr.hhplus.be.server.common.type.PaymentStatusType;
 import org.junit.jupiter.api.Test;
@@ -44,6 +45,7 @@ class OrderServiceTest {
         assertThat(orderResponse.orderTotalPrice()).isEqualTo(orderTotalAmount);
         assertThat(orderResponse.paymentStatus()).isEqualTo(PaymentStatusType.PENDING);
         assertThat(orderResponse.status()).isEqualTo(OrderStatusType.ORDERED);
+
     }
 
     @Test

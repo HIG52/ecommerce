@@ -1,9 +1,10 @@
 package kr.hhplus.be.server.api.balance.domain.service;
 
-import kr.hhplus.be.server.api.balance.domain.entity.UserBalanceHistory;
-import kr.hhplus.be.server.api.balance.domain.repository.BalanceRepository;
-import kr.hhplus.be.server.api.balance.domain.service.request.BalanceHistoryRequest;
-import kr.hhplus.be.server.api.balance.domain.service.response.BalanceHistoryResponse;
+import kr.hhplus.be.server.balance.domain.entity.UserBalanceHistory;
+import kr.hhplus.be.server.balance.domain.repository.BalanceRepository;
+import kr.hhplus.be.server.balance.domain.service.BalanceHistoryService;
+import kr.hhplus.be.server.balance.domain.service.request.BalanceHistoryRequest;
+import kr.hhplus.be.server.balance.domain.service.response.BalanceHistoryResponse;
 import kr.hhplus.be.server.common.type.HistoryType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,7 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
