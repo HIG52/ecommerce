@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.balance.presentation.dto;
 
-public record BalanceRequestDTO (
+public record BalanceChargeResponseDTO(
         long userId,
-        long amount
+        long balance
 ){
 }

@@ -1,43 +1,58 @@
 package kr.hhplus.be.server.integration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import kr.hhplus.be.server.balance.domain.service.BalanceService;
 import kr.hhplus.be.server.balance.presentation.controller.BalanceController;
-import kr.hhplus.be.server.balance.presentation.dto.BalanceRequestDTO;
-import kr.hhplus.be.server.balance.presentation.dto.BalanceResponseDTO;
+import kr.hhplus.be.server.balance.presentation.dto.BalanceChargeRequestDTO;
+import kr.hhplus.be.server.balance.presentation.usecase.BalanceUsecase;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.test.web.servlet.MockMvc;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@Sql("/userData.sql")
-@SpringBootTest
-@Transactional
+
+//@SpringBootTest
+//@Transactional
+//@Sql("/userData.sql")
+@WebMvcTest(BalanceController.class)
 @ActiveProfiles("test")
 public class BalanceIntegrationTest {
 
     @Autowired
-    private BalanceController balanceController;
+    private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @MockitoBean
+    private BalanceService balanceService;
+
+    @MockitoBean
+    private BalanceUsecase balanceUsecase;
+
 
     @Test
-    void userId와_amount입력시_잔액충전후_BalanceResponseDTO반환() {
+    void userId와_amount입력시_잔액충전후_BalanceResponseDTO반환() throws Exception {
         // Given
         int userId = 1; // data.sql에서 삽입된 유저 ID
         long chargeAmount = 500L;
 
-        BalanceRequestDTO balanceRequestDTO = new BalanceRequestDTO(userId, chargeAmount);
+        BalanceChargeRequestDTO balanceChargeRequestDTO = new BalanceChargeRequestDTO(chargeAmount);
 
-        // When
-        ResponseEntity<BalanceResponseDTO> response = balanceController.userPointCharge(userId, balanceRequestDTO);
+        mockMvc.perform(post("/api/balances/{userId}/charge", 1L)
+                        .content(objectMapper.writeValueAsString(balanceChargeRequestDTO))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                ).andExpect(status().isOk())
+                .andExpect(jsonPath("$.userId").value(1L))
+                .andExpect(jsonPath("$.balance").value(1500L));
 
-        // Then
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody().balance()).isEqualTo(1500L); // 초기 1000 + 500
     }
 
 }

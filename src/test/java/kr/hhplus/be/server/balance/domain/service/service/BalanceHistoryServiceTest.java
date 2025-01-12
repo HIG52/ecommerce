@@ -44,13 +44,9 @@ class BalanceHistoryServiceTest {
         given(balanceRepository.saveUserBalanceHistory(any(UserBalanceHistory.class))).willReturn(savedBalanceHistory);
 
         // when
-        BalanceHistoryResponse response = balanceHistoryService.saveBalanceHistory(userId, balanceHistoryRequest);
+        balanceHistoryService.saveBalanceHistory(userId, balanceHistoryRequest);
 
         // then
-        assertThat(response.userId()).isEqualTo(userId);
-        assertThat(response.amount()).isEqualTo(amount);
-
-        // saveUserBalanceHistory 메서드가 호출되었는지 검증
         verify(balanceRepository).saveUserBalanceHistory(any(UserBalanceHistory.class));
     }
 

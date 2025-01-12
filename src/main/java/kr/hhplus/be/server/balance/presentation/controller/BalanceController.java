@@ -1,13 +1,9 @@
 package kr.hhplus.be.server.balance.presentation.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import kr.hhplus.be.server.balance.domain.service.response.BalanceResponse;
-import kr.hhplus.be.server.balance.presentation.dto.BalanceRequestDTO;
+import kr.hhplus.be.server.balance.presentation.dto.BalanceChargeResponseDTO;
+import kr.hhplus.be.server.balance.presentation.dto.BalanceChargeRequestDTO;
 import kr.hhplus.be.server.balance.presentation.dto.BalanceResponseDTO;
 import kr.hhplus.be.server.balance.domain.service.BalanceService;
 import kr.hhplus.be.server.balance.presentation.usecase.BalanceUsecase;
@@ -28,20 +24,20 @@ public class BalanceController implements BalanceControllerDocs {
             @Valid @PathVariable(name = "userId") long userId) {
 
         BalanceResponse balanceResponse = balanceService.getUserBalance(userId);
-        BalanceResponseDTO balanceResponseDTO = new BalanceResponseDTO(balanceResponse.balance(), balanceResponse.userId());
+        BalanceResponseDTO balanceResponseDTO = new BalanceResponseDTO(balanceResponse.balance());
 
         return ResponseEntity.status(HttpStatus.OK).body(balanceResponseDTO);
     }
 
 
     @PostMapping("/api/balances/{userId}/charge")
-    public ResponseEntity<BalanceResponseDTO> userPointCharge(
+    public ResponseEntity<BalanceChargeResponseDTO> userPointCharge(
             @Valid @PathVariable(name = "userId") long userId,
-            @Valid @RequestBody BalanceRequestDTO balanceRequestDTO) {
+            @Valid @RequestBody BalanceChargeRequestDTO balanceChargeRequestDTO) {
 
-        BalanceResponseDTO balanceResponseDTO = balanceUsecase.chargeUserBalance(userId, balanceRequestDTO);
+        BalanceChargeResponseDTO balanceChargeResponseDTO = balanceUsecase.chargeUserBalance(userId, balanceChargeRequestDTO);
 
-        return ResponseEntity.status(HttpStatus.OK).body(balanceResponseDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(balanceChargeResponseDTO);
     }
 
 }

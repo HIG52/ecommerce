@@ -15,7 +15,7 @@ public class BalanceHistoryService {
     private final BalanceRepository balanceRepository;
 
     @Transactional
-    public BalanceHistoryResponse saveBalanceHistory(long userId, BalanceHistoryRequest balanceHistoryRequest) {
+    public void saveBalanceHistory(long userId, BalanceHistoryRequest balanceHistoryRequest) {
 
         UserBalanceHistory userBalanceHistory = UserBalanceHistory.createUserBalanceHistory(userId, balanceHistoryRequest.historyType(), balanceHistoryRequest.amount());
 
@@ -25,7 +25,6 @@ public class BalanceHistoryService {
             throw new IllegalStateException("잔액 히스토리 저장 실패: 저장 결과가 올바르지 않습니다.");
         }
 
-        return new BalanceHistoryResponse(resultUserBalanceHistory.getUserId(), userBalanceHistory.getAmount());
     }
 
 }

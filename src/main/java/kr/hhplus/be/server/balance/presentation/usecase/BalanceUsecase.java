@@ -5,9 +5,8 @@ import kr.hhplus.be.server.balance.domain.service.BalanceService;
 import kr.hhplus.be.server.balance.domain.service.request.BalanceHistoryRequest;
 import kr.hhplus.be.server.balance.domain.service.request.BalanceRequest;
 import kr.hhplus.be.server.balance.domain.service.response.BalanceChargeResponse;
-import kr.hhplus.be.server.balance.domain.service.response.BalanceHistoryResponse;
-import kr.hhplus.be.server.balance.presentation.dto.BalanceRequestDTO;
-import kr.hhplus.be.server.balance.presentation.dto.BalanceResponseDTO;
+import kr.hhplus.be.server.balance.presentation.dto.BalanceChargeResponseDTO;
+import kr.hhplus.be.server.balance.presentation.dto.BalanceChargeRequestDTO;
 import kr.hhplus.be.server.common.type.HistoryType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -20,16 +19,16 @@ public class BalanceUsecase {
     private final BalanceHistoryService balanceHistoryService;
 
     @Transactional
-    public BalanceResponseDTO chargeUserBalance(long userId, BalanceRequestDTO balanceRequestDTO) {
+    public BalanceChargeResponseDTO chargeUserBalance(long userId, BalanceChargeRequestDTO balanceChargeRequestDTO) {
 
         try{
-            BalanceRequest balanceRequest = new BalanceRequest(balanceRequestDTO.amount());
-            BalanceHistoryRequest balanceHistoryRequest = new BalanceHistoryRequest(balanceRequestDTO.amount(), HistoryType.CHARGE);
+            BalanceRequest balanceRequest = new BalanceRequest(balanceChargeRequestDTO.amount());
+            BalanceHistoryRequest balanceHistoryRequest = new BalanceHistoryRequest(balanceChargeRequestDTO.amount(), HistoryType.CHARGE);
 
             BalanceChargeResponse balanceChargeResponse = balanceService.chargeUserBalance(userId, balanceRequest);
-            BalanceHistoryResponse balanceHistoryResponse = balanceHistoryService.saveBalanceHistory(userId, balanceHistoryRequest);
+            balanceHistoryService.saveBalanceHistory(userId, balanceHistoryRequest);
 
-            return new BalanceResponseDTO(balanceChargeResponse.userId(), balanceChargeResponse.balance());
+            return new BalanceChargeResponseDTO(balanceChargeResponse.userId(), balanceChargeResponse.balance());
         }catch (Exception e){
             throw  new RuntimeException("잔액 충전 처리중 문제가 발생하였습니다.");
         }
