@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.api.balance.domain.service;
+package kr.hhplus.be.server.balance.domain.service.service;
 
 import kr.hhplus.be.server.balance.domain.entity.UserBalanceHistory;
 import kr.hhplus.be.server.balance.domain.repository.BalanceRepository;

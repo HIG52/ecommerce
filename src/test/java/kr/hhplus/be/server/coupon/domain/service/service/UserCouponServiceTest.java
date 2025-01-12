@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.api.coupon.domain.service;
+package kr.hhplus.be.server.coupon.domain.service.service;
 
 import kr.hhplus.be.server.coupon.domain.entity.UserCoupon;
 import kr.hhplus.be.server.coupon.domain.repository.CouponRepository;
