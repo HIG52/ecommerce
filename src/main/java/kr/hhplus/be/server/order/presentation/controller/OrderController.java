@@ -15,19 +15,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "Order API", description = "주문 관리 API")
-public class OrderController {
+public class OrderController implements OrderControllerDocs {
 
     private final OrderUsecase orderUsecase;
 
-    @Operation(
-            summary = "주문 생성",
-            description = "쿠폰 목록을 조회합니다.",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "쿠폰목록 조회 성공",
-                            content = @Content(schema = @Schema(implementation = OrderResponseDTO.class)))
-            }
-    )
     @PostMapping("/api/orders/")
     public ResponseEntity<OrderResponseDTO> createOrders(
             @RequestBody OrderRequestDTO orderRequestDTO) {
@@ -37,14 +28,6 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.OK).body(orderResponseDTO);
     }
 
-    @Operation(
-            summary = "주문 조회",
-            description = "주문 상세정보를 조회합니다.",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "주문 상세정보 조회 성공",
-                            content = @Content(schema = @Schema(implementation = OrderResponseDTO.class)))
-            }
-    )
     @GetMapping("/api/orders/{orderId}")
     public ResponseEntity<OrderResponseDTO> getOrder(
             @PathVariable(name = "orderId") int orderId,

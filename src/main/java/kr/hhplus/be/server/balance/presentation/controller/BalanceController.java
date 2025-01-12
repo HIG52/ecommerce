@@ -18,45 +18,30 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "Balance API", description = "잔액 관리 API")
-public class BalanceController {
+public class BalanceController implements BalanceControllerDocs {
 
     private final BalanceService balanceService;
     private final BalanceUsecase balanceUsecase;
 
-    @Operation(
-            summary = "잔액 조회",
-            description = "사용자의 잔액을 조회합니다.",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "잔액 조회 성공",
-                            content = @Content(schema = @Schema(implementation = BalanceResponseDTO.class)))
-            }
-    )
     @GetMapping("/api/balances/{userId}/balance")
-    public ResponseEntity<BalanceResponseDTO> getUserPoint(
-            @Valid @PathVariable(name = "userId") int userId) {
+    public ResponseEntity<BalanceResponseDTO> getUserBalance(
+            @Valid @PathVariable(name = "userId") long userId) {
 
         BalanceResponse balanceResponse = balanceService.getUserBalance(userId);
-        BalanceResponseDTO balanceResponseDTO =
-                new BalanceResponseDTO(balanceResponse.balance(), balanceResponse.userId());
+        BalanceResponseDTO balanceResponseDTO = new BalanceResponseDTO(balanceResponse.balance(), balanceResponse.userId());
 
         return ResponseEntity.status(HttpStatus.OK).body(balanceResponseDTO);
     }
 
-    @Operation(
-            summary = "잔액 충전",
-            description = "사용자의 잔액을 충전합니다.",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "잔액 충전 성공",
-                            content = @Content(schema = @Schema(implementation = BalanceResponseDTO.class)))
-            }
-    )
+
     @PostMapping("/api/balances/{userId}/charge")
     public ResponseEntity<BalanceResponseDTO> userPointCharge(
-            @Valid @PathVariable(name = "userId") int userId,
+            @Valid @PathVariable(name = "userId") long userId,
             @Valid @RequestBody BalanceRequestDTO balanceRequestDTO) {
 
-        return ResponseEntity.status(HttpStatus.OK).body(balanceUsecase.chargeUserBalance(userId, balanceRequestDTO));
+        BalanceResponseDTO balanceResponseDTO = balanceUsecase.chargeUserBalance(userId, balanceRequestDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).body(balanceResponseDTO);
     }
 
 }

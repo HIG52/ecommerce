@@ -24,20 +24,11 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "Product API", description = "상품 관리 API")
-public class ProductController {
+public class ProductController implements ProductControllerDocs {
 
     private final ProductService productService;
     private final ProductUsecase productUsecase;
 
-    @Operation(
-            summary = "상품목록 조회",
-            description = "상품목록을 조회한다.",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "상품 목록 조회 성공",
-                            content = @Content(schema = @Schema(implementation = ProductsResponseDTO.class)))
-            }
-    )
     @GetMapping("/api/products")
     public ResponseEntity<List<ProductsResponseDTO>> getProducts(
             @Valid @RequestParam(defaultValue = "0") int page,
@@ -59,14 +50,6 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(resultProducts);
     }
 
-    @Operation(
-            summary = "상품상세 조회",
-            description = "상품상세를 조회한다.",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "상품 상세 조회 성공",
-                            content = @Content(schema = @Schema(implementation = ProductResponseDTO.class)))
-            }
-    )
     @GetMapping("/api/products/{productId}")
     public ResponseEntity<ProductResponseDTO> getProduct(
             @PathVariable(name = "productId") int productId) {
@@ -82,14 +65,6 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(resultProduct);
     }
 
-    @Operation(
-            summary = "상위상품 조회",
-            description = "많이팔린 상위3개 상품을 조회한다.",
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "상위상품 조회 성공",
-                            content = @Content(schema = @Schema(implementation = ProductsResponseDTO.class)))
-            }
-    )
     @GetMapping("/api/products/topProduct")
     public ResponseEntity<List<ProductsResponseDTO>> getTopProduct() {
 
