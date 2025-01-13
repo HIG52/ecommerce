@@ -2,7 +2,7 @@ package kr.hhplus.be.server.common.type;
 
 public enum CouponType {
 
-    PERCENT,
+    PERCENTAGE,
     AMOUNT
 
 }

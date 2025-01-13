@@ -1,7 +1,7 @@
 ## 이커머스
 
 ### 마일스톤
-https://docs.google.com/spreadsheets/d/1s3lBIxXv6-qHiv5wkr5GCGRCxU9q_vavxkFKUve2ttk/edit?usp=sharing
+https://github.com/users/HIG52/projects/1
 
 ### 플로우 차트
 https://docs.google.com/spreadsheets/d/1Cue3eMqK5F04tsCGB9OkR2Aas16xIATcTdBCDQwc_Rk/edit?usp=sharing
@@ -23,18 +23,114 @@ https://docs.google.com/spreadsheets/d/18d7nosQLr5CIZH96ZxWk3UayW7eZdu1zySMU7XHc
 
 ### 패키지 구조
 ```
-server
-├─api
-│  ├─controller
-│  ├─dto
-│  └─usecase
-├─config
-│  └─jpa
-├─domain
-│  ├─entity
-│  └─repository
-├─infrastructure
-│  ├─repository
-│  └─repositoryImpl
-└─service
+├─main
+│  ├─java
+│  │  └─kr
+│  │      └─hhplus
+│  │          └─be
+│  │              └─server
+│  │                  ├─api
+│  │                  │  ├─balance
+│  │                  │  │  ├─domain
+│  │                  │  │  │  ├─entity
+│  │                  │  │  │  ├─repository
+│  │                  │  │  │  └─service
+│  │                  │  │  │      ├─request
+│  │                  │  │  │      └─response
+│  │                  │  │  ├─infrastructure
+│  │                  │  │  │  ├─repository
+│  │                  │  │  │  └─repositoryImpl
+│  │                  │  │  └─presentation
+│  │                  │  │      ├─controller
+│  │                  │  │      ├─dto
+│  │                  │  │      └─usecase
+│  │                  │  ├─coupon
+│  │                  │  │  ├─domain
+│  │                  │  │  │  ├─entity
+│  │                  │  │  │  ├─repository
+│  │                  │  │  │  └─service
+│  │                  │  │  │      ├─request
+│  │                  │  │  │      └─response
+│  │                  │  │  ├─infrastructure
+│  │                  │  │  │  ├─repository
+│  │                  │  │  │  └─repositoryImpl
+│  │                  │  │  └─presentation
+│  │                  │  │      ├─controller
+│  │                  │  │      ├─dto
+│  │                  │  │      └─usecase
+│  │                  │  ├─order
+│  │                  │  │  ├─domain
+│  │                  │  │  │  ├─entity
+│  │                  │  │  │  ├─repository
+│  │                  │  │  │  └─service
+│  │                  │  │  │      ├─request
+│  │                  │  │  │      └─response
+│  │                  │  │  ├─infrastructure
+│  │                  │  │  │  ├─repository
+│  │                  │  │  │  └─repositoryImpl
+│  │                  │  │  └─presentation
+│  │                  │  │      ├─controller
+│  │                  │  │      ├─dto
+│  │                  │  │      └─usecase
+│  │                  │  ├─payment
+│  │                  │  │  ├─domain
+│  │                  │  │  │  ├─entity
+│  │                  │  │  │  ├─repository
+│  │                  │  │  │  └─service
+│  │                  │  │  │      ├─request
+│  │                  │  │  │      └─response
+│  │                  │  │  ├─infrastructure
+│  │                  │  │  │  ├─repository
+│  │                  │  │  │  └─repositoryImpl
+│  │                  │  │  └─presentation
+│  │                  │  │      ├─controller
+│  │                  │  │      ├─dto
+│  │                  │  │      └─usecase
+│  │                  │  └─product
+│  │                  │      ├─domain
+│  │                  │      │  ├─entity
+│  │                  │      │  ├─repository
+│  │                  │      │  └─service
+│  │                  │      │      ├─request
+│  │                  │      │      └─response
+│  │                  │      ├─infrastructure
+│  │                  │      │  ├─repository
+│  │                  │      │  └─repositoryImpl
+│  │                  │      └─presentation
+│  │                  │          ├─controller
+│  │                  │          ├─dto
+│  │                  │          └─usecase
+│  │                  ├─common
+│  │                  │  ├─entity
+│  │                  │  ├─error
+│  │                  │  └─type
+│  │                  ├─config
+│  │                  │  ├─jpa
+│  │                  │  └─swagger
+│  │                  └─dataflatform
+│  └─resources
+└─test
+    ├─java
+    │  └─kr
+    │      └─hhplus
+    │          └─be
+    │              └─server
+    │                  ├─api
+    │                  │  ├─balance
+    │                  │  │  └─domain
+    │                  │  │      └─service
+    │                  │  ├─coupon
+    │                  │  │  └─domain
+    │                  │  │      └─service
+    │                  │  ├─order
+    │                  │  │  └─domain
+    │                  │  │      └─service
+    │                  │  ├─payment
+    │                  │  │  └─domain
+    │                  │  │      └─service
+    │                  │  └─product
+    │                  │      └─domain
+    │                  │          └─service
+    │                  └─integration
+    └─resources
 ```

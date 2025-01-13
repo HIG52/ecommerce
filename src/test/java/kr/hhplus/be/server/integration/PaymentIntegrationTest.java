@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.integration;
 
-import kr.hhplus.be.server.api.payment.presentation.controller.PaymentController;
-import kr.hhplus.be.server.api.payment.presentation.dto.PaymentRequestDTO;
+import kr.hhplus.be.server.payment.presentation.controller.PaymentController;
+import kr.hhplus.be.server.payment.presentation.dto.PaymentRequestDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
