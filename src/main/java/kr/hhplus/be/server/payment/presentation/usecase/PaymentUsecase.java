@@ -2,7 +2,7 @@ package kr.hhplus.be.server.payment.presentation.usecase;
 
 import kr.hhplus.be.server.balance.domain.service.BalanceService;
 import kr.hhplus.be.server.balance.domain.service.request.BalanceDecreaseRequest;
-import kr.hhplus.be.server.balance.domain.service.response.BalanceResponse;
+import kr.hhplus.be.server.balance.domain.service.response.BalanceInfo;
 import kr.hhplus.be.server.order.domain.service.OrderService;
 import kr.hhplus.be.server.payment.domain.service.PaymentService;
 import kr.hhplus.be.server.payment.domain.service.request.PaymentCreateRequest;
@@ -31,7 +31,7 @@ public class PaymentUsecase {
         //잔액차감 및 락 생성
         BalanceDecreaseRequest balanceDecreaseRequest =
                 new BalanceDecreaseRequest(paymentRequestDTO.userId(), paymentRequestDTO.paymentAmount());
-        BalanceResponse balanceResponse = balanceService.decreaseBalance(balanceDecreaseRequest);
+        BalanceInfo balanceInfo = balanceService.decreaseBalance(balanceDecreaseRequest);
 
         //결제
         PaymentCreateRequest paymentCreateRequest =
@@ -43,7 +43,7 @@ public class PaymentUsecase {
         orderService.updateOrderStatus(paymentRequestDTO.orderId(), OrderStatusType.PAYMENT_COMPLETED);
 
         //데이터플랫폼 데이터 전송
-        boolean isData = dataPlatformService.sendData(balanceResponse);
+        boolean isData = dataPlatformService.sendData(balanceInfo);
         if(!isData) {
             throw new IllegalStateException("데이터 전송 실패");
         }

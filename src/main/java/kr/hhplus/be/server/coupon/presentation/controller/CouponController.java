@@ -1,10 +1,5 @@
 package kr.hhplus.be.server.coupon.presentation.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.hhplus.be.server.coupon.domain.service.CouponService;
 import kr.hhplus.be.server.coupon.domain.service.response.CouponResponse;
 import kr.hhplus.be.server.coupon.domain.service.response.CouponsResponse;

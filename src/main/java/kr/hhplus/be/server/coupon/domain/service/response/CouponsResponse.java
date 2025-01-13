@@ -7,6 +7,6 @@ import java.time.LocalDateTime;
 public record CouponsResponse(
         long couponId,
         String couponName,
-        long couponQuantity
+        int couponQuantity
 ) {
 }
