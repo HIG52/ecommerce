@@ -2,8 +2,8 @@ package kr.hhplus.be.server.balance.domain.service;
 
 import kr.hhplus.be.server.balance.domain.service.request.BalanceDecreaseRequest;
 import kr.hhplus.be.server.balance.domain.service.request.BalanceRequest;
-import kr.hhplus.be.server.balance.domain.service.response.BalanceChargeResponse;
-import kr.hhplus.be.server.balance.domain.service.response.BalanceResponse;
+import kr.hhplus.be.server.balance.domain.service.response.BalanceChargeInfo;
+import kr.hhplus.be.server.balance.domain.service.response.BalanceInfo;
 import kr.hhplus.be.server.balance.domain.entity.User;
 import kr.hhplus.be.server.balance.domain.repository.BalanceRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ public class BalanceService {
 
     private final BalanceRepository balanceRepository;
 
-    public BalanceResponse getUserBalance(long userId) {
+    public BalanceInfo getUserBalance(long userId) {
 
         User user = balanceRepository.getUser(userId);
 
@@ -24,11 +24,11 @@ public class BalanceService {
             throw new IllegalArgumentException("사용자 정보가 존재하지 않습니다.");
         }
 
-        return new BalanceResponse(user.getUserId(), user.getBalance());
+        return new BalanceInfo(user.getUserId(), user.getBalance());
     }
 
     @Transactional
-    public BalanceChargeResponse chargeUserBalance(long userId, BalanceRequest balanceRequest) {
+    public BalanceChargeInfo chargeUserBalance(long userId, BalanceRequest balanceRequest) {
 
         User user = balanceRepository.getUser(userId);
         user.addBalance(balanceRequest.amount());
@@ -38,11 +38,11 @@ public class BalanceService {
             throw new IllegalStateException("잔액 충전 실패: 충전 결과가 올바르지 않습니다.");
         }
 
-        return new BalanceChargeResponse(resultUser.getUserId(), resultUser.getBalance());
+        return new BalanceChargeInfo(resultUser.getUserId(), resultUser.getBalance());
     }
 
     @Transactional
-    public BalanceResponse decreaseBalance(BalanceDecreaseRequest balanceDecreaseRequest) {
+    public BalanceInfo decreaseBalance(BalanceDecreaseRequest balanceDecreaseRequest) {
         User user = balanceRepository.getUserWithLock(balanceDecreaseRequest.userId());
 
         if (user == null) {
@@ -61,7 +61,7 @@ public class BalanceService {
             throw new IllegalStateException("잔액 차감 실패: 차감 결과가 올바르지 않습니다.");
         }
 
-        return new BalanceResponse(resultUser.getUserId(), resultUser.getBalance());
+        return new BalanceInfo(resultUser.getUserId(), resultUser.getBalance());
     }
 
 }

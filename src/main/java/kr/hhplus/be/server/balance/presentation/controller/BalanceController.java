@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.balance.presentation.controller;
 
 import jakarta.validation.Valid;
-import kr.hhplus.be.server.balance.domain.service.response.BalanceResponse;
+import kr.hhplus.be.server.balance.domain.service.response.BalanceInfo;
 import kr.hhplus.be.server.balance.presentation.dto.BalanceChargeResponseDTO;
 import kr.hhplus.be.server.balance.presentation.dto.BalanceChargeRequestDTO;
 import kr.hhplus.be.server.balance.presentation.dto.BalanceResponseDTO;
@@ -23,8 +23,8 @@ public class BalanceController implements BalanceControllerDocs {
     public ResponseEntity<BalanceResponseDTO> getUserBalance(
             @Valid @PathVariable(name = "userId") long userId) {
 
-        BalanceResponse balanceResponse = balanceService.getUserBalance(userId);
-        BalanceResponseDTO balanceResponseDTO = new BalanceResponseDTO(balanceResponse.balance());
+        BalanceInfo balanceInfo = balanceService.getUserBalance(userId);
+        BalanceResponseDTO balanceResponseDTO = new BalanceResponseDTO(balanceInfo.balance());
 
         return ResponseEntity.status(HttpStatus.OK).body(balanceResponseDTO);
     }

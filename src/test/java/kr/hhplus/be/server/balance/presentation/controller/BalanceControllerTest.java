@@ -2,7 +2,7 @@ package kr.hhplus.be.server.balance.presentation.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.hhplus.be.server.balance.domain.service.BalanceService;
-import kr.hhplus.be.server.balance.domain.service.response.BalanceResponse;
+import kr.hhplus.be.server.balance.domain.service.response.BalanceInfo;
 import kr.hhplus.be.server.balance.presentation.dto.BalanceChargeResponseDTO;
 import kr.hhplus.be.server.balance.presentation.dto.BalanceChargeRequestDTO;
 import kr.hhplus.be.server.balance.presentation.usecase.BalanceUsecase;
@@ -64,7 +64,7 @@ class BalanceControllerTest {
         // Given
         int userId = 1;
 
-        given(balanceService.getUserBalance(userId)).willReturn(new BalanceResponse(1L, 1500L));
+        given(balanceService.getUserBalance(userId)).willReturn(new BalanceInfo(1L, 1500L));
 
         mockMvc.perform(get("/api/balances/{userId}/balance", 1L)
                         .contentType(MediaType.APPLICATION_JSON)

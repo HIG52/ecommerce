@@ -5,8 +5,8 @@ import kr.hhplus.be.server.balance.domain.repository.BalanceRepository;
 import kr.hhplus.be.server.balance.domain.service.BalanceService;
 import kr.hhplus.be.server.balance.domain.service.request.BalanceDecreaseRequest;
 import kr.hhplus.be.server.balance.domain.service.request.BalanceRequest;
-import kr.hhplus.be.server.balance.domain.service.response.BalanceChargeResponse;
-import kr.hhplus.be.server.balance.domain.service.response.BalanceResponse;
+import kr.hhplus.be.server.balance.domain.service.response.BalanceChargeInfo;
+import kr.hhplus.be.server.balance.domain.service.response.BalanceInfo;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -34,7 +34,7 @@ class BalanceServiceTest {
         given(balanceRepository.getUser(userId)).willReturn(user);
 
         // when
-        BalanceResponse response = balanceService.getUserBalance(userId);
+        BalanceInfo response = balanceService.getUserBalance(userId);
 
         // then
         assertThat(response.userId()).isEqualTo(1L);
@@ -69,7 +69,7 @@ class BalanceServiceTest {
         given(balanceRepository.saveUser(user)).willReturn(user);
 
         // when
-        BalanceChargeResponse response = balanceService.chargeUserBalance(userId, new BalanceRequest(1000L));
+        BalanceChargeInfo response = balanceService.chargeUserBalance(userId, new BalanceRequest(1000L));
 
         // then
         assertThat(response.userId()).isEqualTo(1L);
@@ -113,7 +113,7 @@ class BalanceServiceTest {
         given(balanceRepository.saveUser(user)).willReturn(user);
 
         // when
-        BalanceResponse response = balanceService.decreaseBalance(new BalanceDecreaseRequest(userId, decreaseAmount));
+        BalanceInfo response = balanceService.decreaseBalance(new BalanceDecreaseRequest(userId, decreaseAmount));
 
         // then
         assertThat(response.userId()).isEqualTo(userId);

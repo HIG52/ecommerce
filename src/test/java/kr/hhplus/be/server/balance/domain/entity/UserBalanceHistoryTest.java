@@ -3,7 +3,6 @@ package kr.hhplus.be.server.balance.domain.entity;
 import kr.hhplus.be.server.common.type.HistoryType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
 
