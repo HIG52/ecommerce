@@ -17,6 +17,7 @@ public class GlobalExceptionHandler {
     // 커스텀 예외처리
     @ExceptionHandler(CustomExceptionHandler.class)
     public ResponseEntity<ErrorResponse> handleCustomException(CustomExceptionHandler ex) {
+        log.error("Custom exception occurred: Code={}, Message={}", ex.getCustomCode(), ex.getErrorMessage());
         ErrorResponse errorResponse = new ErrorResponse(
                 ex.getHttpStatus(),
                 ex.getCustomCode(),
@@ -28,6 +29,7 @@ public class GlobalExceptionHandler {
     // 일반적인 예외 처리
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
+        log.error("Unknown exception occurred: ", ex);
         ErrorResponse errorResponse =
                 new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), "G001", "알 수 없는 오류가 발생했습니다.");
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
@@ -36,6 +38,7 @@ public class GlobalExceptionHandler {
     // 메서드에 잘못된 파라미터 전달시 (예: IllegalArgumentException)
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
+        log.warn("Illegal argument exception: {}", ex.getMessage());
         ErrorResponse errorResponse =
                 new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "G002", ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
@@ -47,7 +50,7 @@ public class GlobalExceptionHandler {
         String message = ex.getBindingResult().getFieldErrors().stream()
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
                 .collect(Collectors.joining(", "));
-
+        log.warn("Validation exception: {}", message);
         ErrorResponse errorResponse =
                 new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "G003", message);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
@@ -56,6 +59,7 @@ public class GlobalExceptionHandler {
     // 지원하지 않는 HTTP 메서드로 요청하였을때
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<ErrorResponse> handleMethodNotSupported(HttpRequestMethodNotSupportedException ex) {
+        log.warn("Unsupported HTTP method: {}", ex.getMethod());
         ErrorResponse errorResponse =
                 new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED.value(), "G004", "지원하지 않는 HTTP 메서드입니다.");
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(errorResponse);
