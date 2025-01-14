@@ -5,9 +5,9 @@ import kr.hhplus.be.server.common.error.ErrorCode;
 import kr.hhplus.be.server.order.domain.entity.Order;
 import kr.hhplus.be.server.order.domain.repository.OrderRepository;
 import kr.hhplus.be.server.order.domain.service.OrderService;
-import kr.hhplus.be.server.order.domain.service.response.OrderPaymentStatusResponse;
-import kr.hhplus.be.server.order.domain.service.response.OrderResponse;
-import kr.hhplus.be.server.order.domain.service.response.OrderStatusResponse;
+import kr.hhplus.be.server.order.domain.service.info.OrderPaymentStatusInfo;
+import kr.hhplus.be.server.order.domain.service.info.OrderInfo;
+import kr.hhplus.be.server.order.domain.service.info.OrderStatusInfo;
 import kr.hhplus.be.server.common.type.OrderStatusType;
 import kr.hhplus.be.server.common.type.PaymentStatusType;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,7 +49,7 @@ class OrderServiceTest {
         given(orderRepository.save(order)).willReturn(order);
 
         // when
-        OrderResponse response = orderService.createOrder(1L, 5000L);
+        OrderInfo response = orderService.createOrder(1L, 5000L);
 
         // then
         assertThat(response.orderId()).isEqualTo(1L);
@@ -81,7 +81,7 @@ class OrderServiceTest {
         given(orderRepository.save(order)).willReturn(order);
 
         // when
-        OrderStatusResponse response = orderService.updateOrderStatus(1L, OrderStatusType.PAYMENT_COMPLETED);
+        OrderStatusInfo response = orderService.updateOrderStatus(1L, OrderStatusType.PAYMENT_COMPLETED);
 
         // then
         assertThat(response.orderId()).isEqualTo(1L);
@@ -112,7 +112,7 @@ class OrderServiceTest {
         given(orderRepository.save(order)).willReturn(order);
 
         // when
-        OrderPaymentStatusResponse response = orderService.updateOrderPaymentStatus(1L, PaymentStatusType.SUCCESS);
+        OrderPaymentStatusInfo response = orderService.updateOrderPaymentStatus(1L, PaymentStatusType.SUCCESS);
 
         // then
         assertThat(response.orderId()).isEqualTo(1L);

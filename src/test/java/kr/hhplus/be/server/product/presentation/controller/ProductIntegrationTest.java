@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.integration;
+package kr.hhplus.be.server.product.presentation.controller;
 
 import kr.hhplus.be.server.product.presentation.controller.ProductController;
 import kr.hhplus.be.server.product.presentation.dto.ProductsResponseDTO;

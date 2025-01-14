@@ -2,16 +2,11 @@ package kr.hhplus.be.server.coupon.domain.service.service;
 
 import kr.hhplus.be.server.common.error.CustomExceptionHandler;
 import kr.hhplus.be.server.common.error.ErrorCode;
-import kr.hhplus.be.server.coupon.domain.entity.Coupon;
 import kr.hhplus.be.server.coupon.domain.entity.UserCoupon;
 import kr.hhplus.be.server.coupon.domain.repository.CouponRepository;
-import kr.hhplus.be.server.coupon.domain.service.CouponService;
 import kr.hhplus.be.server.coupon.domain.service.UserCouponService;
 import kr.hhplus.be.server.coupon.domain.service.request.CouponRequest;
-import kr.hhplus.be.server.coupon.domain.service.response.CouponResponse;
-import kr.hhplus.be.server.coupon.domain.service.response.CouponsResponse;
-import kr.hhplus.be.server.coupon.domain.service.response.UserCouponReponse;
-import kr.hhplus.be.server.common.type.CouponType;
+import kr.hhplus.be.server.coupon.domain.service.info.UserCouponInfo;
 import kr.hhplus.be.server.common.type.UserCouponType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,20 +15,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.test.util.ReflectionTestUtils;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
@@ -62,7 +49,7 @@ class CouponServiceTest {
         given(couponRepository.saveUserCoupon(any(UserCoupon.class))).willReturn(userCoupon);
 
         // when
-        UserCouponReponse response = userCouponService.downloadUserCoupon(couponRequest);
+        UserCouponInfo response = userCouponService.downloadUserCoupon(couponRequest);
 
         // then
         assertThat(response.couponId()).isEqualTo(1L);
@@ -94,7 +81,7 @@ class CouponServiceTest {
         given(couponRepository.saveUserCoupon(userCoupon)).willReturn(userCoupon);
 
         // when
-        UserCouponReponse response = userCouponService.updateUserCouponUseYn(1L, UserCouponType.Y);
+        UserCouponInfo response = userCouponService.updateUserCouponUseYn(1L, UserCouponType.Y);
 
         // then
         assertThat(response.couponId()).isEqualTo(1L);

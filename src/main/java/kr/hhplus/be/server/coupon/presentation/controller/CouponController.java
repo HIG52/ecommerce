@@ -1,8 +1,8 @@
 package kr.hhplus.be.server.coupon.presentation.controller;
 
 import kr.hhplus.be.server.coupon.domain.service.CouponService;
-import kr.hhplus.be.server.coupon.domain.service.response.CouponResponse;
-import kr.hhplus.be.server.coupon.domain.service.response.CouponsResponse;
+import kr.hhplus.be.server.coupon.domain.service.info.CouponInfo;
+import kr.hhplus.be.server.coupon.domain.service.info.CouponsInfo;
 import kr.hhplus.be.server.coupon.presentation.dto.CouponRequestDTO;
 import kr.hhplus.be.server.coupon.presentation.dto.CouponResponseDTO;
 import kr.hhplus.be.server.coupon.presentation.dto.UserCouponResponseDTO;
@@ -27,7 +27,7 @@ public class CouponController implements CouponControllerDocs {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        List<CouponsResponse> coupons = couponService.getCoupons(page, size);
+        List<CouponsInfo> coupons = couponService.getCoupons(page, size);
 
         // CouponsResponse -> CouponsResponseDTO 변환
         List<CouponsResponseDTO> couponDTOs = coupons.stream()
@@ -55,17 +55,17 @@ public class CouponController implements CouponControllerDocs {
     public ResponseEntity<CouponResponseDTO> getCoupon(
             @PathVariable(name = "couponId") int couponId) {
 
-        CouponResponse couponResponse = couponService.getCoupon(couponId);
+        CouponInfo couponInfo = couponService.getCoupon(couponId);
 
         CouponResponseDTO couponResponseDTO = new CouponResponseDTO(
-                couponResponse.couponId(),
-                couponResponse.couponName(),
-                couponResponse.couponAmount(),
-                couponResponse.couponType(),
-                couponResponse.couponQuantity(),
-                couponResponse.expirationDate(),
-                couponResponse.maxDiscountAmount(),
-                couponResponse.minUsageAmount()
+                couponInfo.couponId(),
+                couponInfo.couponName(),
+                couponInfo.couponAmount(),
+                couponInfo.couponType(),
+                couponInfo.couponQuantity(),
+                couponInfo.expirationDate(),
+                couponInfo.maxDiscountAmount(),
+                couponInfo.minUsageAmount()
         );
 
         return ResponseEntity.status(HttpStatus.OK).body(couponResponseDTO);

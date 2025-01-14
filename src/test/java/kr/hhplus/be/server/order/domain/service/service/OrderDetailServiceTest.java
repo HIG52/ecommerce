@@ -6,17 +6,15 @@ import kr.hhplus.be.server.order.domain.entity.OrderDetail;
 import kr.hhplus.be.server.order.domain.repository.OrderRepository;
 import kr.hhplus.be.server.order.domain.service.OrderDetailService;
 import kr.hhplus.be.server.order.domain.service.request.OrderDetailsCreateRequest;
-import kr.hhplus.be.server.order.domain.service.response.OrderDetailsResponse;
+import kr.hhplus.be.server.order.domain.service.info.OrderDetailsInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -55,7 +53,7 @@ class OrderDetailServiceTest {
         given(orderRepository.orderDetailsaveAll(anyList())).willReturn(List.of(orderDetail));
 
         // when
-        List<OrderDetailsResponse> responses = orderDetailService.createOrderDetails(orderDetailsCreateRequest);
+        List<OrderDetailsInfo> responses = orderDetailService.createOrderDetails(orderDetailsCreateRequest);
 
         // then
         assertThat(responses).hasSize(1);

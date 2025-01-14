@@ -2,8 +2,8 @@ package kr.hhplus.be.server.balance.domain.service;
 
 import kr.hhplus.be.server.balance.domain.service.request.BalanceDecreaseRequest;
 import kr.hhplus.be.server.balance.domain.service.request.BalanceRequest;
-import kr.hhplus.be.server.balance.domain.service.response.BalanceChargeInfo;
-import kr.hhplus.be.server.balance.domain.service.response.BalanceInfo;
+import kr.hhplus.be.server.balance.domain.service.info.BalanceChargeInfo;
+import kr.hhplus.be.server.balance.domain.service.info.BalanceInfo;
 import kr.hhplus.be.server.balance.domain.entity.User;
 import kr.hhplus.be.server.balance.domain.repository.BalanceRepository;
 import kr.hhplus.be.server.common.error.CustomExceptionHandler;

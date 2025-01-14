@@ -2,7 +2,7 @@ package kr.hhplus.be.server.balance.presentation.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.hhplus.be.server.balance.domain.service.BalanceService;
-import kr.hhplus.be.server.balance.domain.service.response.BalanceInfo;
+import kr.hhplus.be.server.balance.domain.service.info.BalanceInfo;
 import kr.hhplus.be.server.balance.presentation.dto.BalanceChargeResponseDTO;
 import kr.hhplus.be.server.balance.presentation.dto.BalanceChargeRequestDTO;
 import kr.hhplus.be.server.balance.presentation.usecase.BalanceUsecase;

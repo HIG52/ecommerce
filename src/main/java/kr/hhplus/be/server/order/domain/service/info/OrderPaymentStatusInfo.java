@@ -1,8 +1,8 @@
-package kr.hhplus.be.server.order.domain.service.response;
+package kr.hhplus.be.server.order.domain.service.info;
 
 import kr.hhplus.be.server.common.type.PaymentStatusType;
 
-public record OrderPaymentStatusResponse(
+public record OrderPaymentStatusInfo(
         long orderId,
         PaymentStatusType paymentStatusType
 ) {

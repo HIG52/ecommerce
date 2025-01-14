@@ -5,7 +5,7 @@ import kr.hhplus.be.server.common.error.ErrorCode;
 import kr.hhplus.be.server.coupon.domain.entity.UserCoupon;
 import kr.hhplus.be.server.coupon.domain.repository.CouponRepository;
 import kr.hhplus.be.server.coupon.domain.service.request.CouponRequest;
-import kr.hhplus.be.server.coupon.domain.service.response.UserCouponReponse;
+import kr.hhplus.be.server.coupon.domain.service.info.UserCouponInfo;
 import kr.hhplus.be.server.common.type.UserCouponType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ public class UserCouponService {
     private final CouponRepository couponRepository;
 
     @Transactional
-    public UserCouponReponse downloadUserCoupon(CouponRequest couponRequest) {
+    public UserCouponInfo downloadUserCoupon(CouponRequest couponRequest) {
 
         UserCoupon myCoupon = couponRepository.getMyUserCoupon(couponRequest.userId(), couponRequest.couponId());
 
@@ -30,11 +30,11 @@ public class UserCouponService {
 
         UserCoupon resultUserCoupon = couponRepository.saveUserCoupon(userCoupon);
 
-        return new UserCouponReponse(resultUserCoupon.getCouponId(), resultUserCoupon.getUserId(), resultUserCoupon.getUseYn());
+        return new UserCouponInfo(resultUserCoupon.getCouponId(), resultUserCoupon.getUserId(), resultUserCoupon.getUseYn());
     }
 
     @Transactional
-    public UserCouponReponse updateUserCouponUseYn(long userCouponId, UserCouponType userCouponType) {
+    public UserCouponInfo updateUserCouponUseYn(long userCouponId, UserCouponType userCouponType) {
         UserCoupon userCoupon = couponRepository.getUserCoupon(userCouponId);
 
         if(userCoupon == null) {
@@ -49,7 +49,7 @@ public class UserCouponService {
             throw new CustomExceptionHandler(ErrorCode.COUPON_USE_FAILED);
         }
 
-        return new UserCouponReponse(resultUserCoupon.getCouponId(), resultUserCoupon.getUserId(), resultUserCoupon.getUseYn());
+        return new UserCouponInfo(resultUserCoupon.getCouponId(), resultUserCoupon.getUserId(), resultUserCoupon.getUseYn());
     }
 
 }

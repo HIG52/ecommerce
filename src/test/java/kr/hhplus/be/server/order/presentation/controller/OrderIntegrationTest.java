@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.integration;
+package kr.hhplus.be.server.order.presentation.controller;
 
 import kr.hhplus.be.server.order.presentation.controller.OrderController;
 import kr.hhplus.be.server.order.presentation.dto.OrderRequestDTO;
