@@ -6,6 +6,8 @@ import kr.hhplus.be.server.balance.domain.service.response.BalanceChargeInfo;
 import kr.hhplus.be.server.balance.domain.service.response.BalanceInfo;
 import kr.hhplus.be.server.balance.domain.entity.User;
 import kr.hhplus.be.server.balance.domain.repository.BalanceRepository;
+import kr.hhplus.be.server.common.error.CustomExceptionHandler;
+import kr.hhplus.be.server.common.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +23,7 @@ public class BalanceService {
         User user = balanceRepository.getUser(userId);
 
         if(user == null) {
-            throw new IllegalArgumentException("사용자 정보가 존재하지 않습니다.");
+            throw new CustomExceptionHandler(ErrorCode.USER_NOT_FOUND);
         }
 
         return new BalanceInfo(user.getUserId(), user.getBalance());
@@ -31,11 +33,17 @@ public class BalanceService {
     public BalanceChargeInfo chargeUserBalance(long userId, BalanceRequest balanceRequest) {
 
         User user = balanceRepository.getUser(userId);
+
+        if(user == null) {
+            throw new CustomExceptionHandler(ErrorCode.USER_NOT_FOUND);
+        }
+
         user.addBalance(balanceRequest.amount());
+
         User resultUser = balanceRepository.saveUser(user);
 
         if (resultUser == null) {
-            throw new IllegalStateException("잔액 충전 실패: 충전 결과가 올바르지 않습니다.");
+            throw new CustomExceptionHandler(ErrorCode.BALANCE_CHARGE_FAILED);
         }
 
         return new BalanceChargeInfo(resultUser.getUserId(), resultUser.getBalance());
@@ -43,25 +51,23 @@ public class BalanceService {
 
     @Transactional
     public BalanceInfo decreaseBalance(BalanceDecreaseRequest balanceDecreaseRequest) {
-        User user = balanceRepository.getUserWithLock(balanceDecreaseRequest.userId());
+        try {
+            User user = balanceRepository.getUserWithLock(balanceDecreaseRequest.userId());
 
-        if (user == null) {
-            throw new IllegalArgumentException("사용자 정보가 존재하지 않습니다.");
+            if (user == null) {
+                throw new CustomExceptionHandler(ErrorCode.USER_NOT_FOUND);
+            }
+
+            user.decreaseBalance(balanceDecreaseRequest.amount());
+
+            User resultUser = balanceRepository.saveUser(user);
+
+            return new BalanceInfo(resultUser.getUserId(), resultUser.getBalance());
+        }catch (CustomExceptionHandler e) {
+            throw e;
+        }catch (Exception e) {
+            throw new CustomExceptionHandler(ErrorCode.BALANCE_USE_FAILED, e);
         }
-
-        user.decreaseBalance(balanceDecreaseRequest.amount());
-
-        if(user.getBalance() < 0) {
-            throw new IllegalStateException("잔액 차감 실패: 잔액이 부족합니다.");
-        }
-
-        User resultUser = balanceRepository.saveUser(user);
-
-        if (resultUser == null) {
-            throw new IllegalStateException("잔액 차감 실패: 차감 결과가 올바르지 않습니다.");
-        }
-
-        return new BalanceInfo(resultUser.getUserId(), resultUser.getBalance());
     }
 
 }

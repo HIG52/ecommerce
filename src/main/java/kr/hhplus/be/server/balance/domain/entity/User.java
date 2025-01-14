@@ -2,6 +2,8 @@ package kr.hhplus.be.server.balance.domain.entity;
 
 import jakarta.persistence.*;
 import kr.hhplus.be.server.common.entity.AuditingFields;
+import kr.hhplus.be.server.common.error.CustomExceptionHandler;
+import kr.hhplus.be.server.common.error.ErrorCode;
 import lombok.Getter;
 
 @Entity
@@ -38,6 +40,9 @@ public class User extends AuditingFields {
     }
 
     public void decreaseBalance(long amount) {
+        if (this.balance < amount) {
+            throw new CustomExceptionHandler(ErrorCode.BALANCE_IS_NOT_ENOUGH);
+        }
         this.balance -= amount;
     }
 }
