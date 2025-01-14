@@ -1,5 +1,7 @@
 package kr.hhplus.be.server.order.domain.service;
 
+import kr.hhplus.be.server.common.error.CustomExceptionHandler;
+import kr.hhplus.be.server.common.error.ErrorCode;
 import kr.hhplus.be.server.order.domain.entity.Order;
 import kr.hhplus.be.server.order.domain.repository.OrderRepository;
 import kr.hhplus.be.server.order.domain.service.response.OrderPaymentStatusResponse;
@@ -21,7 +23,9 @@ public class OrderService {
     public OrderResponse createOrder(long userId, long orderTotalAmount) {
         Order order = Order.createOrder(userId, orderTotalAmount, PaymentStatusType.PENDING, OrderStatusType.ORDERED);
         Order resultOrder = orderRepository.save(order);
-
+        if(resultOrder == null){
+            throw new CustomExceptionHandler(ErrorCode.ORDER_NOT_CREATE);
+        }
         return new OrderResponse(
                 resultOrder.getOrderId(),
                 resultOrder.getUserId(),
@@ -36,7 +40,9 @@ public class OrderService {
         Order order = orderRepository.findByOrderId(orderId);
         order.updateStatus(orderStatusType);
         Order resultOrder = orderRepository.save(order);
-
+        if(resultOrder == null){
+            throw new CustomExceptionHandler(ErrorCode.ORDER_STATUS_UPDATE_FAIL);
+        }
         return new OrderStatusResponse(
                 resultOrder.getOrderId(),
                 resultOrder.getStatus()
@@ -48,7 +54,9 @@ public class OrderService {
         Order order = orderRepository.findByOrderId(orderId);
         order.updatePaymentStatus(paymentStatusType);
         Order resultOrder = orderRepository.save(order);
-
+        if(resultOrder == null){
+            throw new CustomExceptionHandler(ErrorCode.ORDER_PAYMENT_STATUS_UPDATE_FAIL);
+        }
         return new OrderPaymentStatusResponse(
                 resultOrder.getOrderId(),
                 resultOrder.getPaymentStatus()

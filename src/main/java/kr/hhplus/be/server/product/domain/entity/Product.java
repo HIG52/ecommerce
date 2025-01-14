@@ -2,6 +2,8 @@ package kr.hhplus.be.server.product.domain.entity;
 
 import jakarta.persistence.*;
 import kr.hhplus.be.server.common.entity.AuditingFields;
+import kr.hhplus.be.server.common.error.CustomExceptionHandler;
+import kr.hhplus.be.server.common.error.ErrorCode;
 import lombok.Getter;
 
 @Entity
@@ -38,6 +40,9 @@ public class Product extends AuditingFields {
     }
 
     public void decreaseProductQuantity(int productQuantity) {
+        if(this.productQuantity < productQuantity) {
+            throw new CustomExceptionHandler(ErrorCode.STOCK_QUANTITY_NOT_ENOUGH);
+        }
         this.productQuantity -= productQuantity;
     }
 }

@@ -1,5 +1,7 @@
 package kr.hhplus.be.server.product.domain.service;
 
+import kr.hhplus.be.server.common.error.CustomExceptionHandler;
+import kr.hhplus.be.server.common.error.ErrorCode;
 import kr.hhplus.be.server.product.domain.entity.Product;
 import kr.hhplus.be.server.product.domain.repository.ProductRepository;
 import kr.hhplus.be.server.product.domain.service.request.QuantityRequest;
@@ -26,11 +28,11 @@ public class ProductService {
         Product product = productRepository.getProduct(productId);
 
         if(product == null) {
-            throw new IllegalArgumentException("상품이 존재하지 않습니다.");
+            throw new CustomExceptionHandler(ErrorCode.PRODUCT_NOT_FOUND);
         }
 
         if(product.getProductQuantity() <= 0) {
-            throw new IllegalArgumentException("상품의 재고가 없습니다.");
+            throw new CustomExceptionHandler(ErrorCode.STOCK_QUANTITY_NOT_ENOUGH);
         }
 
         return new ProductResponse(
@@ -58,12 +60,18 @@ public class ProductService {
 
     @Transactional
     public QuantityResponse decreaseProductQuantity(QuantityRequest quantityRequests) {
+        try {
+            Product product = productRepository.getProductWithLock(quantityRequests.productId());
+            product.decreaseProductQuantity(quantityRequests.productQuantity());
+            productRepository.productSave(product);
 
-        Product product = productRepository.getProductWithLock(quantityRequests.productId());
-        product.decreaseProductQuantity(quantityRequests.productQuantity());
-        productRepository.productSave(product);
+            return new QuantityResponse(quantityRequests.productId(), product.getProductQuantity());
+        } catch (CustomExceptionHandler e) {
+            throw e;
+        } catch (Exception e) {
+            throw new CustomExceptionHandler(ErrorCode.PRODUCT_NOT_FOUND, e);
+        }
 
-        return new QuantityResponse(quantityRequests.productId(), product.getProductQuantity());
     }
 
     // TODO : 주문에서 리스트를 가져와 상품을 조회하는 usecase 구현 예정
