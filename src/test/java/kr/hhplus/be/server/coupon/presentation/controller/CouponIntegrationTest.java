@@ -1,6 +1,5 @@
-package kr.hhplus.be.server.integration;
+package kr.hhplus.be.server.coupon.presentation.controller;
 
-import kr.hhplus.be.server.coupon.presentation.controller.CouponController;
 import kr.hhplus.be.server.coupon.presentation.dto.CouponRequestDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

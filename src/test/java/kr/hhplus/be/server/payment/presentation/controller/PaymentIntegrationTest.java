@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.integration;
+package kr.hhplus.be.server.payment.presentation.controller;
 
 import kr.hhplus.be.server.payment.presentation.controller.PaymentController;
 import kr.hhplus.be.server.payment.presentation.dto.PaymentRequestDTO;

@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.balance.presentation.controller;
 
 import jakarta.validation.Valid;
-import kr.hhplus.be.server.balance.domain.service.response.BalanceInfo;
+import kr.hhplus.be.server.balance.domain.service.info.BalanceInfo;
 import kr.hhplus.be.server.balance.presentation.dto.BalanceChargeResponseDTO;
 import kr.hhplus.be.server.balance.presentation.dto.BalanceChargeRequestDTO;
 import kr.hhplus.be.server.balance.presentation.dto.BalanceResponseDTO;

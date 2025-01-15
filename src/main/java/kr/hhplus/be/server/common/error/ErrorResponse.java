@@ -1,27 +1,27 @@
 package kr.hhplus.be.server.common.error;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-
-@Schema(description = "에러 응답 DTO")
 public class ErrorResponse {
 
-    @Schema(description = "에러 코드", example = "400")
-    private int errorCode;
+    private final int status;
+    private final String code;
+    private final String message;
 
-    @Schema(description = "에러 메시지", example = "잘못된 요청입니다.")
-    private String errorMessage;
-
-    public ErrorResponse(int errorCode, String errorMessage) {
-        this.errorCode = errorCode;
-        this.errorMessage = errorMessage;
+    public ErrorResponse(int status, String code, String message) {
+        this.status = status;
+        this.code = code;
+        this.message = message;
     }
 
-    public int getErrorCode() {
-        return errorCode;
+    public int getStatus() {
+        return status;
     }
 
-    public String getErrorMessage() {
-        return errorMessage;
+    public String getCode() {
+        return code;
+    }
+
+    public String getMessage() {
+        return message;
     }
 
 }

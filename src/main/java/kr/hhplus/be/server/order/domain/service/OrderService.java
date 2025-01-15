@@ -1,10 +1,12 @@
 package kr.hhplus.be.server.order.domain.service;
 
+import kr.hhplus.be.server.common.error.CustomExceptionHandler;
+import kr.hhplus.be.server.common.error.ErrorCode;
 import kr.hhplus.be.server.order.domain.entity.Order;
 import kr.hhplus.be.server.order.domain.repository.OrderRepository;
-import kr.hhplus.be.server.order.domain.service.response.OrderPaymentStatusResponse;
-import kr.hhplus.be.server.order.domain.service.response.OrderResponse;
-import kr.hhplus.be.server.order.domain.service.response.OrderStatusResponse;
+import kr.hhplus.be.server.order.domain.service.info.OrderPaymentStatusInfo;
+import kr.hhplus.be.server.order.domain.service.info.OrderInfo;
+import kr.hhplus.be.server.order.domain.service.info.OrderStatusInfo;
 import kr.hhplus.be.server.common.type.OrderStatusType;
 import kr.hhplus.be.server.common.type.PaymentStatusType;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +20,13 @@ public class OrderService {
     private final OrderRepository orderRepository;
 
     @Transactional
-    public OrderResponse createOrder(long userId, long orderTotalAmount) {
+    public OrderInfo createOrder(long userId, long orderTotalAmount) {
         Order order = Order.createOrder(userId, orderTotalAmount, PaymentStatusType.PENDING, OrderStatusType.ORDERED);
         Order resultOrder = orderRepository.save(order);
-
-        return new OrderResponse(
+        if(resultOrder == null){
+            throw new CustomExceptionHandler(ErrorCode.ORDER_NOT_CREATE);
+        }
+        return new OrderInfo(
                 resultOrder.getOrderId(),
                 resultOrder.getUserId(),
                 resultOrder.getOrderTotalAmount(),
@@ -32,24 +36,28 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderStatusResponse updateOrderStatus(long orderId, OrderStatusType orderStatusType) {
+    public OrderStatusInfo updateOrderStatus(long orderId, OrderStatusType orderStatusType) {
         Order order = orderRepository.findByOrderId(orderId);
         order.updateStatus(orderStatusType);
         Order resultOrder = orderRepository.save(order);
-
-        return new OrderStatusResponse(
+        if(resultOrder == null){
+            throw new CustomExceptionHandler(ErrorCode.ORDER_STATUS_UPDATE_FAIL);
+        }
+        return new OrderStatusInfo(
                 resultOrder.getOrderId(),
                 resultOrder.getStatus()
         );
     }
 
     @Transactional
-    public OrderPaymentStatusResponse updateOrderPaymentStatus(long orderId, PaymentStatusType paymentStatusType) {
+    public OrderPaymentStatusInfo updateOrderPaymentStatus(long orderId, PaymentStatusType paymentStatusType) {
         Order order = orderRepository.findByOrderId(orderId);
         order.updatePaymentStatus(paymentStatusType);
         Order resultOrder = orderRepository.save(order);
-
-        return new OrderPaymentStatusResponse(
+        if(resultOrder == null){
+            throw new CustomExceptionHandler(ErrorCode.ORDER_PAYMENT_STATUS_UPDATE_FAIL);
+        }
+        return new OrderPaymentStatusInfo(
                 resultOrder.getOrderId(),
                 resultOrder.getPaymentStatus()
         );

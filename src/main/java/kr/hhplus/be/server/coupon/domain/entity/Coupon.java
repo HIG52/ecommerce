@@ -2,6 +2,8 @@ package kr.hhplus.be.server.coupon.domain.entity;
 
 import jakarta.persistence.*;
 import kr.hhplus.be.server.common.entity.AuditingFields;
+import kr.hhplus.be.server.common.error.CustomExceptionHandler;
+import kr.hhplus.be.server.common.error.ErrorCode;
 import kr.hhplus.be.server.common.type.CouponType;
 import lombok.Getter;
 
@@ -59,6 +61,9 @@ public class Coupon extends AuditingFields {
 
 
     public void decreaseQuantity() {
+        if (this.couponQuantity < 0) {
+            throw new CustomExceptionHandler(ErrorCode.COUPON_OUT_OF_STOCK);
+        }
         this.couponQuantity--;
     }
 }

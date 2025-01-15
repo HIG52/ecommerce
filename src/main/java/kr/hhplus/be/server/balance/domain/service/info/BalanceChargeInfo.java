@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.balance.domain.service.response;
+package kr.hhplus.be.server.balance.domain.service.info;
 
 
 public record BalanceChargeInfo(

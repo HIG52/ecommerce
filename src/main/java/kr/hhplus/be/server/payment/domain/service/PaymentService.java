@@ -1,9 +1,11 @@
 package kr.hhplus.be.server.payment.domain.service;
 
+import kr.hhplus.be.server.common.error.CustomExceptionHandler;
+import kr.hhplus.be.server.common.error.ErrorCode;
 import kr.hhplus.be.server.payment.domain.entity.Payment;
 import kr.hhplus.be.server.payment.domain.repository.PaymentRepository;
 import kr.hhplus.be.server.payment.domain.service.request.PaymentCreateRequest;
-import kr.hhplus.be.server.payment.domain.service.response.PaymentResponse;
+import kr.hhplus.be.server.payment.domain.service.info.PaymentInfo;
 import kr.hhplus.be.server.common.type.PaymentStatusType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,12 +18,16 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
 
     @Transactional
-    public PaymentResponse createPayment(PaymentCreateRequest paymentCreateRequest) {
+    public PaymentInfo createPayment(PaymentCreateRequest paymentCreateRequest) {
 
-        Payment payment = Payment.createPayment(paymentCreateRequest.orderId(), paymentCreateRequest.paymentAmount(), paymentCreateRequest.couponId(), PaymentStatusType.PENDING);
+        Payment payment = Payment.createPayment(paymentCreateRequest.orderId(), paymentCreateRequest.couponId(), paymentCreateRequest.paymentAmount(), PaymentStatusType.PENDING);
         Payment resultPayment = paymentRepository.paymentSave(payment);
 
-        return new PaymentResponse(
+        if(resultPayment == null){
+            throw new CustomExceptionHandler(ErrorCode.PAYMENT_SAVE_FAILED);
+        }
+
+        return new PaymentInfo(
                 resultPayment.getPaymentId(),
                 resultPayment.getOrderId(),
                 resultPayment.getCouponId(),
@@ -30,13 +36,17 @@ public class PaymentService {
     }
 
     @Transactional
-    public PaymentResponse updatePaymentType(long paymentId, PaymentStatusType paymentStatus) {
+    public PaymentInfo updatePaymentType(long paymentId, PaymentStatusType paymentStatus) {
 
         Payment payment = paymentRepository.paymentFindById(paymentId);
         payment.updatePaymentStatus(paymentStatus);
         Payment resultPayment = paymentRepository.paymentSave(payment);
 
-        return new PaymentResponse(
+        if(resultPayment == null){
+            throw new CustomExceptionHandler(ErrorCode.PAYMENT_STATUS_UPDATE_FAIL);
+        }
+
+        return new PaymentInfo(
                 resultPayment.getPaymentId(),
                 resultPayment.getOrderId(),
                 resultPayment.getCouponId(),

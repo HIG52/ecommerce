@@ -1,6 +1,6 @@
-package kr.hhplus.be.server.order.domain.service.response;
+package kr.hhplus.be.server.order.domain.service.info;
 
-public record OrderDetailsResponse(
+public record OrderDetailsInfo(
         long orderId,
         long productId,
         int orderQuantity,

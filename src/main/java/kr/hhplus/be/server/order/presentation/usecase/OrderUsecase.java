@@ -3,7 +3,7 @@ package kr.hhplus.be.server.order.presentation.usecase;
 import kr.hhplus.be.server.order.domain.service.OrderDetailService;
 import kr.hhplus.be.server.order.domain.service.OrderService;
 import kr.hhplus.be.server.order.domain.service.request.OrderDetailsCreateRequest;
-import kr.hhplus.be.server.order.domain.service.response.OrderResponse;
+import kr.hhplus.be.server.order.domain.service.info.OrderInfo;
 import kr.hhplus.be.server.order.presentation.dto.OrderRequestDTO;
 import kr.hhplus.be.server.order.presentation.dto.OrderResponseDTO;
 import kr.hhplus.be.server.product.domain.service.ProductService;
@@ -33,15 +33,15 @@ public class OrderUsecase {
             productService.decreaseProductQuantity(quantityRequest);
         }
 
-        OrderResponse orderResponse = orderService.createOrder(orderRequestDTO.userId(), orderRequestDTO.orderTotalAmount());
+        OrderInfo orderInfo = orderService.createOrder(orderRequestDTO.userId(), orderRequestDTO.orderTotalAmount());
 
-        OrderDetailsCreateRequest orderDetailsCreateRequest = new OrderDetailsCreateRequest(orderResponse.orderId(), orderRequestDTO.productIds(), orderRequestDTO.productQuantities(), orderRequestDTO.productPrices());
+        OrderDetailsCreateRequest orderDetailsCreateRequest = new OrderDetailsCreateRequest(orderInfo.orderId(), orderRequestDTO.productIds(), orderRequestDTO.productQuantities(), orderRequestDTO.productPrices());
         orderDetailService.createOrderDetails(orderDetailsCreateRequest);
 
         return new OrderResponseDTO(
-                orderResponse.orderId(),
-                orderResponse.userId(),
-                orderResponse.orderTotalPrice(),
+                orderInfo.orderId(),
+                orderInfo.userId(),
+                orderInfo.orderTotalPrice(),
                 PaymentStatusType.PENDING,
                 OrderStatusType.ORDERED,
                 totalQuantity,
