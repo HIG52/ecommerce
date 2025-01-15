@@ -63,4 +63,11 @@ public class OrderService {
         );
     }
 
+    public void checkOrderPendingStatus(long orderId) {
+        Order order = orderRepository.findByOrderId(orderId);
+        if(order.getPaymentStatus() != PaymentStatusType.PENDING){
+            throw new CustomExceptionHandler(ErrorCode.ORDER_ALREADY_PROCESSED);
+        }
+    }
+
 }

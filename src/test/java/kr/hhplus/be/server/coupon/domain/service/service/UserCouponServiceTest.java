@@ -1,5 +1,7 @@
 package kr.hhplus.be.server.coupon.domain.service.service;
 
+import kr.hhplus.be.server.common.error.CustomExceptionHandler;
+import kr.hhplus.be.server.common.error.ErrorCode;
 import kr.hhplus.be.server.coupon.domain.entity.UserCoupon;
 import kr.hhplus.be.server.coupon.domain.repository.CouponRepository;
 import kr.hhplus.be.server.coupon.domain.service.UserCouponService;
@@ -87,8 +89,8 @@ class UserCouponServiceTest {
 
         // when & then
         assertThatThrownBy(() -> userCouponService.updateUserCouponUseYn(userCouponId, newType))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("존재하지 않는 쿠폰입니다.");
+                .isInstanceOf(CustomExceptionHandler.class)
+                .hasMessage(ErrorCode.COUPON_NOT_FOUND.getMessage());
 
         // verify repository method
         verify(couponRepository).getUserCoupon(userCouponId);
@@ -110,8 +112,8 @@ class UserCouponServiceTest {
 
         // when & then
         assertThatThrownBy(() -> userCouponService.updateUserCouponUseYn(userCouponId, newType))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("쿠폰 사용처리에 실패하였습니다.");
+                .isInstanceOf(CustomExceptionHandler.class)
+                .hasMessage(ErrorCode.COUPON_USE_FAILED.getMessage());
 
         // verify repository methods
         verify(couponRepository).getUserCoupon(userCouponId);

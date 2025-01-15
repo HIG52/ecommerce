@@ -24,12 +24,12 @@ public class OrderUsecase {
     @Transactional
     public OrderResponseDTO createOrder(OrderRequestDTO orderRequestDTO) {
         // 상품 재고 차감 및 락설정
-        long totalQuantity = 0;
+        int totalQuantity = 0;
         long totalPrice = 0;
         for (int i = 0; i < orderRequestDTO.productIds().size(); i++) {
             QuantityRequest quantityRequest = new QuantityRequest(orderRequestDTO.productIds().get(i), orderRequestDTO.productQuantities().get(i));
             totalQuantity += orderRequestDTO.productQuantities().get(i);
-            totalPrice += orderRequestDTO.productPrices().get(i) * orderRequestDTO.productQuantities().get(i);
+            totalPrice += orderRequestDTO.productPrices().get(i) * Long.valueOf(orderRequestDTO.productQuantities().get(i));
             productService.decreaseProductQuantity(quantityRequest);
         }
 

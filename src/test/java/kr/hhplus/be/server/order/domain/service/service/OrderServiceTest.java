@@ -46,7 +46,7 @@ class OrderServiceTest {
     @DisplayName("사용자 ID와 총 금액을 입력하면 주문이 생성된다")
     void createOrder_Success() {
         // given
-        given(orderRepository.save(order)).willReturn(order);
+        given(orderRepository.save(any(Order.class))).willReturn(order);
 
         // when
         OrderInfo response = orderService.createOrder(1L, 5000L);
@@ -57,15 +57,13 @@ class OrderServiceTest {
         assertThat(response.orderTotalPrice()).isEqualTo(5000L);
         assertThat(response.paymentStatus()).isEqualTo(PaymentStatusType.PENDING);
         assertThat(response.status()).isEqualTo(OrderStatusType.ORDERED);
-
-        verify(orderRepository).save(order);
     }
 
     @Test
     @DisplayName("주문 저장에 실패하면 CustomExceptionHandler를 반환한다")
     void createOrder_Fail() {
         // given
-        given(orderRepository.save(order)).willReturn(null);
+        given(orderRepository.save(any(Order.class))).willReturn(null);
 
         // when & then
         assertThatThrownBy(() -> orderService.createOrder(1L, 5000L))

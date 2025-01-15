@@ -34,7 +34,7 @@ public class PaymentController implements PaymentControllerDocs {
 
         PaymentResponseDTO paymentResponseDTO = paymentUsecase.createPayment(paymentRequestDTO);
 
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+        return ResponseEntity.status(HttpStatus.OK).body(paymentResponseDTO);
     }
 
 }

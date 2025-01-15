@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.coupon.presentation.usecase;
 
+import kr.hhplus.be.server.balance.domain.service.BalanceService;
 import kr.hhplus.be.server.coupon.domain.service.CouponService;
 import kr.hhplus.be.server.coupon.domain.service.UserCouponService;
 import kr.hhplus.be.server.coupon.domain.service.request.CouponRequest;
@@ -15,11 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CouponUsecase {
 
+    private final BalanceService balanceService;
     private final CouponService couponService;
     private final UserCouponService userCouponService;
 
     @Transactional
     public UserCouponResponseDTO downloadUserCoupon(CouponRequestDTO couponRequestDTO) {
+
+        balanceService.getUserBalance(couponRequestDTO.userId());
 
         CouponRequest couponRequest = new CouponRequest(
                 couponRequestDTO.userId(),
