@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.config.cors;
+package kr.hhplus.be.server.config.filter;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
