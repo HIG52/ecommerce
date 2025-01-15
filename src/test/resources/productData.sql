@@ -1,3 +1,6 @@
+TRUNCATE TABLE order_detail;
+TRUNCATE TABLE product;
+
 -- 최근 3일의 날짜 생성
 INSERT INTO order_detail (order_quantity, created_at, modify_at, order_amount, order_detail_id, order_id, product_id)
 VALUES

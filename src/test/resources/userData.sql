@@ -1,3 +1,4 @@
+TRUNCATE TABLE user;
 INSERT INTO user (user_id, user_name, balance, created_at, modify_at) VALUES
     (1, 'User1', 1000, '2025-01-05 12:00:00', '2025-01-05 12:00:00'),
     (2, 'User2', 2000, '2025-01-05 12:01:00', '2025-01-05 12:01:00'),

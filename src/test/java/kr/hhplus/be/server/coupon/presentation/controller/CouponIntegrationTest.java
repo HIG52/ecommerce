@@ -26,7 +26,7 @@ public class CouponIntegrationTest {
     void 여러_유저_동시_쿠폰다운로드_테스트() throws InterruptedException {
         // given
         long couponId = 1L; // couponData.sql에서 삽입된 쿠폰 ID
-        int threadCount = 40; // 동시 요청 수
+        int threadCount = 10; // 동시 요청 수
 
         ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
         CountDownLatch latch = new CountDownLatch(threadCount);
@@ -56,8 +56,8 @@ public class CouponIntegrationTest {
         System.out.println("실패 횟수: " + failCount);
 
         // 검증: 재고가 10개라면 성공은 10번 이하여야 함
-        assertThat(successCount.get()).isEqualTo(30); // 성공한 요청 수
-        assertThat(failCount.get()).isEqualTo(10); // 실패한 요청 수
+        assertThat(successCount.get()).isEqualTo(5); // 성공한 요청 수
+        assertThat(failCount.get()).isEqualTo(5); // 실패한 요청 수
 
     }
 

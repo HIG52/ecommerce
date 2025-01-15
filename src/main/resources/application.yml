@@ -67,6 +67,6 @@ spring.config.activate.on-profile: test
 spring:
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: create
     datasource:
       initialization-mode: always
