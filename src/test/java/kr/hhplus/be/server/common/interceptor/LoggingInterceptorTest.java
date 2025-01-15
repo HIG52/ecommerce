@@ -45,7 +45,7 @@ class LoggingInterceptorTest {
     void testRequestBodyLogged(CapturedOutput output) {
         // given
         String url = "http://localhost:" + port + "/api/balances/1/charge"; // 예: 테스트용 컨트롤러
-        String jsonBody = "{\"amount\": \"10000\"}";
+        String jsonBody = "{\"amount\": 10000}"; // 올바른 JSON 형식
 
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
@@ -60,10 +60,13 @@ class LoggingInterceptorTest {
         // 컨트롤러가 정상 응답을 하는지
         assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
 
-        // 로그가 제대로 찍혔는지 확인 (LoggingInterceptor에서 System.out.println 등으로 찍었다고 가정)
+        // 로그가 제대로 찍혔는지 확인 (LoggingInterceptor에서 log 등으로 찍었다고 가정)
         // OutputCaptureExtension 덕분에, output에 콘솔에 찍힌 문자열이 다 들어온다
         assertThat(output.getOut())
-                .contains("Request Body: " + jsonBody);
+                .contains("HTTP Method : POST")
+                .contains("Request URI : /api/balances/1/charge")
+                .contains("AccessToken Exist : false")
+                .contains("Request Body : {\"amount\":10000}");
     }
 
 }
