@@ -1,10 +1,12 @@
 package kr.hhplus.be.server.coupon.domain.service.service;
 
+import kr.hhplus.be.server.common.error.CustomExceptionHandler;
+import kr.hhplus.be.server.common.error.ErrorCode;
 import kr.hhplus.be.server.coupon.domain.entity.UserCoupon;
 import kr.hhplus.be.server.coupon.domain.repository.CouponRepository;
 import kr.hhplus.be.server.coupon.domain.service.UserCouponService;
 import kr.hhplus.be.server.coupon.domain.service.request.CouponRequest;
-import kr.hhplus.be.server.coupon.domain.service.response.UserCouponReponse;
+import kr.hhplus.be.server.coupon.domain.service.info.UserCouponInfo;
 import kr.hhplus.be.server.common.type.UserCouponType;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,7 +40,7 @@ class UserCouponServiceTest {
         given(couponRepository.saveUserCoupon(any(UserCoupon.class))).willReturn(savedUserCoupon);
         CouponRequest couponRequest = new CouponRequest(userId, couponId);
         // when
-        UserCouponReponse response = couponService.downloadUserCoupon(couponRequest);
+        UserCouponInfo response = couponService.downloadUserCoupon(couponRequest);
 
         // then
         assertEquals(response.userId(), userId);
@@ -65,7 +67,7 @@ class UserCouponServiceTest {
         given(couponRepository.saveUserCoupon(userCoupon)).willReturn(updatedUserCoupon);
 
         // when
-        UserCouponReponse response = userCouponService.updateUserCouponUseYn(userCouponId, newType);
+        UserCouponInfo response = userCouponService.updateUserCouponUseYn(userCouponId, newType);
 
         // then
         assertThat(response.couponId()).isEqualTo(1L);
@@ -87,8 +89,8 @@ class UserCouponServiceTest {
 
         // when & then
         assertThatThrownBy(() -> userCouponService.updateUserCouponUseYn(userCouponId, newType))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("존재하지 않는 쿠폰입니다.");
+                .isInstanceOf(CustomExceptionHandler.class)
+                .hasMessage(ErrorCode.COUPON_NOT_FOUND.getMessage());
 
         // verify repository method
         verify(couponRepository).getUserCoupon(userCouponId);
@@ -110,8 +112,8 @@ class UserCouponServiceTest {
 
         // when & then
         assertThatThrownBy(() -> userCouponService.updateUserCouponUseYn(userCouponId, newType))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("쿠폰 사용처리에 실패하였습니다.");
+                .isInstanceOf(CustomExceptionHandler.class)
+                .hasMessage(ErrorCode.COUPON_USE_FAILED.getMessage());
 
         // verify repository methods
         verify(couponRepository).getUserCoupon(userCouponId);

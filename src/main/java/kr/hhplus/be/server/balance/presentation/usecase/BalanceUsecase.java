@@ -4,7 +4,7 @@ import kr.hhplus.be.server.balance.domain.service.BalanceHistoryService;
 import kr.hhplus.be.server.balance.domain.service.BalanceService;
 import kr.hhplus.be.server.balance.domain.service.request.BalanceHistoryRequest;
 import kr.hhplus.be.server.balance.domain.service.request.BalanceRequest;
-import kr.hhplus.be.server.balance.domain.service.response.BalanceChargeInfo;
+import kr.hhplus.be.server.balance.domain.service.info.BalanceChargeInfo;
 import kr.hhplus.be.server.balance.presentation.dto.BalanceChargeResponseDTO;
 import kr.hhplus.be.server.balance.presentation.dto.BalanceChargeRequestDTO;
 import kr.hhplus.be.server.common.type.HistoryType;

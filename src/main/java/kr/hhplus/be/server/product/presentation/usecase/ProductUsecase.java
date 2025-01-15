@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.product.presentation.usecase;
 
 import kr.hhplus.be.server.order.domain.service.OrderDetailService;
-import kr.hhplus.be.server.order.domain.service.response.OrderDetailsResponse;
+import kr.hhplus.be.server.order.domain.service.info.OrderDetailsInfo;
 import kr.hhplus.be.server.product.domain.service.ProductService;
 import kr.hhplus.be.server.product.domain.service.response.ProductsResponse;
 import kr.hhplus.be.server.product.presentation.dto.ProductsResponseDTO;
@@ -23,7 +23,7 @@ public class ProductUsecase {
 
         /*List<OrderDetailsResponse> productIds = orderDetailService.getTopOrderDetails();*/
         List<Long> productIds = orderDetailService.getTopOrderDetails().stream()
-                .map(OrderDetailsResponse::productId) // productId만 추출
+                .map(OrderDetailsInfo::productId) // productId만 추출
                 .collect(Collectors.toList());
 
         List<ProductsResponse> products = productService.getTopProducts(productIds);

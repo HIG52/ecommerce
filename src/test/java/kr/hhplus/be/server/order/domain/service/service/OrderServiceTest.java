@@ -1,19 +1,25 @@
 package kr.hhplus.be.server.order.domain.service.service;
 
+import kr.hhplus.be.server.common.error.CustomExceptionHandler;
+import kr.hhplus.be.server.common.error.ErrorCode;
 import kr.hhplus.be.server.order.domain.entity.Order;
 import kr.hhplus.be.server.order.domain.repository.OrderRepository;
 import kr.hhplus.be.server.order.domain.service.OrderService;
-import kr.hhplus.be.server.order.domain.service.response.OrderPaymentStatusResponse;
-import kr.hhplus.be.server.order.domain.service.response.OrderResponse;
-import kr.hhplus.be.server.order.domain.service.response.OrderStatusResponse;
+import kr.hhplus.be.server.order.domain.service.info.OrderPaymentStatusInfo;
+import kr.hhplus.be.server.order.domain.service.info.OrderInfo;
+import kr.hhplus.be.server.order.domain.service.info.OrderStatusInfo;
 import kr.hhplus.be.server.common.type.OrderStatusType;
 import kr.hhplus.be.server.common.type.PaymentStatusType;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -25,89 +31,106 @@ class OrderServiceTest {
     @Mock
     private OrderRepository orderRepository;
 
-    @Test
-    void 주문_생성하면_OrderResponseDTO_반환() {
-        // given
-        OrderService orderService = new OrderService(orderRepository);
+    @InjectMocks
+    private OrderService orderService;
 
-        long userId = 1L;
-        long orderTotalAmount = 5000L;
+    private Order order;
 
-        Order mockOrder = Order.createOrder(userId, orderTotalAmount, PaymentStatusType.PENDING, OrderStatusType.ORDERED);
-        ReflectionTestUtils.setField(mockOrder, "orderId", 1L);
-        given(orderRepository.save(any(Order.class))).willReturn(mockOrder);
-
-        // when
-        OrderResponse orderResponse = orderService.createOrder(userId, orderTotalAmount);
-
-        // then
-        assertThat(orderResponse.userId()).isEqualTo(userId);
-        assertThat(orderResponse.orderTotalPrice()).isEqualTo(orderTotalAmount);
-        assertThat(orderResponse.paymentStatus()).isEqualTo(PaymentStatusType.PENDING);
-        assertThat(orderResponse.status()).isEqualTo(OrderStatusType.ORDERED);
-
+    @BeforeEach
+    void setUp() {
+        order = Order.createOrder(1L, 5000L, PaymentStatusType.PENDING, OrderStatusType.ORDERED);
+        ReflectionTestUtils.setField(order, "orderId", 1L);
     }
 
     @Test
-    void 주문_상태_업데이트시_OrderStatusResponse_반환() {
+    @DisplayName("사용자 ID와 총 금액을 입력하면 주문이 생성된다")
+    void createOrder_Success() {
         // given
-        OrderService orderService = new OrderService(orderRepository);
-
-        long orderId = 1L;
-        OrderStatusType newStatus = OrderStatusType.CANCELLED;
-
-        // 기존 주문 Mock 데이터 생성
-        Order mockOrder = Order.createOrder(1L, 5000L, PaymentStatusType.PENDING, OrderStatusType.ORDERED);
-        ReflectionTestUtils.setField(mockOrder, "orderId", orderId);
-
-        // Mock 설정
-        given(orderRepository.findByOrderId(orderId)).willReturn(mockOrder);
-
-        // 상태 업데이트된 주문 Mock 데이터 생성
-        Order updatedOrder = Order.createOrder(1L, 5000L, PaymentStatusType.PENDING, newStatus);
-        ReflectionTestUtils.setField(updatedOrder, "orderId", orderId);
-
-        given(orderRepository.save(mockOrder)).willReturn(updatedOrder);
+        given(orderRepository.save(any(Order.class))).willReturn(order);
 
         // when
-        OrderStatusResponse response = orderService.updateOrderStatus(orderId, newStatus);
+        OrderInfo response = orderService.createOrder(1L, 5000L);
 
         // then
-        assertThat(response.orderId()).isEqualTo(orderId);
-        assertThat(response.orderStatus()).isEqualTo(newStatus);
+        assertThat(response.orderId()).isEqualTo(1L);
+        assertThat(response.userId()).isEqualTo(1L);
+        assertThat(response.orderTotalPrice()).isEqualTo(5000L);
+        assertThat(response.paymentStatus()).isEqualTo(PaymentStatusType.PENDING);
+        assertThat(response.status()).isEqualTo(OrderStatusType.ORDERED);
     }
 
     @Test
-    void 주문_결제_상태_업데이트시_OrderPaymentStatusResponse_반환() {
+    @DisplayName("주문 저장에 실패하면 CustomExceptionHandler를 반환한다")
+    void createOrder_Fail() {
         // given
-        OrderService orderService = new OrderService(orderRepository);
+        given(orderRepository.save(any(Order.class))).willReturn(null);
 
-        long orderId = 1L;
-        PaymentStatusType newPaymentStatus = PaymentStatusType.SUCCESS;
+        // when & then
+        assertThatThrownBy(() -> orderService.createOrder(1L, 5000L))
+                .isInstanceOf(CustomExceptionHandler.class)
+                .hasMessage(ErrorCode.ORDER_NOT_CREATE.getMessage());
+    }
 
-        // 기존 주문 Mock 데이터 생성
-        Order mockOrder = Order.createOrder(1L, 5000L, PaymentStatusType.PENDING, OrderStatusType.ORDERED);
-        ReflectionTestUtils.setField(mockOrder, "orderId", orderId);
-
-        // Mock 설정: findByOrderId 호출 시 기존 Mock 데이터 반환
-        given(orderRepository.findByOrderId(orderId)).willReturn(mockOrder);
-
-        // Mock 설정: save 호출 시 업데이트된 주문 데이터 반환
-        Order updatedOrder = Order.createOrder(1L, 5000L, newPaymentStatus, OrderStatusType.ORDERED);
-        ReflectionTestUtils.setField(updatedOrder, "orderId", orderId);
-
-        given(orderRepository.save(mockOrder)).willReturn(updatedOrder);
+    @Test
+    @DisplayName("주문 ID와 상태를 입력하면 주문 상태가 업데이트된다")
+    void updateOrderStatus_Success() {
+        // given
+        given(orderRepository.findByOrderId(1L)).willReturn(order);
+        given(orderRepository.save(order)).willReturn(order);
 
         // when
-        OrderPaymentStatusResponse response = orderService.updateOrderPaymentStatus(orderId, newPaymentStatus);
+        OrderStatusInfo response = orderService.updateOrderStatus(1L, OrderStatusType.PAYMENT_COMPLETED);
 
         // then
-        assertThat(response.orderId()).isEqualTo(orderId);
-        assertThat(response.paymentStatusType()).isEqualTo(newPaymentStatus);
+        assertThat(response.orderId()).isEqualTo(1L);
+        assertThat(response.orderStatus()).isEqualTo(OrderStatusType.PAYMENT_COMPLETED);
 
-        // verify 호출 확인
-        verify(orderRepository).findByOrderId(orderId);
-        verify(orderRepository).save(mockOrder);
+        verify(orderRepository).findByOrderId(1L);
+        verify(orderRepository).save(order);
+    }
+
+    @Test
+    @DisplayName("주문 상태 업데이트 실패 시 CustomExceptionHandler를 반환한다")
+    void updateOrderStatus_Fail() {
+        // given
+        given(orderRepository.findByOrderId(1L)).willReturn(order);
+        given(orderRepository.save(order)).willReturn(null);
+
+        // when & then
+        assertThatThrownBy(() -> orderService.updateOrderStatus(1L, OrderStatusType.PAYMENT_COMPLETED))
+                .isInstanceOf(CustomExceptionHandler.class)
+                .hasMessage(ErrorCode.ORDER_STATUS_UPDATE_FAIL.getMessage());
+    }
+
+    @Test
+    @DisplayName("주문 ID와 결제 상태를 입력하면 결제 상태가 업데이트된다")
+    void updateOrderPaymentStatus_Success() {
+        // given
+        given(orderRepository.findByOrderId(1L)).willReturn(order);
+        given(orderRepository.save(order)).willReturn(order);
+
+        // when
+        OrderPaymentStatusInfo response = orderService.updateOrderPaymentStatus(1L, PaymentStatusType.SUCCESS);
+
+        // then
+        assertThat(response.orderId()).isEqualTo(1L);
+        assertThat(response.paymentStatusType()).isEqualTo(PaymentStatusType.SUCCESS);
+
+        verify(orderRepository).findByOrderId(1L);
+        verify(orderRepository).save(order);
+    }
+
+    @Test
+    @DisplayName("결제 상태 업데이트 실패 시 CustomExceptionHandler를 반환한다")
+    void updateOrderPaymentStatus_Fail() {
+        // given
+        given(orderRepository.findByOrderId(1L)).willReturn(order);
+        given(orderRepository.save(order)).willReturn(null);
+
+        // when & then
+        assertThatThrownBy(() -> orderService.updateOrderPaymentStatus(1L, PaymentStatusType.SUCCESS))
+                .isInstanceOf(CustomExceptionHandler.class)
+                .hasMessage(ErrorCode.ORDER_PAYMENT_STATUS_UPDATE_FAIL.getMessage());
     }
 
 

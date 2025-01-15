@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.dataflatform;
 
-import kr.hhplus.be.server.balance.domain.service.response.BalanceInfo;
+import kr.hhplus.be.server.balance.domain.service.info.BalanceInfo;
 import org.springframework.stereotype.Service;
 
 @Service
