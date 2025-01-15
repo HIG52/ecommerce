@@ -26,14 +26,14 @@ public enum ErrorCode {
     COUPON_SAVE_FAILED(400, "C003", "쿠폰 재고가 없습니다."),
     COUPON_ALREADY_DOWNLOAD(400, "C004", "발급된 쿠폰입니다."),
     COUPON_USE_FAILED(400, "C005", "쿠폰 사용 처리에 실패하였습니다."),
-    // TODO : 추후 쿠폰 만료시간 체크 로직 추가시 추가 예정
-    //COUPON_IS_EXPIRED(400, "C003", "만료된 쿠폰입니다."),
+    COUPON_IS_EXPIRED(400, "C006", "만료된 쿠폰입니다."),
 
     // 주문
     ORDER_NOT_FOUND(404, "O001", "주문을 조회할 수 없습니다."),
     ORDER_NOT_CREATE(404, "O002", "주문 생성에 실패하였습니다."),
     ORDER_STATUS_UPDATE_FAIL(404, "O003", "주문 상태 업데이트에 실패하였습니다."),
-    ORDER_PAYMENT_STATUS_UPDATE_FAIL(404, "O003", "주문 결제 상태 업데이트에 실패하였습니다."),
+    ORDER_PAYMENT_STATUS_UPDATE_FAIL(404, "O004", "주문 결제 상태 업데이트에 실패하였습니다."),
+    ORDER_ALREADY_PROCESSED(400, "O005", "이미 처리된 주문입니다."),
 
     // 결제
     PAYMENT_SAVE_FAILED(400, "PAY001", "결제 정보 저장에 실패하였습니다."),

@@ -28,6 +28,8 @@ public class PaymentUsecase {
     @Transactional
     public PaymentResponseDTO createPayment(PaymentRequestDTO paymentRequestDTO) {
 
+        orderService.checkOrderPendingStatus(paymentRequestDTO.orderId());
+
         //잔액차감 및 락 생성
         BalanceDecreaseRequest balanceDecreaseRequest =
                 new BalanceDecreaseRequest(paymentRequestDTO.userId(), paymentRequestDTO.paymentAmount());

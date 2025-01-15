@@ -33,7 +33,7 @@ public class OrderController implements OrderControllerDocs {
             @PathVariable(name = "orderId") int orderId,
             @RequestBody OrderRequestDTO orderRequestDTO) {
 
-        // TODO : 주문 조회 usecase 작성 예정
+        // TODO : 주문 조회 usecase 작성 예정, 기본 요구사항에 아직 존재하지 않아 넣지 않았습니다.
 
         return null;
     }

@@ -4,8 +4,10 @@ Content-Type: application/json
 
 {
   "userId": 1,
-  "productIds": [1, 2, 3],
-  "productQuantities": [1, 2, 3]
+  "productIds": [101, 102, 103],
+  "productQuantities": [1, 2, 3],
+  "productPrices": [500, 1200, 2100],
+  "orderTotalAmount": 3800
 }
 
 ### 주문 생성 - 존재하지 않는 유저
@@ -15,7 +17,9 @@ Content-Type: application/json
 {
   "userId": 0,
   "productIds": [1, 2, 3],
-  "productQuantities": [1, 2, 3]
+  "productQuantities": [1, 2, 3],
+  "productPrices": [500, 1200, 2100],
+  "orderTotalAmount": 3800
 }
 
 ### 주문 생성 - 품절된 상품 포함
@@ -25,7 +29,9 @@ Content-Type: application/json
 {
   "userId": 1,
   "productIds": [1, 2, 3],
-  "productQuantities": [1, 0, 3]
+  "productQuantities": [1, 0, 3],
+  "productPrices": [500, 0, 2100],
+  "orderTotalAmount": 2600
 }
 
 ### 주문 상세 조회 - 유효한 데이터

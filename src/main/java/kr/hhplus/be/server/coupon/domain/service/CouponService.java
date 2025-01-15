@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -53,6 +54,11 @@ public class CouponService {
             // 쿠폰 재고 확인
             if (coupon.getCouponQuantity() <= 0) {
                 throw new CustomExceptionHandler(ErrorCode.COUPON_OUT_OF_STOCK);
+            }
+
+            //만료 확인
+            if(coupon.getExpirationDate().isBefore(LocalDateTime.now())) {
+                throw new CustomExceptionHandler(ErrorCode.COUPON_IS_EXPIRED);
             }
 
             // 쿠폰 수량 감소
