@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class BalanceIntegrationTest {
+public class BalanceUsecaseTest {
 
     @Autowired
     private MockMvc mockMvc;

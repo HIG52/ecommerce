@@ -3,6 +3,7 @@ package kr.hhplus.be.server.order.presentation.controller;
 import kr.hhplus.be.server.order.presentation.controller.OrderController;
 import kr.hhplus.be.server.order.presentation.dto.OrderRequestDTO;
 import kr.hhplus.be.server.order.presentation.dto.OrderResponseDTO;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,7 +27,8 @@ public class OrderIntegrationTest {
     private OrderController orderController;
 
     @Test
-    void 여러_유저_동시_주문_생성_테스트() throws InterruptedException {
+    @DisplayName("여러 유저들이 동시에 주문했을시 재고에 따라 성공 또는 실패반환")
+    void concurrencyCreateOrder() throws InterruptedException {
         // given
         long productId1 = 1L; // orderData.sql에서 삽입된 상품 ID
         long productId2 = 2L;

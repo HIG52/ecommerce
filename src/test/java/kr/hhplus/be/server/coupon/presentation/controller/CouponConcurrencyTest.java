@@ -1,6 +1,7 @@
 package kr.hhplus.be.server.coupon.presentation.controller;
 
 import kr.hhplus.be.server.coupon.presentation.dto.CouponRequestDTO;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,13 +18,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Sql("/couponData.sql")
 @SpringBootTest
 @ActiveProfiles("test")
-public class CouponIntegrationTest {
+public class CouponConcurrencyTest {
 
     @Autowired
     private CouponController couponController;
 
     @Test
-    void 여러_유저_동시_쿠폰다운로드_테스트() throws InterruptedException {
+    @DisplayName("여러유저가 동시에 쿠폰을 발급할때 재고의 갯수만큼만 발급된다.")
+    void couponDownloadTest() throws InterruptedException {
         // given
         long couponId = 1L; // couponData.sql에서 삽입된 쿠폰 ID
         int threadCount = 10; // 동시 요청 수
@@ -55,7 +57,7 @@ public class CouponIntegrationTest {
         System.out.println("성공 횟수: " + successCount);
         System.out.println("실패 횟수: " + failCount);
 
-        // 검증: 재고가 10개라면 성공은 10번 이하여야 함
+        // 검증: 재고가 5개
         assertThat(successCount.get()).isEqualTo(5); // 성공한 요청 수
         assertThat(failCount.get()).isEqualTo(5); // 실패한 요청 수
 

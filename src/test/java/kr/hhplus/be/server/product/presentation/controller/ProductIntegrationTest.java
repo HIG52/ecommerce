@@ -2,6 +2,7 @@ package kr.hhplus.be.server.product.presentation.controller;
 
 import kr.hhplus.be.server.product.presentation.controller.ProductController;
 import kr.hhplus.be.server.product.presentation.dto.ProductsResponseDTO;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,7 +24,8 @@ public class ProductIntegrationTest {
     private ProductController productController;
 
     @Test
-    void 상위상품_조회() {
+    @DisplayName("상위 상품 3개 조회")
+    void findTopProducts() {
         // When
         ResponseEntity<List<ProductsResponseDTO>> response = productController.getTopProduct();
 

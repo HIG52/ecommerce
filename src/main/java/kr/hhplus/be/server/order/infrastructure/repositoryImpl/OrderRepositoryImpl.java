@@ -38,4 +38,9 @@ public class OrderRepositoryImpl implements OrderRepository {
     public List<OrderDetail> findTop3OrderDetailsGroupByProductId(LocalDateTime startDate, LocalDateTime endDate) {
         return orderDetailJpaRepository.findTop3OrderDetailsGroupByProductId(startDate, endDate);
     }
+
+    @Override
+    public Order findByOrderIdWithLock(long orderId) {
+        return orderJpaRepository.findByOrderIdWithLock(orderId);
+    }
 }

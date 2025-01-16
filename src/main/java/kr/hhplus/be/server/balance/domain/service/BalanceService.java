@@ -52,7 +52,7 @@ public class BalanceService {
     @Transactional
     public BalanceInfo decreaseBalance(BalanceDecreaseRequest balanceDecreaseRequest) {
         try {
-            User user = balanceRepository.getUserWithLock(balanceDecreaseRequest.userId());
+            User user = balanceRepository.getUser(balanceDecreaseRequest.userId());
 
             if (user == null) {
                 throw new CustomExceptionHandler(ErrorCode.USER_NOT_FOUND);
