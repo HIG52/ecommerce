@@ -1,6 +1,5 @@
 package kr.hhplus.be.server.order.presentation.controller;
 
-import kr.hhplus.be.server.order.presentation.controller.OrderController;
 import kr.hhplus.be.server.order.presentation.dto.OrderRequestDTO;
 import kr.hhplus.be.server.order.presentation.dto.OrderResponseDTO;
 import org.junit.jupiter.api.DisplayName;
@@ -21,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Sql("/orderData.sql")
 @SpringBootTest
 @ActiveProfiles("test")
-public class OrderIntegrationTest {
+public class OrderConcurrencyTest {
 
     @Autowired
     private OrderController orderController;

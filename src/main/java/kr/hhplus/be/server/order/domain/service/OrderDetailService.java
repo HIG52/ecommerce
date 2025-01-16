@@ -53,7 +53,7 @@ public class OrderDetailService {
     public List<OrderDetailsInfo> getTopOrderDetails() {
         LocalDateTime endDate = LocalDateTime.now();
         LocalDateTime startDate = endDate.minusDays(3);
-        List<OrderDetail> orderDetails = orderRepository.findTop3OrderDetailsGroupByProductId(startDate, endDate);
+        List<OrderDetail> orderDetails = orderRepository.findTop5OrderDetailsGroupByProductId(startDate, endDate);
 
         return orderDetails.stream()
                 .map(orderDetail -> new OrderDetailsInfo(
