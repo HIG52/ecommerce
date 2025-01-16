@@ -7,6 +7,8 @@ import kr.hhplus.be.server.balance.domain.service.BalanceService;
 import kr.hhplus.be.server.balance.presentation.dto.BalanceChargeRequestDTO;
 import kr.hhplus.be.server.balance.presentation.dto.BalanceChargeResponseDTO;
 import kr.hhplus.be.server.balance.presentation.usecase.BalanceUsecase;
+import kr.hhplus.be.server.util.DatabaseCleaner;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
-public class BalanceIntegrationTest {
+public class BalanceUsecaseTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -39,6 +41,13 @@ public class BalanceIntegrationTest {
     @Autowired
     private BalanceUsecase balanceUsecase;
 
+    @Autowired
+    DatabaseCleaner databaseCleaner;
+
+    @BeforeEach
+    final void baseSetUp() {
+        databaseCleaner.clear();
+    }
 
     @Test
     @DisplayName("POST /api/balances/{userId}/charge - 정상적인 요청에 대해 잔액 충전 성공")

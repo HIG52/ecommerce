@@ -11,6 +11,7 @@ import kr.hhplus.be.server.common.type.OrderStatusType;
 import kr.hhplus.be.server.common.type.PaymentStatusType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -63,8 +64,9 @@ public class OrderService {
         );
     }
 
+    @Transactional
     public void checkOrderPendingStatus(long orderId) {
-        Order order = orderRepository.findByOrderId(orderId);
+        Order order = orderRepository.findByOrderIdWithLock(orderId);
         if(order.getPaymentStatus() != PaymentStatusType.PENDING){
             throw new CustomExceptionHandler(ErrorCode.ORDER_ALREADY_PROCESSED);
         }

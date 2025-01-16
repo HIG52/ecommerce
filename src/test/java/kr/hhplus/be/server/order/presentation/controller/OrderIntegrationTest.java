@@ -3,6 +3,7 @@ package kr.hhplus.be.server.order.presentation.controller;
 import kr.hhplus.be.server.order.presentation.controller.OrderController;
 import kr.hhplus.be.server.order.presentation.dto.OrderRequestDTO;
 import kr.hhplus.be.server.order.presentation.dto.OrderResponseDTO;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,11 +27,12 @@ public class OrderIntegrationTest {
     private OrderController orderController;
 
     @Test
-    void 여러_유저_동시_주문_생성_테스트() throws InterruptedException {
+    @DisplayName("여러 유저들이 동시에 주문했을시 재고에 따라 성공 또는 실패반환")
+    void concurrencyCreateOrder() throws InterruptedException {
         // given
         long productId1 = 1L; // orderData.sql에서 삽입된 상품 ID
         long productId2 = 2L;
-        int threadCount = 40; // 동시 요청 수
+        int threadCount = 10; // 동시 요청 수
 
         ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
         CountDownLatch latch = new CountDownLatch(threadCount);
@@ -46,8 +48,8 @@ public class OrderIntegrationTest {
                             userId,
                             10000L, // 주문 총 금액
                             List.of(productId1, productId2),
-                            List.of(2, 3), // 각 상품의 주문 수량
-                            List.of(1000L, 2000L) // 각 상품의 가격
+                            List.of(2, 1), // 각 상품의 주문 수량
+                            List.of(1200000L, 800000L) // 각 상품의 가격
                     );
 
                     OrderResponseDTO response = orderController.createOrders(orderRequestDTO).getBody();
@@ -67,9 +69,9 @@ public class OrderIntegrationTest {
         // then
         System.out.println("성공 횟수: " + successCount);
         System.out.println("실패 횟수: " + failCount);
-
-        assertThat(successCount.get()).isLessThanOrEqualTo(40); // 성공한 요청 수
-        assertThat(failCount.get()).isGreaterThanOrEqualTo(0); // 실패한 요청 수
+        //1번 상품의 재고가 10개라 5번 성공후 이후는 실패
+        assertThat(successCount.get()).isEqualTo(5); // 성공한 요청 수
+        assertThat(failCount.get()).isEqualTo(5); // 실패한 요청 수
     }
 
 }
