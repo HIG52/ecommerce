@@ -1,6 +1,5 @@
 package kr.hhplus.be.server.payment.presentation.controller;
 
-import kr.hhplus.be.server.payment.presentation.controller.PaymentController;
 import kr.hhplus.be.server.payment.presentation.dto.PaymentRequestDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Sql("/paymentData.sql")
 @SpringBootTest
 @ActiveProfiles("test")
-public class PaymentIntegrationTest {
+public class PaymentConcurrencyTest {
 
     @Autowired
     private PaymentController paymentController;

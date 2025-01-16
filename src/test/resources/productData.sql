@@ -1,15 +1,21 @@
-TRUNCATE TABLE order_detail;
+TRUNCATE TABLE user;
+TRUNCATE TABLE coupon;
 TRUNCATE TABLE product;
+TRUNCATE TABLE order_detail;
+TRUNCATE TABLE `order`;
+TRUNCATE TABLE payment;
+TRUNCATE TABLE user_balance_history;
+TRUNCATE TABLE user_coupon;
 
 -- 최근 3일의 날짜 생성
 INSERT INTO order_detail (order_quantity, created_at, modify_at, order_amount, order_detail_id, order_id, product_id)
 VALUES
 -- 첫째 날 데이터
-(5, NOW() - INTERVAL 3 DAY, NOW(), 5000, 1, 1, 101),
-(3, NOW() - INTERVAL 3 DAY, NOW(), 3000, 2, 1, 102),
-(7, NOW() - INTERVAL 3 DAY, NOW(), 7000, 3, 2, 103),
-(2, NOW() - INTERVAL 3 DAY, NOW(), 2000, 4, 2, 104),
-(4, NOW() - INTERVAL 3 DAY, NOW(), 4000, 5, 3, 105),
+(20, NOW() - INTERVAL 3 DAY, NOW(), 5000, 1, 1, 101),
+(19, NOW() - INTERVAL 3 DAY, NOW(), 3000, 2, 1, 102),
+(18, NOW() - INTERVAL 3 DAY, NOW(), 7000, 3, 2, 103),
+(17, NOW() - INTERVAL 3 DAY, NOW(), 2000, 4, 2, 104),
+(16, NOW() - INTERVAL 3 DAY, NOW(), 4000, 5, 3, 105),
 
 -- 둘째 날 데이터
 (6, NOW() - INTERVAL 2 DAY, NOW(), 6000, 6, 4, 106),
@@ -23,7 +29,7 @@ VALUES
 (4, NOW() - INTERVAL 1 DAY, NOW(), 4000, 12, 7, 112),
 (5, NOW() - INTERVAL 1 DAY, NOW(), 5000, 13, 7, 113),
 (6, NOW() - INTERVAL 1 DAY, NOW(), 6000, 14, 8, 114),
-(8, NOW() - INTERVAL 1 DAY, NOW(), 8000, 15, 8, 115),
+(7, NOW() - INTERVAL 1 DAY, NOW(), 8000, 15, 8, 115),
 
 -- 랜덤 데이터
 (2, NOW() - INTERVAL 1 DAY, NOW(), 2000, 16, 9, 116),

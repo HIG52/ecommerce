@@ -15,8 +15,8 @@ public interface OrderDetailJpaRepository extends JpaRepository<OrderDetail, Lon
             "WHERE created_at BETWEEN NOW() - INTERVAL 3 DAY AND NOW() " +
             "GROUP BY product_id " +
             "ORDER BY SUM(order_quantity) DESC " +
-            "LIMIT 3", nativeQuery = true)
-    List<OrderDetail> findTop3OrderDetailsGroupByProductId(
+            "LIMIT 5", nativeQuery = true)
+    List<OrderDetail> findTop5OrderDetailsGroupByProductId(
             @Param("startDate") LocalDateTime startDate,
             @Param("endDate") LocalDateTime endDate);
 }

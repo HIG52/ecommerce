@@ -13,7 +13,7 @@ public interface OrderRepository {
 
     Order findByOrderId(long orderId);
 
-    List<OrderDetail> findTop3OrderDetailsGroupByProductId(LocalDateTime startDate, LocalDateTime endDate);
+    List<OrderDetail> findTop5OrderDetailsGroupByProductId(LocalDateTime startDate, LocalDateTime endDate);
 
     Order findByOrderIdWithLock(long orderId);
 }
