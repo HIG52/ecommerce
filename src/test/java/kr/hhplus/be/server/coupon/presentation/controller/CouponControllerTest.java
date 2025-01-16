@@ -59,7 +59,7 @@ class CouponControllerTest {
     @Test
     @DisplayName("POST /api/coupons/download 요청시 쿠폰을 다운로드한다.")
     void couponDownload() throws Exception {
-        long couponId = 1L;
+        long couponId = 2L;
         long userId = 1L;
         CouponRequestDTO couponRequestDTO = new CouponRequestDTO(userId, couponId);
 
@@ -69,7 +69,7 @@ class CouponControllerTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value(1L))
-                .andExpect(jsonPath("$.couponId").value(1L))
+                .andExpect(jsonPath("$.couponId").value(2L))
                 .andExpect(jsonPath("$.useYn").value("N"));
 
 
