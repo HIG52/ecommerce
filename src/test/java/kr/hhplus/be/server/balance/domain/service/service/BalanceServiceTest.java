@@ -96,7 +96,7 @@ class BalanceServiceTest {
     @DisplayName("사용자 ID와 차감 금액을 입력하면 잔액 차감 후 BalanceInfo를 반환한다")
     void decreaseBalance_Success() {
         // given
-        given(balanceRepository.getUserWithLock(1L)).willReturn(user);
+        given(balanceRepository.getUser(1L)).willReturn(user);
         given(balanceRepository.saveUser(user)).willReturn(user);
 
         // when
@@ -111,7 +111,7 @@ class BalanceServiceTest {
     @DisplayName("존재하지 않는 사용자 ID로 잔액 차감을 요청하면 CustomExceptionHandler를 반환한다")
     void decreaseBalance_UserNotFound() {
         // given
-        given(balanceRepository.getUserWithLock(1L)).willReturn(null);
+        given(balanceRepository.getUser(1L)).willReturn(null);
 
         // when & then
         assertThatThrownBy(() -> balanceService.decreaseBalance(new BalanceDecreaseRequest(1L, 500L)))
@@ -124,7 +124,7 @@ class BalanceServiceTest {
     void decreaseBalance_InsufficientBalance() {
         // given
         user.addBalance(-1000L); // 잔액 부족 상태로 설정
-        given(balanceRepository.getUserWithLock(1L)).willReturn(user);
+        given(balanceRepository.getUser(1L)).willReturn(user);
 
         // when & then
         assertThatThrownBy(() -> balanceService.decreaseBalance(new BalanceDecreaseRequest(1L, 2000L)))
@@ -136,7 +136,7 @@ class BalanceServiceTest {
     @DisplayName("사용자 ID와 차감 금액을 입력했으나 저장 결과가 null이면 CustomExceptionHandler를 반환한다")
     void decreaseBalance_DecreaseFailed() {
         // given
-        given(balanceRepository.getUserWithLock(1L)).willReturn(user);
+        given(balanceRepository.getUser(1L)).willReturn(user);
         given(balanceRepository.saveUser(user)).willReturn(null);
 
         // when & then

@@ -74,7 +74,6 @@ public class ProductService {
 
     }
 
-    // TODO : 주문에서 리스트를 가져와 상품을 조회하는 usecase 구현 예정
     public List<ProductsResponse> getTopProducts(List<Long> productIds) {
 
         List<Product> productsResponse = productRepository.getTopProducts(productIds);

@@ -28,9 +28,10 @@ public class PaymentUsecase {
     @Transactional
     public PaymentResponseDTO createPayment(PaymentRequestDTO paymentRequestDTO) {
 
+        //주문 상태확인 락생성
         orderService.checkOrderPendingStatus(paymentRequestDTO.orderId());
 
-        //잔액차감 및 락 생성
+        //잔액차감
         BalanceDecreaseRequest balanceDecreaseRequest =
                 new BalanceDecreaseRequest(paymentRequestDTO.userId(), paymentRequestDTO.paymentAmount());
         BalanceInfo balanceInfo = balanceService.decreaseBalance(balanceDecreaseRequest);

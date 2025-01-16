@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.product.presentation.controller;
 
-import kr.hhplus.be.server.product.presentation.controller.ProductController;
 import kr.hhplus.be.server.product.presentation.dto.ProductsResponseDTO;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,13 +17,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Sql("/productData.sql")
 @SpringBootTest
 @ActiveProfiles("test")
-public class ProductIntegrationTest {
+public class ProductUsecaseTest {
 
     @Autowired
     private ProductController productController;
 
     @Test
-    void 상위상품_조회() {
+    @DisplayName("상위 상품 5개 조회")
+    void findTopProducts() {
         // When
         ResponseEntity<List<ProductsResponseDTO>> response = productController.getTopProduct();
 
@@ -35,9 +36,11 @@ public class ProductIntegrationTest {
         List<ProductsResponseDTO> products = response.getBody();
 
         // 검증: 데이터가 예상대로 정렬되어 있는지 확인
-        assertThat(products.get(0).productId()).isEqualTo(108L); // 첫 번째 상품 ID (가장 많이 팔린 상품)
-        assertThat(products.get(1).productId()).isEqualTo(109L); // 두 번째 상품 ID
-        assertThat(products.get(2).productId()).isEqualTo(107L); // 세 번째 상품 ID
+        assertThat(products.get(0).productId()).isEqualTo(101L); // 첫 번째 상품 ID (가장 많이 팔린 상품)
+        assertThat(products.get(1).productId()).isEqualTo(102L); // 두 번째 상품 ID
+        assertThat(products.get(2).productId()).isEqualTo(103L); // 세 번째 상품 ID
+        assertThat(products.get(3).productId()).isEqualTo(104L); // 네 번째 상품 ID
+        assertThat(products.get(4).productId()).isEqualTo(105L); // 다섯 번째 상품 ID
     }
 
 }
