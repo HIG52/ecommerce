@@ -22,6 +22,9 @@ public class User extends AuditingFields {
     @Column(name = "balance")
     private Long balance;
 
+    @Version
+    private Integer version;
+
     protected User() {
 
     }
