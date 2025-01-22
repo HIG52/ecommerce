@@ -45,8 +45,8 @@ public class CouponService {
     public CouponInfo getCouponLock(long couponId) {
         try {
             // 쿠폰 조회 및 락 설정
-            Coupon coupon = couponRepository.getCouponWithLock(couponId);
-
+            //Coupon coupon = couponRepository.getCouponWithLock(couponId);
+            Coupon coupon = couponRepository.getCoupon(couponId);
             if (coupon == null) {
                 throw new CustomExceptionHandler(ErrorCode.COUPON_NOT_FOUND);
             }

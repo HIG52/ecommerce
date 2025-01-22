@@ -8,6 +8,7 @@ import kr.hhplus.be.server.coupon.domain.service.info.CouponInfo;
 import kr.hhplus.be.server.coupon.domain.service.info.UserCouponInfo;
 import kr.hhplus.be.server.coupon.presentation.dto.CouponRequestDTO;
 import kr.hhplus.be.server.coupon.presentation.dto.UserCouponResponseDTO;
+import kr.hhplus.be.server.redis.RedisLock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +21,9 @@ public class CouponUsecase {
     private final CouponService couponService;
     private final UserCouponService userCouponService;
 
+
     @Transactional
+    @RedisLock(key = "'couponId:' + #couponRequestDTO.couponId()")
     public UserCouponResponseDTO downloadUserCoupon(CouponRequestDTO couponRequestDTO) {
 
         balanceService.getUserBalance(couponRequestDTO.userId());

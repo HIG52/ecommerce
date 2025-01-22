@@ -28,8 +28,6 @@ public class BalanceChargeConcurrencyTest {
     @Test
     @DisplayName("한명의 유저가 동시에 여러번 충전시 전부 성공")
     void balanceChargeTest() throws InterruptedException {
-        // 테스트 시작 시간 기록
-        long startTime = System.currentTimeMillis();
 
         // given
         long userId = 6L;
@@ -57,11 +55,6 @@ public class BalanceChargeConcurrencyTest {
 
         latch.await(); // 모든 쓰레드가 작업을 완료할 때까지 대기
         executorService.shutdown();
-
-        // 테스트 종료 시간 기록
-        long endTime = System.currentTimeMillis();
-        long duration = endTime - startTime;
-        System.out.println("Test duration: " + duration + " ms");
 
         // then
         System.out.println("성공 횟수: " + successCount);

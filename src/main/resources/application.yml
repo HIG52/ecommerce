@@ -19,6 +19,9 @@ spring:
         root: DEBUG  # 모든 로그를 DEBUG 수준으로 출력
         org:
           hibernate:
+            orm:
+              jdbc:
+                binding: TRACE  # Hibernate 파라미터 바인딩 로그
             SQL: DEBUG  # Hibernate SQL 쿼리 로그
             type:
               descriptor:
