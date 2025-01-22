@@ -32,7 +32,7 @@ public class BalanceService {
     @Transactional
     public BalanceChargeInfo chargeUserBalance(long userId, BalanceRequest balanceRequest) {
 
-        User user = balanceRepository.getUser(userId);
+        User user = balanceRepository.getUserWithLock(userId);
 
         if(user == null) {
             throw new CustomExceptionHandler(ErrorCode.USER_NOT_FOUND);

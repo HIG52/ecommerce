@@ -58,7 +58,7 @@ public class LettuceLockService implements LockService {
         }
     }
 
-    @Override
+    /*@Override
     public <T> T executeWithLock(String lockKey, LockCallback<T> callback) {
         lock(lockKey);
         try {
@@ -66,6 +66,6 @@ public class LettuceLockService implements LockService {
         } finally {
             unlock(lockKey);
         }
-    }
+    }*/
 
 }
