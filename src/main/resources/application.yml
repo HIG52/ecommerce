@@ -4,7 +4,7 @@ spring:
   application:
     name: hhplus
   profiles:
-    active: local, lettuce #redisson
+    active: local, redisson #lettuce
   datasource:
     name: HangHaePlusDataSource
     type: com.zaxxer.hikari.HikariDataSource
