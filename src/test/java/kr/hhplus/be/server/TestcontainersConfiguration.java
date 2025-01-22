@@ -32,7 +32,7 @@ class TestcontainersConfiguration {
 		REDIS_CONTAINER = new GenericContainer<>(DockerImageName.parse("redis:7.4.2"))
 				.withExposedPorts(6379);
 
-		REDIS_CONTAINER.setPortBindings(List.of("6379:6379"));
+		//REDIS_CONTAINER.setPortBindings(List.of("6380:6380"));
 
 		REDIS_CONTAINER.start();
 

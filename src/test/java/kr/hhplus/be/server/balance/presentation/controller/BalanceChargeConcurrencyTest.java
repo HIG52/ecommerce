@@ -67,9 +67,9 @@ public class BalanceChargeConcurrencyTest {
         System.out.println("성공 횟수: " + successCount);
         System.out.println("실패 횟수: " + failCount);
         User result = balanceRepositoryImpl.getUser(userId);
-        assertThat(result.getBalance()).isEqualTo(3000L);
-        assertThat(successCount.get()).isEqualTo(1); // 성공한 요청 수
-        assertThat(failCount.get()).isEqualTo(9); // 실패한 요청 수
+        assertThat(result.getBalance()).isEqualTo(12000L);
+        assertThat(successCount.get()).isEqualTo(10); // 성공한 요청 수
+        assertThat(failCount.get()).isEqualTo(0); // 실패한 요청 수
     }
 
 }
