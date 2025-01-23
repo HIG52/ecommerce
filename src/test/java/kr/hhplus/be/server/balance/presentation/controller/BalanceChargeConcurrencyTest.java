@@ -1,7 +1,8 @@
-package kr.hhplus.be.server.coupon.presentation.controller;
+package kr.hhplus.be.server.balance.presentation.controller;
 
-import kr.hhplus.be.server.coupon.domain.repository.CouponRepository;
-import kr.hhplus.be.server.coupon.presentation.dto.CouponRequestDTO;
+import kr.hhplus.be.server.balance.domain.entity.User;
+import kr.hhplus.be.server.balance.infrastructure.repositoryImpl.BalanceRepositoryImpl;
+import kr.hhplus.be.server.balance.presentation.dto.BalanceChargeRequestDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,22 +17,23 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Sql("/couponData.sql")
+@Sql("/userData.sql")
 @SpringBootTest
 @ActiveProfiles("test")
-public class CouponConcurrencyTest {
+public class BalanceChargeConcurrencyTest {
 
     @Autowired
-    private CouponController couponController;
-
+    private BalanceController balanceController;
     @Autowired
-    private CouponRepository couponRepository;
+    private BalanceRepositoryImpl balanceRepositoryImpl;
 
     @Test
-    @DisplayName("여러유저가 동시에 쿠폰을 발급할때 재고의 갯수만큼만 발급된다.")
-    void couponDownloadTest() throws InterruptedException {
+    @DisplayName("한명의 유저가 동시에 여러번 충전시 전부 성공")
+    void balanceChargeTest() throws InterruptedException {
+
         // given
-        long couponId = 1L; // couponData.sql에서 삽입된 쿠폰 ID
+        long userId = 6L;
+        long amount = 1000L;
         int threadCount = 10; // 동시 요청 수
 
         ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
@@ -40,12 +42,10 @@ public class CouponConcurrencyTest {
         AtomicInteger failCount = new AtomicInteger(0);
 
         for (int i = 0; i < threadCount; i++) {
-            long userId = i+1; // 각 요청마다 다른 사용자 ID 설정
             executorService.submit(() -> {
                 try {
-                    CouponRequestDTO couponRequestDTO = new CouponRequestDTO(userId, couponId);
-                    System.out.println("couponId = " + couponId);
-                    couponController.couponDownload(couponRequestDTO);
+                    BalanceChargeRequestDTO balanceChargeRequestDTO = new BalanceChargeRequestDTO(amount);
+                    balanceController.userPointCharge(userId, balanceChargeRequestDTO);
                     successCount.incrementAndGet();
                 } catch (Exception ignored) {
                     failCount.incrementAndGet();
@@ -58,15 +58,15 @@ public class CouponConcurrencyTest {
         latch.await(); // 모든 쓰레드가 작업을 완료할 때까지 대기
         executorService.shutdown();
 
-        System.out.println("쿠폰 재고 : "+couponRepository.getCoupon(couponId).getCouponQuantity());
         // then
         System.out.println("성공 횟수: " + successCount);
         System.out.println("실패 횟수: " + failCount);
 
-        // 검증: 재고가 5개
-        assertThat(successCount.get()).isEqualTo(5); // 성공한 요청 수
-        assertThat(failCount.get()).isEqualTo(5); // 실패한 요청 수
-
+        User result = balanceRepositoryImpl.getUser(userId);
+        System.out.println("result.getBalance(): " + result.getBalance());
+        assertThat(result.getBalance()).isEqualTo(12000L);
+        assertThat(successCount.get()).isEqualTo(10); // 성공한 요청 수
+        assertThat(failCount.get()).isEqualTo(0); // 실패한 요청 수
     }
 
 }

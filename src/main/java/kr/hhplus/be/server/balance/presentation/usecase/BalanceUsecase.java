@@ -8,6 +8,7 @@ import kr.hhplus.be.server.balance.domain.service.info.BalanceChargeInfo;
 import kr.hhplus.be.server.balance.presentation.dto.BalanceChargeResponseDTO;
 import kr.hhplus.be.server.balance.presentation.dto.BalanceChargeRequestDTO;
 import kr.hhplus.be.server.common.type.HistoryType;
+import kr.hhplus.be.server.redis.RedisLock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BalanceUsecase {
     private final BalanceService balanceService;
     private final BalanceHistoryService balanceHistoryService;
-
+    
     @Transactional
     public BalanceChargeResponseDTO chargeUserBalance(long userId, BalanceChargeRequestDTO balanceChargeRequestDTO) {
 

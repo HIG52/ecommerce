@@ -8,6 +8,7 @@ import kr.hhplus.be.server.balance.domain.entity.User;
 import kr.hhplus.be.server.balance.domain.repository.BalanceRepository;
 import kr.hhplus.be.server.common.error.CustomExceptionHandler;
 import kr.hhplus.be.server.common.error.ErrorCode;
+import kr.hhplus.be.server.redis.RedisLock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +33,7 @@ public class BalanceService {
     @Transactional
     public BalanceChargeInfo chargeUserBalance(long userId, BalanceRequest balanceRequest) {
 
-        User user = balanceRepository.getUser(userId);
+        User user = balanceRepository.getUserWithLock(userId);
 
         if(user == null) {
             throw new CustomExceptionHandler(ErrorCode.USER_NOT_FOUND);
