@@ -23,10 +23,8 @@ public class CouponUsecase {
 
 
     @Transactional
-    @RedisLock(key = "'couponId:' + #couponRequestDTO.couponId()")
     public UserCouponResponseDTO downloadUserCoupon(CouponRequestDTO couponRequestDTO) {
 
-        balanceService.getUserBalance(couponRequestDTO.userId());
 
         CouponRequest couponRequest = new CouponRequest(
                 couponRequestDTO.userId(),
