@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
 import java.util.concurrent.CountDownLatch;
@@ -18,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Sql("/userData.sql")
 @SpringBootTest
+@ActiveProfiles("test")
 public class BalanceChargeConcurrencyTest {
 
     @Autowired
@@ -28,8 +30,6 @@ public class BalanceChargeConcurrencyTest {
     @Test
     @DisplayName("한명의 유저가 동시에 여러번 충전시 전부 성공")
     void balanceChargeTest() throws InterruptedException {
-        // 테스트 시작 시간 기록
-        long startTime = System.currentTimeMillis();
 
         // given
         long userId = 6L;
@@ -58,15 +58,12 @@ public class BalanceChargeConcurrencyTest {
         latch.await(); // 모든 쓰레드가 작업을 완료할 때까지 대기
         executorService.shutdown();
 
-        // 테스트 종료 시간 기록
-        long endTime = System.currentTimeMillis();
-        long duration = endTime - startTime;
-        System.out.println("Test duration: " + duration + " ms");
-
         // then
         System.out.println("성공 횟수: " + successCount);
         System.out.println("실패 횟수: " + failCount);
+
         User result = balanceRepositoryImpl.getUser(userId);
+        System.out.println("result.getBalance(): " + result.getBalance());
         assertThat(result.getBalance()).isEqualTo(12000L);
         assertThat(successCount.get()).isEqualTo(10); // 성공한 요청 수
         assertThat(failCount.get()).isEqualTo(0); // 실패한 요청 수

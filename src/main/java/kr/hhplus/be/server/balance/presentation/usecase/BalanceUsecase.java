@@ -18,8 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BalanceUsecase {
     private final BalanceService balanceService;
     private final BalanceHistoryService balanceHistoryService;
-
-    @RedisLock(key = "#userId")
+    
     @Transactional
     public BalanceChargeResponseDTO chargeUserBalance(long userId, BalanceChargeRequestDTO balanceChargeRequestDTO) {
 
