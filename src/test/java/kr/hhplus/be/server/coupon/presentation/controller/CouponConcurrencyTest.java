@@ -40,7 +40,7 @@ public class CouponConcurrencyTest {
         AtomicInteger failCount = new AtomicInteger(0);
 
         for (int i = 0; i < threadCount; i++) {
-            long userId = 1L; // 각 요청마다 다른 사용자 ID 설정
+            long userId = i+1; // 각 요청마다 다른 사용자 ID 설정
             executorService.submit(() -> {
                 try {
                     CouponRequestDTO couponRequestDTO = new CouponRequestDTO(userId, couponId);

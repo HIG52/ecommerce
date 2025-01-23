@@ -68,7 +68,7 @@ class BalanceServiceTest {
     @DisplayName("사용자 ID와 금액을 입력하면 잔액 충전 후 BalanceChargeInfo를 반환한다")
     void chargeUserBalance_Success() {
         // given
-        given(balanceRepository.getUser(1L)).willReturn(user);
+        given(balanceRepository.getUserWithLock(1L)).willReturn(user);
         given(balanceRepository.saveUser(user)).willReturn(user);
 
         // when
@@ -83,7 +83,7 @@ class BalanceServiceTest {
     @DisplayName("사용자 ID와 금액을 입력했지만 저장 결과가 null이면 CustomExceptionHandler를 반환한다")
     void chargeUserBalance_ChargeFailed() {
         // given
-        given(balanceRepository.getUser(1L)).willReturn(user);
+        given(balanceRepository.getUserWithLock(1L)).willReturn(user);
         given(balanceRepository.saveUser(user)).willReturn(null);
 
         // when & then

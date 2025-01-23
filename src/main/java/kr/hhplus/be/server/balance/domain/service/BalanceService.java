@@ -8,6 +8,7 @@ import kr.hhplus.be.server.balance.domain.entity.User;
 import kr.hhplus.be.server.balance.domain.repository.BalanceRepository;
 import kr.hhplus.be.server.common.error.CustomExceptionHandler;
 import kr.hhplus.be.server.common.error.ErrorCode;
+import kr.hhplus.be.server.redis.RedisLock;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
