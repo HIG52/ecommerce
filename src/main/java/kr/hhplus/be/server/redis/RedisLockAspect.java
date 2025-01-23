@@ -67,8 +67,7 @@ public class RedisLockAspect {
             log.error("Error during RedisLock acquisition: keys={}, error={}", acquiredKeys, t.getMessage());
             throw t;
         } finally {
-            if (!TransactionSynchronizationManager.isSynchronizationActive()) {
-                // 트랜잭션이 없을 경우 즉시 해제
+            if (!TransactionSynchronizationManager.isSynchronizationActive() || acquiredKeys.isEmpty()) {
                 for (String key : acquiredKeys) {
                     lockService.unlock(key);
                 }
