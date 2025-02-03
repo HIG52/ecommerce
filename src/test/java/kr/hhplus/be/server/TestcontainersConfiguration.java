@@ -30,9 +30,10 @@ class TestcontainersConfiguration {
 
 		// Redis 컨테이너 설정
 		REDIS_CONTAINER = new GenericContainer<>(DockerImageName.parse("redis:7.4.2"))
-				.withExposedPorts(6379);
+				.withExposedPorts(6379)
+				.waitingFor(Wait.forListeningPort());
 
-		//REDIS_CONTAINER.setPortBindings(List.of("6380:6380"));
+		REDIS_CONTAINER.setPortBindings(List.of("6379:6379"));
 
 		REDIS_CONTAINER.start();
 
@@ -43,8 +44,8 @@ class TestcontainersConfiguration {
 		String redisHost = REDIS_CONTAINER.getHost();
 		Integer redisPort = REDIS_CONTAINER.getFirstMappedPort();
 
-		registry.add("spring.data.redis.host", () -> redisHost);
-		registry.add("spring.data.redis.port", () -> redisPort);
+		registry.add("spring.redis.host", () -> redisHost);
+		registry.add("spring.redis.port", () -> redisPort);
 	}
 
 	@PreDestroy
