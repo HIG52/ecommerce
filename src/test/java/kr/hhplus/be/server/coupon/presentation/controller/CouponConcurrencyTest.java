@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Sql("/couponData.sql")
 @SpringBootTest
-@ActiveProfiles("test")
+@ActiveProfiles({"test"})
 public class CouponConcurrencyTest {
 
     @Autowired
