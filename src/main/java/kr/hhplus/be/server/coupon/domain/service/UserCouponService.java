@@ -26,7 +26,7 @@ public class UserCouponService {
             throw new CustomExceptionHandler(ErrorCode.COUPON_ALREADY_DOWNLOAD);
         }
 
-        UserCoupon userCoupon = UserCoupon.createUserCoupon(couponRequest.userId(), couponRequest.couponId(), UserCouponType.N);
+        UserCoupon userCoupon = UserCoupon.createUserCoupon(couponRequest.couponId(), couponRequest.userId(), UserCouponType.N);
 
         UserCoupon resultUserCoupon = couponRepository.saveUserCoupon(userCoupon);
 

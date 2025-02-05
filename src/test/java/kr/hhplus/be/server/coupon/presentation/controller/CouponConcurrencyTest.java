@@ -6,6 +6,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -27,12 +28,23 @@ public class CouponConcurrencyTest {
     @Autowired
     private CouponRepository couponRepository;
 
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+
     @Test
     @DisplayName("여러유저가 동시에 쿠폰을 발급할때 재고의 갯수만큼만 발급된다.")
     void couponDownloadTest() throws InterruptedException {
         // given
         long couponId = 1L; // couponData.sql에서 삽입된 쿠폰 ID
         int threadCount = 10; // 동시 요청 수
+        int initialInventory = 5; // 미리 적재할 쿠폰 재고
+
+        // 쿠폰 재고를 Redis에 미리 적재
+        String inventoryKey = "coupon_inventory:" + couponId;
+        String issuedKey = "coupon_issued:" + couponId;
+        redisTemplate.opsForValue().set(inventoryKey, String.valueOf(initialInventory));
+        // 이전 발급 내역이 남아있을 수 있으므로 삭제 (없으면 무시됨)
+        redisTemplate.delete(issuedKey);
 
         ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
         CountDownLatch latch = new CountDownLatch(threadCount);
@@ -44,7 +56,6 @@ public class CouponConcurrencyTest {
             executorService.submit(() -> {
                 try {
                     CouponRequestDTO couponRequestDTO = new CouponRequestDTO(userId, couponId);
-                    System.out.println("couponId = " + couponId);
                     couponController.couponDownload(couponRequestDTO);
                     successCount.incrementAndGet();
                 } catch (Exception ignored) {
@@ -58,12 +69,12 @@ public class CouponConcurrencyTest {
         latch.await(); // 모든 쓰레드가 작업을 완료할 때까지 대기
         executorService.shutdown();
 
-        System.out.println("쿠폰 재고 : "+couponRepository.getCoupon(couponId).getCouponQuantity());
         // then
         System.out.println("성공 횟수: " + successCount);
         System.out.println("실패 횟수: " + failCount);
 
         // 검증: 재고가 5개
+        assertThat(couponRepository.getUserCouponCount(couponId)).isEqualTo(5);
         assertThat(successCount.get()).isEqualTo(5); // 성공한 요청 수
         assertThat(failCount.get()).isEqualTo(5); // 실패한 요청 수
 

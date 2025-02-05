@@ -27,7 +27,6 @@ public class CouponUsecase {
     @Transactional
     public UserCouponResponseDTO downloadUserCoupon(CouponRequestDTO couponRequestDTO) {
 
-
         CouponRequest couponRequest = new CouponRequest(
                 couponRequestDTO.userId(),
                 couponRequestDTO.couponId()
@@ -35,7 +34,7 @@ public class CouponUsecase {
 
         //CouponInfo couponLockResponse = couponService.getCouponLock(couponRequest.couponId());
 
-        // Redis를 사용하여 쿠폰 재고를 원자적으로 감소시키고, 수령자 기록을 남김
+        // Redis를 사용하여 쿠폰 재고를 원자적으로 감소시키고, 수령자 기록을 남김 TODO: 정말 다중환경에서 잘 작동되는지
         boolean redisResult = couponInventoryService.processCouponDownload(couponRequest.couponId(), couponRequest.userId());
 
         // Redis에서 재고 감소가 실패하면 (재고 부족) 예외 발생

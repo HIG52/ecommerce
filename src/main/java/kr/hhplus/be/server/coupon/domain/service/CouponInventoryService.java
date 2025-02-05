@@ -3,6 +3,10 @@ package kr.hhplus.be.server.coupon.domain.service;
 import jakarta.annotation.PostConstruct;
 import kr.hhplus.be.server.common.error.CustomExceptionHandler;
 import kr.hhplus.be.server.common.error.ErrorCode;
+import kr.hhplus.be.server.coupon.domain.repository.CouponRepository;
+import kr.hhplus.be.server.coupon.presentation.dto.CouponIssuedRequestDTO;
+import kr.hhplus.be.server.coupon.presentation.dto.UserCouponResponseDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.redis.core.RedisTemplate;
@@ -15,13 +19,15 @@ import java.util.Collections;
 public class CouponInventoryService {
 
     private final RedisTemplate<String, String> redisTemplate;
+    private final CouponRepository couponRepository;
 
     private DefaultRedisScript<Long> decrementScript;
 
     @Autowired
-    public CouponInventoryService(RedisTemplate<String, String> redisTemplate) {
+    public CouponInventoryService(RedisTemplate<String, String> redisTemplate, CouponRepository couponRepository) {
 
         this.redisTemplate = redisTemplate;
+        this.couponRepository = couponRepository;
     }
 
     @PostConstruct
@@ -69,4 +75,23 @@ public class CouponInventoryService {
         return false;
     }
 
+    public boolean issuedCouponQuantity(CouponIssuedRequestDTO couponIssuedRequestDTO) {
+        // 1. CouponRequestDTO에서 쿠폰 ID와 초기 재고 수량 추출
+        long couponId = couponIssuedRequestDTO.couponId();
+        int quantity = couponIssuedRequestDTO.quantity(); // 쿠폰 재고 수량
+        int userCouponCount = couponRepository.getUserCouponCount(couponId);
+
+        int resultQuantity = quantity - userCouponCount;
+
+        if(resultQuantity <= 0) {
+            throw new CustomExceptionHandler(ErrorCode.COUPON_NOT_ISSUED);
+        }
+        // 2. Redis에서 사용할 key 이름 설정
+        String inventoryKey = "coupon_inventory:" + couponId;
+
+        // 3. 쿠폰 재고를 Redis에 저장 (문자열로 저장)
+        redisTemplate.opsForValue().set(inventoryKey, String.valueOf(quantity));
+
+        return true;
+    }
 }
