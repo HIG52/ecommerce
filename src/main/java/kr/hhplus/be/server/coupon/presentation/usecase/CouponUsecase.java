@@ -45,8 +45,8 @@ public class CouponUsecase {
         UserCouponInfo userCouponInfo = userCouponService.downloadUserCoupon(couponRequest);
 
         return new UserCouponResponseDTO(
-                userCouponInfo.userId(),
                 userCouponInfo.couponId(),
+                userCouponInfo.userId(),
                 userCouponInfo.useYn()
         );
     }
