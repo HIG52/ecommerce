@@ -18,5 +18,7 @@ public interface CouponRepository {
 
     Coupon saveCoupon(Coupon coupon);
 
-    UserCoupon getMyUserCoupon(long l, long l1);
+    UserCoupon getMyUserCoupon(long userId, long couponId);
+
+    int getUserCouponCount(long couponId);
 }

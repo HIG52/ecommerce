@@ -27,6 +27,7 @@ public enum ErrorCode {
     COUPON_ALREADY_DOWNLOAD(400, "C004", "발급된 쿠폰입니다."),
     COUPON_USE_FAILED(400, "C005", "쿠폰 사용 처리에 실패하였습니다."),
     COUPON_IS_EXPIRED(400, "C006", "만료된 쿠폰입니다."),
+    COUPON_NOT_ISSUED(400, "C007", "재고가 존재하지 않는 쿠폰입니다."),
 
     // 주문
     ORDER_NOT_FOUND(404, "O001", "주문을 조회할 수 없습니다."),
