@@ -2,6 +2,7 @@ package kr.hhplus.be.server.order.infrastructure.repositoryImpl;
 
 import kr.hhplus.be.server.order.domain.entity.Order;
 import kr.hhplus.be.server.order.domain.entity.OrderDetail;
+import kr.hhplus.be.server.order.domain.entity.ProductIdProjection;
 import kr.hhplus.be.server.order.domain.repository.OrderRepository;
 import kr.hhplus.be.server.order.infrastructure.repository.OrderDetailJpaRepository;
 import kr.hhplus.be.server.order.infrastructure.repository.OrderJpaRepository;
@@ -35,7 +36,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     @Override
-    public List<OrderDetail> findTop5OrderDetailsGroupByProductId(LocalDateTime startDate, LocalDateTime endDate) {
+    public List<ProductIdProjection> findTop5OrderDetailsGroupByProductId(LocalDateTime startDate, LocalDateTime endDate) {
         return orderDetailJpaRepository.findTop5OrderDetailsGroupByProductId(startDate, endDate);
     }
 
