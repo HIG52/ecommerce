@@ -2,6 +2,14 @@
 GET http://localhost:8080/api/coupons
 Content-Type: application/json
 
+### 쿠폰 재고 레디스에 적재
+POST http://localhost:8080/api/coupons/issued
+Content-Type: application/json
+
+{
+  "couponId": 2,
+  "quantity": 10
+}
 
 ### 유효한 유저로 쿠폰 다운로드
 POST http://localhost:8080/api/coupons/download
@@ -9,7 +17,7 @@ Content-Type: application/json
 
 {
   "userId": 1,
-  "couponId": 1
+  "couponId": 2
 }
 
 

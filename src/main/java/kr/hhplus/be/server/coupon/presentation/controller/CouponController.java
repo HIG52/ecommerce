@@ -1,12 +1,10 @@
 package kr.hhplus.be.server.coupon.presentation.controller;
 
+import kr.hhplus.be.server.coupon.domain.service.CouponInventoryService;
 import kr.hhplus.be.server.coupon.domain.service.CouponService;
 import kr.hhplus.be.server.coupon.domain.service.info.CouponInfo;
 import kr.hhplus.be.server.coupon.domain.service.info.CouponsInfo;
-import kr.hhplus.be.server.coupon.presentation.dto.CouponRequestDTO;
-import kr.hhplus.be.server.coupon.presentation.dto.CouponResponseDTO;
-import kr.hhplus.be.server.coupon.presentation.dto.UserCouponResponseDTO;
-import kr.hhplus.be.server.coupon.presentation.dto.CouponsResponseDTO;
+import kr.hhplus.be.server.coupon.presentation.dto.*;
 import kr.hhplus.be.server.coupon.presentation.usecase.CouponUsecase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +19,7 @@ public class CouponController implements CouponControllerDocs {
 
     private final CouponService couponService;
     private final CouponUsecase couponUsecase;
+    private final CouponInventoryService couponInventoryService;
 
     @GetMapping("/api/coupons")
     public ResponseEntity<List<CouponsResponseDTO>> getCoupons(
@@ -69,6 +68,15 @@ public class CouponController implements CouponControllerDocs {
         );
 
         return ResponseEntity.status(HttpStatus.OK).body(couponResponseDTO);
+    }
+
+    @PostMapping("/api/coupons/issued")
+    public ResponseEntity<Boolean> issuedCouponQuantity(
+            @RequestBody CouponIssuedRequestDTO couponIssuedRequestDTO) {
+
+        Boolean result = couponInventoryService.issuedCouponQuantity(couponIssuedRequestDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
 }

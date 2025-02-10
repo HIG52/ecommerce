@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
@@ -38,6 +39,9 @@ class CouponControllerTest {
     @Autowired
     private CouponUsecase couponUsecase;
 
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+
     @Test
     @DisplayName("GET /api/coupons 요청시 쿠폰 목록을 조회한다.")
     void getCoupons() throws Exception {
@@ -61,6 +65,15 @@ class CouponControllerTest {
     void couponDownload() throws Exception {
         long couponId = 2L;
         long userId = 1L;
+        int initialInventory = 5; // 미리 적재할 쿠폰 재고
+
+        // 쿠폰 재고를 Redis에 미리 적재
+        String inventoryKey = "coupon_inventory:" + couponId;
+        String issuedKey = "coupon_issued:" + couponId;
+        redisTemplate.opsForValue().set(inventoryKey, String.valueOf(initialInventory));
+        // 이전 발급 내역이 남아있을 수 있으므로 삭제 (없으면 무시됨)
+        redisTemplate.delete(issuedKey);
+
         CouponRequestDTO couponRequestDTO = new CouponRequestDTO(userId, couponId);
 
         mockMvc.perform(post("/api/coupons/download")
@@ -71,7 +84,6 @@ class CouponControllerTest {
                 .andExpect(jsonPath("$.userId").value(1L))
                 .andExpect(jsonPath("$.couponId").value(2L))
                 .andExpect(jsonPath("$.useYn").value("N"));
-
 
     }
 
