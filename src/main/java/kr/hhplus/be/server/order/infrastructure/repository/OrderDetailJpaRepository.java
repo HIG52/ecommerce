@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface OrderDetailJpaRepository extends JpaRepository<OrderDetail, Long> {
 
-    @Query(value = "SELECT MAX(product_id) AS product_id " +
+    @Query(value = "SELECT product_id AS product_id " +
             "FROM order_detail " +
             "WHERE created_at BETWEEN NOW() - INTERVAL 3 DAY AND NOW() " +
             "GROUP BY product_id " +
