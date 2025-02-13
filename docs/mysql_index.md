@@ -98,6 +98,7 @@ LIMIT 5;
      - 마지막 단계에서 order_detail 테이블을 1,000,000건 정도 스캔하는데, 이때 인덱스 없이 모든 행을 읽으므로 많은 비용이 발생한다.
   2. 임시 테이블 생성 및 정렬 (Using temporary; Using filesort)
      - GROUP BY, ORDER BY 절에서 임시 테이블을 생성하고 정렬을 수행하는데, 이로 인해 성능 저하가 발생한다.
+
 - 개선 방안 : 
   - 인덱스 추가 : `create_at` 컬럼의 인덱스 추가 또는 상황에 따라 `(create_at, product_id, order_quantity)` 와 같은 복합인덱스를 사용한다.
 
@@ -177,6 +178,7 @@ CREATE INDEX idx_order_detail_created_product
 |   id   |select_type|    table     | partitions | type | possible_keys | key | key_len | ref |  rowd  | filtered |                   Extra                    |
 |:------:|:--:|:------------:|:----------:|:----:|:-------------:|:---:|:-------:|:---:|:------:|:--------:|:------------------------------------------:|
 | 1 |SIMPLE| order_detail |            | ALL  |               |     |         |     | 996779 |  11.11   |Using where; Using temporary; Using filesort|
+
 - Limit: 5 row(s)  (cost=2.6..2.6 rows=0) (actual time=366..366 rows=5 loops=1)
 - Sort: derived.total_quantity DESC, limit input to 5 row(s) per chunk  (cost=2.6..2.6 rows=0) (actual time=366..366 rows=5 loops=1)
 - Table scan on derived  (cost=2.5..2.5 rows=0) (actual time=366..366 rows=20 loops=1)
@@ -196,6 +198,7 @@ CREATE INDEX idx_order_detail_created_product
 |:------:|:--:|:------------:|:----------:|:----:|:-------------:|:---:|:-------:|:---:|:------:|:--------:|:------------------------------------------:|
 | 1 |SIMPLE| order_detail |            | range  | idx_order_detail_created_product_quantity | idx_order_detail_created_product_quantity |    8    |     | 455592 |  100   |Using where; Using index; Using temporary; Using filesort|
 
+
 - Limit: 5 row(s)  (cost=2.6..2.6 rows=0) (actual time=119..119 rows=5 loops=1)
 - Sort: derived.total_quantity DESC, limit input to 5 row(s) per chunk  (cost=2.6..2.6 rows=0) (actual time=119..119 rows=5 loops=1)
 - Table scan on derived  (cost=2.5..2.5 rows=0) (actual time=119..119 rows=20 loops=1)
@@ -210,7 +213,6 @@ CREATE INDEX idx_order_detail_created_product
 
 temporary를 사용하지 않기위하여 서브쿼리를 사용하고 인덱스또한 걸어봤지만 결국 기본 그룹바이에서 복합인덱스를 사용하는것이
 가장 빠르게 나온것을 확인할수 있엇다. 이론상으로는 가장 빠르면 안됐지만 이것은 현재 들어가있는데이터의 차이라고도 볼수 있을거같다.
-
 
 ---
 
