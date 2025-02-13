@@ -69,7 +69,7 @@
 
 - EXPLAIN 실행 : 
 ```
-EXPLAIN
+EXPLAIN ANALYZE
 SELECT product_id AS product_id
 FROM order_detail
 WHERE created_at BETWEEN NOW() - INTERVAL 3 DAY AND NOW()
@@ -84,10 +84,20 @@ LIMIT 5;
 |:------:|:--:|:------------:|:----------:|:----:|:-------------:|:---:|:-------:|:---:|:------:|:--------:|:------------------------------------------:|
 | 1 |SIMPLE| order_detail |            | ALL  |               |     |         |     | 996779 |  11.11   |Using where; Using temporary; Using filesort|
 
+- Limit: 5 row(s)  (cost=2.6..2.6 rows=0) (actual time=366..366 rows=5 loops=1)
+- Sort: derived.total_quantity DESC, limit input to 5 row(s) per chunk  (cost=2.6..2.6 rows=0) (actual time=366..366 rows=5 loops=1)
+- Table scan on derived  (cost=2.5..2.5 rows=0) (actual time=366..366 rows=20 loops=1)
+- Materialize  (cost=0..0 rows=0) (actual time=366..366 rows=20 loops=1)
+- Table scan on <temporary>  (actual time=366..366 rows=20 loops=1)
+- Aggregate using temporary table  (actual time=366..366 rows=20 loops=1)
+- Filter: (order_detail.created_at between <cache>((now() - interval 3 day)) and <cache>(now()))  (cost=12840 rows=110854) (actual time=0.516..305 rows=271700 loops=1)
+- Table scan on order_detail  (cost=12840 rows=997782) (actual time=0.492..259 rows=1e+6 loops=1)
+
 - 문제점 :
-  - 전체 테이블 스캔
-    - `type: ALL` : 인덱스를 사용하지 않고 전체 테이블 스캔중
-    - 전체 약 100만개의 행을 읽기 때문에 성능 저하가 발생할수 있음
+  1. order_detail 테이블의 전체 스캔 (Full Table Scan)
+     - 마지막 단계에서 order_detail 테이블을 1,000,000건 정도 스캔하는데, 이때 인덱스 없이 모든 행을 읽으므로 많은 비용이 발생한다.
+  2. 임시 테이블 생성 및 정렬 (Using temporary; Using filesort)
+     - GROUP BY, ORDER BY 절에서 임시 테이블을 생성하고 정렬을 수행하는데, 이로 인해 성능 저하가 발생한다.
 
 - 개선 방안 : 
   - 인덱스 추가 : `create_at` 컬럼의 인덱스 추가 또는 상황에 따라 `(create_at, product_id, order_quantity)` 와 같은 복합인덱스를 사용한다.
@@ -169,6 +179,16 @@ CREATE INDEX idx_order_detail_created_product
 |:------:|:--:|:------------:|:----------:|:----:|:-------------:|:---:|:-------:|:---:|:------:|:--------:|:------------------------------------------:|
 | 1 |SIMPLE| order_detail |            | ALL  |               |     |         |     | 996779 |  11.11   |Using where; Using temporary; Using filesort|
 
+- Limit: 5 row(s)  (cost=2.6..2.6 rows=0) (actual time=366..366 rows=5 loops=1)
+- Sort: derived.total_quantity DESC, limit input to 5 row(s) per chunk  (cost=2.6..2.6 rows=0) (actual time=366..366 rows=5 loops=1)
+- Table scan on derived  (cost=2.5..2.5 rows=0) (actual time=366..366 rows=20 loops=1)
+- Materialize  (cost=0..0 rows=0) (actual time=366..366 rows=20 loops=1)
+- Table scan on <temporary>  (actual time=366..366 rows=20 loops=1)
+- Aggregate using temporary table  (actual time=366..366 rows=20 loops=1)
+- Filter: (order_detail.created_at between <cache>((now() - interval 3 day)) and <cache>(now()))  (cost=12840 rows=110854) (actual time=0.516..305 rows=271700 loops=1)
+- Table scan on order_detail  (cost=12840 rows=997782) (actual time=0.492..259 rows=1e+6 loops=1)
+
+
 - 쿼리 수행 시간 : 약 200~250ms 소요
 
 
@@ -178,10 +198,22 @@ CREATE INDEX idx_order_detail_created_product
 |:------:|:--:|:------------:|:----------:|:----:|:-------------:|:---:|:-------:|:---:|:------:|:--------:|:------------------------------------------:|
 | 1 |SIMPLE| order_detail |            | range  | idx_order_detail_created_product_quantity | idx_order_detail_created_product_quantity |    8    |     | 455592 |  100   |Using where; Using index; Using temporary; Using filesort|
 
+
+- Limit: 5 row(s)  (cost=2.6..2.6 rows=0) (actual time=119..119 rows=5 loops=1)
+- Sort: derived.total_quantity DESC, limit input to 5 row(s) per chunk  (cost=2.6..2.6 rows=0) (actual time=119..119 rows=5 loops=1)
+- Table scan on derived  (cost=2.5..2.5 rows=0) (actual time=119..119 rows=20 loops=1)
+- Materialize  (cost=0..0 rows=0) (actual time=119..119 rows=20 loops=1)
+- Table scan on <temporary>  (actual time=119..119 rows=20 loops=1)
+- Aggregate using temporary table  (actual time=119..119 rows=20 loops=1)
+- Filter: (order_detail.created_at between <cache>((now() - interval 3 day)) and <cache>(now()))  (cost=101600 rows=498891) (actual time=0.36..63.5 rows=273457 loops=1)
+- Covering index range scan on order_detail using idx_order_detail_created_product_quantity over ('2025-02-10 15:36:31.000000' <= created_at <= '2025-02-13 15:36:31.000000')  (cost=101600 rows=498891) (actual time=0.353..48.6 rows=273457 loops=1)
+
+
 - 쿼리 수행 시간 : 약 100~150ms 소요
 
+temporary를 사용하지 않기위하여 서브쿼리를 사용하고 인덱스또한 걸어봤지만 결국 기본 그룹바이에서 복합인덱스를 사용하는것이
+가장 빠르게 나온것을 확인할수 있엇다. 이론상으로는 가장 빠르면 안됐지만 이것은 현재 들어가있는데이터의 차이라고도 볼수 있을거같다.
 
-    
 ---
 
 ## 결과
