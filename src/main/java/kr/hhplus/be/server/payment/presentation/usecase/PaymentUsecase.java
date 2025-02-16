@@ -3,6 +3,7 @@ package kr.hhplus.be.server.payment.presentation.usecase;
 import kr.hhplus.be.server.balance.domain.service.BalanceService;
 import kr.hhplus.be.server.balance.domain.service.request.BalanceDecreaseRequest;
 import kr.hhplus.be.server.balance.domain.service.info.BalanceInfo;
+import kr.hhplus.be.server.dataflatform.presentation.event.DataTransmissionEvent;
 import kr.hhplus.be.server.order.domain.service.OrderService;
 import kr.hhplus.be.server.payment.domain.service.PaymentService;
 import kr.hhplus.be.server.payment.domain.service.request.PaymentCreateRequest;
@@ -13,6 +14,7 @@ import kr.hhplus.be.server.common.type.OrderStatusType;
 import kr.hhplus.be.server.common.type.PaymentStatusType;
 import kr.hhplus.be.server.dataflatform.DataPlatformService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +25,9 @@ public class PaymentUsecase {
     private final PaymentService paymentService;
     private final BalanceService balanceService;
     private final OrderService orderService;
-    private final DataPlatformService dataPlatformService;
+    //private final DataPlatformService dataPlatformService;
+
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public PaymentResponseDTO createPayment(PaymentRequestDTO paymentRequestDTO) {
@@ -46,10 +50,15 @@ public class PaymentUsecase {
         orderService.updateOrderStatus(paymentRequestDTO.orderId(), OrderStatusType.PAYMENT_COMPLETED);
 
         //데이터플랫폼 데이터 전송
-        boolean isData = dataPlatformService.sendData(balanceInfo);
+        /*boolean isData = dataPlatformService.sendData(balanceInfo);
         if(!isData) {
             throw new IllegalStateException("데이터 전송 실패");
-        }
+        }*/
+
+        //이벤트 발행
+        DataTransmissionEvent event = new DataTransmissionEvent(this, balanceInfo);
+        applicationEventPublisher.publishEvent(event);
+
         return new PaymentResponseDTO(
                 paymentInfo.paymentId()
         );

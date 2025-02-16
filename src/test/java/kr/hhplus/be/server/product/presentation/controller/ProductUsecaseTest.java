@@ -25,8 +25,15 @@ public class ProductUsecaseTest {
     @Test
     @DisplayName("상위 상품 5개 조회")
     void findTopProducts() {
+        long startTime = System.nanoTime();
+
         // When
         ResponseEntity<List<ProductsResponseDTO>> response = productController.getTopProduct();
+        long endTime = System.nanoTime();
+        // 실행 시간 계산 (밀리초 단위로 변환)
+        long durationInNano = endTime - startTime;
+        double durationInMs = durationInNano / 1_000_000.0;
+        System.out.println("getTopProduct() 실행 시간: " + durationInMs + " ms");
 
         // Then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
