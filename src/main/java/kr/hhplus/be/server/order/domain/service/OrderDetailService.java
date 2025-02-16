@@ -3,7 +3,9 @@ package kr.hhplus.be.server.order.domain.service;
 import kr.hhplus.be.server.common.error.CustomExceptionHandler;
 import kr.hhplus.be.server.common.error.ErrorCode;
 import kr.hhplus.be.server.order.domain.entity.OrderDetail;
+import kr.hhplus.be.server.order.domain.entity.ProductIdProjection;
 import kr.hhplus.be.server.order.domain.repository.OrderRepository;
+import kr.hhplus.be.server.order.domain.service.info.ProductIdInfo;
 import kr.hhplus.be.server.order.domain.service.request.OrderDetailsCreateRequest;
 import kr.hhplus.be.server.order.domain.service.info.OrderDetailsInfo;
 import lombok.RequiredArgsConstructor;
@@ -50,17 +52,14 @@ public class OrderDetailService {
 
     }
 
-    public List<OrderDetailsInfo> getTopOrderDetails() {
+    public List<ProductIdInfo> getTopOrderDetails() {
         LocalDateTime endDate = LocalDateTime.now();
         LocalDateTime startDate = endDate.minusDays(3);
-        List<OrderDetail> orderDetails = orderRepository.findTop5OrderDetailsGroupByProductId(startDate, endDate);
+        List<ProductIdProjection> orderDetails = orderRepository.findTop5OrderDetailsGroupByProductId(startDate, endDate);
 
         return orderDetails.stream()
-                .map(orderDetail -> new OrderDetailsInfo(
-                        orderDetail.getOrderId(),
-                        orderDetail.getProductId(),
-                        orderDetail.getOrderQuantity(),
-                        orderDetail.getOrderAmount()
+                .map(orderDetail -> new ProductIdInfo(
+                        orderDetail.getProductId()
                 ))
                 .toList();
     }
