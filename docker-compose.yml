@@ -15,7 +15,7 @@ services:
       - default
 
   kafka:
-    image: public.ecr.aws/bitnami/kafka:3.5.1
+    image: bitnami/kafka:3.5.1
     ports:
       - "9094:9094"
     volumes:
