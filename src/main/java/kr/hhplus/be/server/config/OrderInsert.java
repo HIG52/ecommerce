@@ -1,4 +1,5 @@
 package kr.hhplus.be.server.config;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,9 +15,9 @@ public class OrderInsert {
     private static final String USER = "application";
     private static final String PASSWORD = "application";
 
-    private static final int TOTAL_RECORDS = 1_000_000; // 총 100만 건
-    private static final int BATCH_SIZE = 10_000; // 배치 크기
-    private static final int THREAD_COUNT = 10; // 병렬 스레드 개수
+    private static final int TOTAL_RECORDS = 1_000_000;
+    private static final int BATCH_SIZE = 10_000;
+    private static final int THREAD_COUNT = 10;
 
     public static void main(String[] args) {
         ExecutorService executor = Executors.newFixedThreadPool(THREAD_COUNT);
@@ -45,11 +46,10 @@ public class OrderInsert {
                  PreparedStatement orderDetailStmt = conn.prepareStatement(insertOrderDetailSQL)) {
 
                 for (int i = startId; i <= endId; i++) {
-                    // 주문 정보 생성
-                    int userId = random.nextInt(100) + 1;  // 1~100 사이 랜덤 사용자
-                    int productId = 101 + (i % 20); // 101~120 사이 상품
-                    int quantity = (i % 5) + 1;  // 1~5 랜덤 수량
-                    int productPrice = (500 + (productId - 101) * 100); // 상품 가격 (500 ~ 2400)
+                    int userId = random.nextInt(100) + 1;
+                    int productId = 101 + (i % 20);
+                    int quantity = (i % 5) + 1;
+                    int productPrice = (500 + (productId - 101) * 100);
                     int totalAmount = productPrice * quantity;
 
                     String paymentStatus = switch (i % 3) {
@@ -63,20 +63,22 @@ public class OrderInsert {
                         default -> "CANCELLED";
                     };
 
-                    // created_at 및 modify_at 랜덤 생성
                     LocalDateTime createdAt;
                     if (random.nextDouble() < 0.3) {
-                        // 최근 3일 내 30% 확률
                         createdAt = LocalDateTime.now().minusDays(random.nextInt(3));
                     } else {
-                        // 최근 3일 이후 랜덤 날짜 (예: 최근 3일 + 0~30일 랜덤)
                         createdAt = LocalDateTime.now().minusDays(3 + random.nextInt(30));
                     }
 
-                    // modify_at은 created_at 이후 0~5일 내 랜덤 설정
-                    LocalDateTime modifyAt = createdAt.plusDays(random.nextInt(6));
+                    createdAt = createdAt.withHour(random.nextInt(24))
+                            .withMinute(random.nextInt(60))
+                            .withSecond(random.nextInt(60));
 
-                    // 주문 데이터 추가
+                    LocalDateTime modifyAt = createdAt.plusDays(random.nextInt(6))
+                            .withHour(random.nextInt(24))
+                            .withMinute(random.nextInt(60))
+                            .withSecond(random.nextInt(60));
+
                     orderStmt.setInt(1, i);
                     orderStmt.setString(2, createdAt.format(dateTimeFormatter));
                     orderStmt.setString(3, modifyAt.format(dateTimeFormatter));
@@ -86,7 +88,6 @@ public class OrderInsert {
                     orderStmt.setString(7, status);
                     orderStmt.addBatch();
 
-                    // 주문 상세 데이터 추가
                     orderDetailStmt.setInt(1, i);
                     orderDetailStmt.setInt(2, i);
                     orderDetailStmt.setInt(3, quantity);
@@ -96,7 +97,6 @@ public class OrderInsert {
                     orderDetailStmt.setInt(7, productId);
                     orderDetailStmt.addBatch();
 
-                    // 배치 실행 및 커밋
                     if (i % BATCH_SIZE == 0) {
                         orderStmt.executeBatch();
                         orderDetailStmt.executeBatch();
@@ -105,7 +105,6 @@ public class OrderInsert {
                     }
                 }
 
-                // 남은 데이터 커밋
                 orderStmt.executeBatch();
                 orderDetailStmt.executeBatch();
                 conn.commit();
