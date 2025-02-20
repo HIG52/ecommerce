@@ -9,4 +9,6 @@ public interface DataPlatFormEventJpaRepository extends JpaRepository<DataPlatFo
 
 
     List<DataPlatFormEvent> findByStatus(String status);
+
+    DataPlatFormEvent findByAggregateId(Long orderId);
 }

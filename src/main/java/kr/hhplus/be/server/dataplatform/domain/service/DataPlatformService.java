@@ -26,4 +26,10 @@ public class DataPlatformService {
         DataPlatFormEvent dataPlatFormEvent = DataPlatFormEvent.createDataPlatFormEvent(paymentRequestDTO);
         dataPlatFormRepository.save(dataPlatFormEvent);
     }
+
+    public void updateOutboxStatus(Long orderId) {
+        DataPlatFormEvent dataPlatFormEvent = dataPlatFormRepository.findByAggregateId(orderId);
+        dataPlatFormEvent.updateStatus("after");
+        dataPlatFormRepository.save(dataPlatFormEvent);
+    }
 }

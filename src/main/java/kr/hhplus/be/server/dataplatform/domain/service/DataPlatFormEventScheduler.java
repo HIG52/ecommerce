@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -28,13 +29,16 @@ public class DataPlatFormEventScheduler {
         List<DataPlatFormEvent> beforeEvents = dataPlatFormRepository.findByStatus("before");
         for (DataPlatFormEvent event : beforeEvents) {
             try {
-                // Kafka 전송
-                kafkaProducer.sendMessage("my-topic", event.getPayload());
 
-                // 전송 성공 -> 상태 업데이트
-                event.updateStatus("after");
+                if (event.getCreatedAt().isBefore(LocalDateTime.now().minusMinutes(5))) {
+                    // Kafka 전송
+                    kafkaProducer.sendMessage("my-topic", event.getPayload());
 
-                dataPlatFormRepository.save(event);
+                    // 전송 성공 -> 상태 업데이트
+                    event.updateStatus("after");
+
+                    dataPlatFormRepository.save(event);
+                }
 
             } catch (Exception e) {
                 log.error("Failed to send event to Kafka. eventId={}", event.getId(), e);

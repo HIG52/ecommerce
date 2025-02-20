@@ -1,5 +1,7 @@
 package kr.hhplus.be.server.dataplatform.domain.entity;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.*;
 import kr.hhplus.be.server.payment.presentation.dto.PaymentRequestDTO;
 import lombok.Getter;
@@ -10,6 +12,9 @@ import java.time.LocalDateTime;
 @Getter
 @Table(name = "data_flat_form_event")
 public class DataPlatFormEvent {
+
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,9 +62,14 @@ public class DataPlatFormEvent {
     }
 
     public static DataPlatFormEvent createDataPlatFormEvent(PaymentRequestDTO paymentRequestDTO) {
-        return new DataPlatFormEvent(
-                paymentRequestDTO.orderId(), "payment_complate", paymentRequestDTO.toString(), "before"
-        );
+        try {
+            String jsonPayload = objectMapper.writeValueAsString(paymentRequestDTO);
+            return new DataPlatFormEvent(
+                    paymentRequestDTO.orderId(), "payment_complate", jsonPayload, "before"
+            );
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Error converting PaymentRequestDTO to JSON", e);
+        }
     }
 
     public void updateStatus(String status){

@@ -15,6 +15,11 @@ public class DataPlatFormRepositoryImpl implements DataPlatFormRepository {
         return dataPlatFormEventJpaRepository.findByStatus(status);
     }
 
+    @Override
+    public DataPlatFormEvent findByAggregateId(Long orderId) {
+        return dataPlatFormEventJpaRepository.findByAggregateId(orderId);
+    }
+
     private final DataPlatFormEventJpaRepository dataPlatFormEventJpaRepository;
 
     @Autowired

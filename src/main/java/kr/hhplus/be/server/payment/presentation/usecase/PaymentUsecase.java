@@ -49,18 +49,9 @@ public class PaymentUsecase {
         orderService.updateOrderPaymentStatus(paymentRequestDTO.orderId(), PaymentStatusType.SUCCESS);
         orderService.updateOrderStatus(paymentRequestDTO.orderId(), OrderStatusType.PAYMENT_COMPLETED);
 
-        //데이터플랫폼 데이터 전송
-        /*boolean isData = dataPlatformService.sendData(balanceInfo);
-        if(!isData) {
-            throw new IllegalStateException("데이터 전송 실패");
-        }*/
-
         //이벤트 발행
         DataTransmissionEvent event = new DataTransmissionEvent(this, paymentRequestDTO);
         applicationEventPublisher.publishEvent(event);
-
-        //데이터플랫폼 이벤트 아웃박스 테이블 저장
-        //dataPlatformService.createDataFlatFormEvent(paymentRequestDTO);
 
         return new PaymentResponseDTO(
                 paymentInfo.paymentId()

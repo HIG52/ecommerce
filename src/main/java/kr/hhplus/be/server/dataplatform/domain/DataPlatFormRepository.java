@@ -8,4 +8,6 @@ public interface DataPlatFormRepository {
     void save(DataPlatFormEvent dataPlatFormEvent);
 
     List<DataPlatFormEvent> findByStatus(String status);
+
+    DataPlatFormEvent findByAggregateId(Long orderId);
 }
