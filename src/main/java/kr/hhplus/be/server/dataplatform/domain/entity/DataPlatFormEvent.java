@@ -61,4 +61,8 @@ public class DataPlatFormEvent {
                 paymentRequestDTO.orderId(), "payment_complate", paymentRequestDTO.toString(), "before"
         );
     }
+
+    public void updateStatus(String status){
+        this.status = status;
+    }
 }

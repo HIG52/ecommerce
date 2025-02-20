@@ -60,6 +60,8 @@ dependencies {
 
 	// kafka
 	implementation("org.springframework.kafka:spring-kafka")
+	testImplementation("org.testcontainers:kafka")
+
 }
 
 tasks.withType<Test> {

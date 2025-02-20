@@ -6,8 +6,14 @@ import kr.hhplus.be.server.dataplatform.infrastructure.repository.DataPlatFormEv
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class DataPlatFormRepositoryImpl implements DataPlatFormRepository {
+    @Override
+    public List<DataPlatFormEvent> findByStatus(String status) {
+        return dataPlatFormEventJpaRepository.findByStatus(status);
+    }
 
     private final DataPlatFormEventJpaRepository dataPlatFormEventJpaRepository;
 
