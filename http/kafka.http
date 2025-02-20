@@ -1,0 +1,7 @@
+### 카프카 메시지 테스트
+POST http://localhost:8080/publish
+Content-Type: application/json
+
+{
+  "message": "test message"
+}
