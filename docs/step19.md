@@ -60,3 +60,7 @@ scenarios:
 
 ## 부하 테스트 결과
 https://app.artillery.io/olej5drvnso5b/load-tests/t5nq6_nfqnw4fb8tjxbx9yfxaa6xgpcry6w_qjtd
+
+### 비고 
+원래는 도커에 올려서 하려고 했으나 도커 윈도우 관련 오류들로인해 수정에 시간이 오래걸릴거 같아 
+로컬에서 진행하였습니다. 
