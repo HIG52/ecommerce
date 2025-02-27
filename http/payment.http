@@ -1,5 +1,5 @@
 ### 결제 생성 - 유효한 데이터
-POST http://localhost:8080/api/payments/
+POST http://localhost:8080/api/payments
 Content-Type: application/json
 
 {
@@ -8,7 +8,7 @@ Content-Type: application/json
 }
 
 ### 결제 생성 - 존재하지 않는 유저
-POST http://localhost:8080/api/payments/
+POST http://localhost:8080/api/payments
 Content-Type: application/json
 
 {
@@ -17,7 +17,7 @@ Content-Type: application/json
 }
 
 ### 결제 생성 - 존재하지 않는 주문
-POST http://localhost:8080/api/payments/
+POST http://localhost:8080/api/payments
 Content-Type: application/json
 
 {
@@ -26,7 +26,7 @@ Content-Type: application/json
 }
 
 ### 결제 생성 - 만료된 주문
-POST http://localhost:8080/api/payments/
+POST http://localhost:8080/api/payments
 Content-Type: application/json
 
 {

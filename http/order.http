@@ -1,5 +1,5 @@
 ### 주문 생성 - 유효한 데이터
-POST http://localhost:8080/api/orders/
+POST http://localhost:8080/api/orders
 Content-Type: application/json
 
 {
@@ -11,7 +11,7 @@ Content-Type: application/json
 }
 
 ### 주문 생성 - 존재하지 않는 유저
-POST http://localhost:8080/api/orders/
+POST http://localhost:8080/api/orders
 Content-Type: application/json
 
 {
@@ -23,7 +23,7 @@ Content-Type: application/json
 }
 
 ### 주문 생성 - 품절된 상품 포함
-POST http://localhost:8080/api/orders/
+POST http://localhost:8080/api/orders
 Content-Type: application/json
 
 {

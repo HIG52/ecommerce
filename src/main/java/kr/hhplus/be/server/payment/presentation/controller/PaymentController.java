@@ -28,7 +28,7 @@ public class PaymentController implements PaymentControllerDocs {
                             content = @Content(schema = @Schema(implementation = PaymentResponseDTO.class)))
             }
     )
-    @PostMapping("/api/payments/")
+    @PostMapping("/api/payments")
     public ResponseEntity<PaymentResponseDTO> payments(
             @RequestBody PaymentRequestDTO paymentRequestDTO) {
 
