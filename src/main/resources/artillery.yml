@@ -2,17 +2,17 @@ config:
   target: 'http://localhost:8080'
   phases:
     - duration: 30
-      arrivalRate: 10
+      arrivalRate: 20
       name: 'Warm up'
     - duration: 20
       arrivalRate: 20
-      rampTo: 200
+      rampTo: 500
       name: 'Ramp up'
     - duration: 20
-      arrivalRate: 200
+      arrivalRate: 500
       name: 'Sustained max load'
     - duration: 30
-      arrivalRate: 200
+      arrivalRate: 500
       rampTo: 20
       name: 'Ramp down'
   payload:
@@ -21,50 +21,14 @@ config:
       - 'userId'
       - 'couponId'
 scenarios:
-  - name: "주문 및 결제"
+  - name: "쿠폰 발급"
     flow:
       - post:
-          url: '/api/orders'
+          url: "/api/coupons/download"
           json:
-            userId: 1
-            productIds: [101, 102, 103]
-            productQuantities: [1, 1, 1]
-            productPrices: [500, 600, 700]
-            orderTotalAmount: 1800
-          capture:
-            json: "$.orderId"
-            as: orderId
-      - post:
-          url: '/api/payments'
-          json:
-            userId: 1
-            orderId: "{{ orderId }}"
+            userId: "{{ userId }}"
+            couponId: "{{ couponId }}"
 
 #실행 명령어
 #artillery run artillery.yml --record --key a9_tfZ7HbV_Uvf7qXrAE7SGC11faP6kTYOm
 #해당 명령어 실행시 artillery.io 사이트에 접속하여 결과를 확인할 수 있음
-
-#-----------------------------------------------------------------------------------
-
-#Warm up
-#
-#duration: 30: 30초 동안 진행
-#arrivalRate: 10: 초당 10명의 가상 사용자가 시작됨
-#목적: 시스템을 서서히 준비시키고, 기본적인 응답 상태를 확인
-#Ramp up
-#
-#duration: 20: 20초 동안 진행
-#arrivalRate: 20: 시작 시 초당 20명
-#rampTo: 200: 20초 후 초당 200명으로 증가
-#목적: 부하를 점진적으로 늘려 시스템의 최대 처리량을 테스트
-#Sustained max load
-#
-#duration: 20: 20초 동안 진행
-#arrivalRate: 200: 고정된 초당 200명의 가상 사용자
-#목적: 최대 부하 상태에서의 시스템 안정성과 응답 속도 확인
-#Ramp down
-#
-#duration: 30: 30초 동안 진행
-#arrivalRate: 200: 시작 시 초당 200명
-#rampTo: 20: 30초 후 초당 20명으로 감소
-#목적: 부하를 점진적으로 줄이며, 시스템이 부하 감소에 어떻게 반응하는지 확인

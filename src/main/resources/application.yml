@@ -1,6 +1,5 @@
 server:
   port: 8080
-
 spring:
   application:
     name: hhplus
@@ -17,20 +16,20 @@ spring:
   logging:
     level:
       level:
-        root: DEBUG
+        root: DEBUG  # 모든 로그를 DEBUG 수준으로 출력
         org:
           hibernate:
             orm:
               jdbc:
-                binding: TRACE
-            SQL: DEBUG
+                binding: TRACE  # Hibernate 파라미터 바인딩 로그
+            SQL: DEBUG  # Hibernate SQL 쿼리 로그
             type:
               descriptor:
                 sql:
-                  BasicBinder: TRACE
-          springframework: DEBUG
-    pattern:
-      console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+                  BasicBinder: TRACE  # Hibernate 파라미터 바인딩 로그
+          springframework: DEBUG  # Spring 관련 디버깅 로그
+      pattern:
+        console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
       org:
         hibernate:
           type:
@@ -50,28 +49,21 @@ spring:
     properties:
       hibernate.timezone.default_storage: NORMALIZE_UTC
       hibernate.jdbc.time_zone: UTC
-  kafka:
-    # 내부 통신을 위해 kafka 서비스의 내부 리스너 사용 (9092)
-    bootstrap-servers: localhost:9094  # 기본값은 그대로 두고, 아래 프로파일에서 덮어씁니다.
 
 ---
 spring.config.activate.on-profile: local, test
 
 spring:
   datasource:
-    # docker-compose 내부 네트워크에서 MySQL 서비스는 "mysql" 이름으로 접근
-    url: jdbc:mysql://mysql:3306/hhplus?characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/hhplus?characterEncoding=UTF-8&serverTimezone=UTC
     username: application
     password: application
   data:
     redis:
-      # Redis가 별도로 구성되어 있으면 해당 호스트를 사용하세요.
-      # 예: host: host.docker.internal 또는 redis 서비스 이름 (예: redis)
-      host: host.docker.internal
+      host: localhost
       port: 6379
   kafka:
-    # docker-compose 내부 네트워크에서 Kafka 서비스는 "kafka" 이름이며, 내부 포트는 9092입니다.
-    bootstrap-servers: kafka:9092
+    bootstrap-servers: localhost:9094
     consumer:
       group-id: test-group
       auto-offset-reset: earliest
@@ -93,3 +85,4 @@ spring:
       ddl-auto: create
     datasource:
       initialization-mode: always
+

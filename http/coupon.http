@@ -7,8 +7,8 @@ POST http://localhost:8080/api/coupons/issued
 Content-Type: application/json
 
 {
-  "couponId": 2,
-  "quantity": 10
+  "couponId": 1,
+  "quantity": 30
 }
 
 ### 유효한 유저로 쿠폰 다운로드
@@ -17,7 +17,7 @@ Content-Type: application/json
 
 {
   "userId": 1,
-  "couponId": 2
+  "couponId": 1
 }
 
 
