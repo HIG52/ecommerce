@@ -58,6 +58,9 @@ scenarios:
   - Sustained max load : 20초 동안 초당 200명의 유저가 접속
   - Ramp down : 30초 동안 초당 200명의 유저가 접속, 초당 20명의 유저까지 접속률을 감소
 
+- 테스트 실행 : 
+- artillery run artillery.yml --record --key a9_tfZ7HbV_Uvf7qXrAE7SGC11faP6kTYOm
+
 ## 부하 테스트 결과
 https://app.artillery.io/olej5drvnso5b/load-tests/t5nq6_nfqnw4fb8tjxbx9yfxaa6xgpcry6w_qjtd
 
