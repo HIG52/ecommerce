@@ -19,7 +19,7 @@ public class OrderController implements OrderControllerDocs {
 
     private final OrderUsecase orderUsecase;
 
-    @PostMapping("/api/orders/")
+    @PostMapping("/api/orders")
     public ResponseEntity<OrderResponseDTO> createOrders(
             @RequestBody OrderRequestDTO orderRequestDTO) {
 
